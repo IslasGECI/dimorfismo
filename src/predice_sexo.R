@@ -1,12 +1,12 @@
-source("src/R/clases/ModeloDimorfismo.R")
-source("src/R/clases/CalculatorROC.R")
+source("src/ModeloDimorfismo.R")
+source("src/CalculatorROC.R")
 
 directorioTDP <- ("data/raw")
 nombreArchivoCSV <- file.path(directorioTDP,"morfometria_albatros-laysan_guadalupe.csv")
 
 Datos <- data.table::data.table(read.csv(nombreArchivoCSV))
 
-ruta_resultados <- "src/R/resultados/"
+ruta_resultados <- "data/processed/"
 tabla_importada <- data.table::data.table(readr::read_csv(paste0(ruta_resultados,"tabla_mejores_modelos.csv")))
 calculadorROC <- ROC$new()
 n_renglones <- nrow(tabla_importada)
@@ -29,9 +29,9 @@ for (i_albatros in 1:nrow(Datos)){
                                                     parametrosModelo = tabla_coeficientes_auxiliar)
         
         readr::write_lines(jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), 
-                            path =  "src/R/resultados/parametros_modelo_logistico_laal_ig.json")
+                            path =  "data/processed/parametros_modelo_logistico_laal_ig.json")
         ModeloDimorfismoAlbatros <- ModeloDimorfismo$new()
-        ModeloDimorfismoAlbatros$loadParameters("src/R/resultados/parametros_modelo_logistico_laal_ig.json")
+        ModeloDimorfismoAlbatros$loadParameters("data/processed/parametros_modelo_logistico_laal_ig.json")
         
         prob <- ModeloDimorfismoAlbatros$predict(dato)
         es_macho <- append(es_macho, as.logical(prob > umbral))

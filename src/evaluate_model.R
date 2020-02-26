@@ -4,7 +4,7 @@ library(data.table)
 evaluate_model <- function(datos_entrenamiento, datos_validacion) {
   
   ModeloDimorfismoAlbatros <- ModeloDimorfismo$new()
-  ModeloDimorfismoAlbatros$loadParameters("src/R/resultados/parametros_modelo_logistico_laal_ig.json")
+  ModeloDimorfismoAlbatros$loadParameters("data/processed/parametros_modelo_logistico_laal_ig.json")
   probabilidad_macho_entrenamiento <- ModeloDimorfismoAlbatros$predict(datos_entrenamiento)
   probabilidad_macho_validacion <- ModeloDimorfismoAlbatros$predict(datos_validacion)
   
@@ -28,5 +28,5 @@ evaluate_model <- function(datos_entrenamiento, datos_validacion) {
   
   listaError <- list(erros_variables_entrenamiento = error_todas_entrenamiento, error_variables_validacion = error_todas_validacion)
   
-  readr::write_lines(jsonlite::toJSON(listaError), path = "scr/R/resultados/error_calculado.json")
+  readr::write_lines(jsonlite::toJSON(listaError), path = "data/processed/error_calculado.json")
 }

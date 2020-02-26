@@ -1,17 +1,17 @@
 library(data.table) 
 
-source("src/R/clases/ModeloDimorfismo.R")
-source("src/R/clases/CalculatorROC.R")
-source("src/R/funciones/evaluate_model.R")
-source("src/R/funciones/getPredictionSexPlot.R")
-source("src/R/funciones/getSexProbabilityPlot.R")
-source("src/R/funciones/regretion2DataFrameCoefficients.R")
+source("src/ModeloDimorfismo.R")
+source("src/CalculatorROC.R")
+source("src/evaluate_model.R")
+source("src/getPredictionSexPlot.R")
+source("src/getSexProbabilityPlot.R")
+source("src/regretion2DataFrameCoefficients.R")
 
 directorioTDP <- ("data/raw/")
 nombreArchivoCSV <- file.path(directorioTDP,"morfometria_albatros-laysan_guadalupe.csv")
 directorioTDP<- ("data/")
 nombreArchivoJSON <- file.path(directorioTDP,"datapackage.json")
-rutaResultados = ('src/R/resultados/')
+rutaResultados = ('data/processed/')
 
 Metadatos <- jsonlite::fromJSON(nombreArchivoJSON)
 Datos <- data.table(read.csv(nombreArchivoCSV))
@@ -122,9 +122,9 @@ for(i in 1:n_repeticiones) {
   ##
   
   
-  readr::write_lines(jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), path =  "src/R/resultados/parametros_modelo_logistico_laal_ig.json")
+  readr::write_lines(jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), path =  "data/processed/parametros_modelo_logistico_laal_ig.json")
   ModeloDimorfismoAlbatros <- ModeloDimorfismo$new()
-  ModeloDimorfismoAlbatros$loadParameters("src/R/resultados/parametros_modelo_logistico_laal_ig.json")
+  ModeloDimorfismoAlbatros$loadParameters("data/processed/parametros_modelo_logistico_laal_ig.json")
 
   prob <- ModeloDimorfismoAlbatros$predict(datos_validacion)
   y_test <- ifelse(datos_validacion$sexo == 'M', 1, 0)
