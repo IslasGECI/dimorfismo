@@ -1,5 +1,5 @@
-source("src/ModeloDimorfismo.R")
-source("src/CalculatorROC.R")
+source("src/dimorphism_model_class.R")
+source("src/calculator_ROC_class.R")
 
 directorioTDP <- ("data/raw")
 nombreArchivoCSV <- file.path(directorioTDP,"morfometria_albatros-laysan_guadalupe.csv")
