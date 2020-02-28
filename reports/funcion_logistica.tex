@@ -32,7 +32,7 @@ Donde (2) puede ser reescrito de la forma:
     \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}(x_{1})+...+\beta_{n}N_{n} (x_{n})\right ) \right ]}
 \end{equation}
 
-Notemos que en (3) la normalización $N$ depende de un $X_{i}$ .
+Notemos que en (3) la normalización $N$ depende de un $x_{i}$ .
 
 Definimos $A_{i}$ y $B_{i}$ como:
 
@@ -46,11 +46,11 @@ Definimos $A_{i}$ y $B_{i}$ como:
     B_{i}= \mbox{máx}_{j=\left \{ 1,...,m_{i} \right \}}\left ( x_{i}^{j} \right )
 \end{equation}
 
-Donde, en este caso, el superíndice $j$ representa la anatomía en medición, mientras que el superíndice $i$ simboliza al i-ésimo albatro del conjunto.
+Donde, en este caso, el superíndice $j$ representa el conjunto de anatomías $m_i$  en medición, mientras que el subíndice $i$ simboliza al i-ésimo albatros del conjunto.
 
 
 Por lo tanto, sea 
-\begin{equation} N_{i} \left ( X_{i} \right )= \frac{x_{i}^{j} - \underset{j\in [m_{i} ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}{\underset{j\in [m_{i} ]}{\mbox{máx}}\left (  x_{i}^{j}\right )-\underset{j\in [m_{i} ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}
+\begin{equation} N_{i} \left ( x_{i} \right )= \frac{x_{i}^{j} - \underset{j\in [m_{i} ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}{\underset{j\in [m_{i} ]}{\mbox{máx}}\left (  x_{i}^{j}\right )-\underset{j\in [m_{i} ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}
 \end{equation}
 
 Sustituyendo (6) en (3) tenemos que: 
