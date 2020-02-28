@@ -4,12 +4,11 @@ source("src/dimorphism_model_class.R")
 source("src/calculator_ROC_class.R")
 source("src/evaluate_model_function.R")
 source("src/get_prediction_sex_plot_function.R")
-source("src/get_sex_probability_plot_funcion.R")
+source("src/get_sex_probability_plot_function.R")
 source("src/regretion_to_data_frame_coefficients_function.R")
 
 directorioTDP <- ("data/raw/")
 nombreArchivoCSV <- file.path(directorioTDP,"morfometria_albatros-laysan_guadalupe.csv")
-directorioTDP<- ("data/")
 nombreArchivoJSON <- file.path(directorioTDP,"datapackage.json")
 rutaResultados = ('data/processed/')
 

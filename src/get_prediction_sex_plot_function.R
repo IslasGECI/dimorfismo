@@ -8,9 +8,3 @@ getPredictionSexPlot <- function(TablaDatos, prediccion) {
   theme(axis.text.x = element_text(angle = 90, size=5, vjust=0.5))
   return(graficaPrediccion)
 }
-
-
-
-
-
-
