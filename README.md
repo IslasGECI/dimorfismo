@@ -16,7 +16,7 @@ Para examinar un _fork_:
 FORK='andrea-sanchez'
 RAMA='feature/scriptsR'
 rm --force --recursive dimorfismo
-git clone https://github.com//${FORK}/dimorfismo
+git clone https://github.com/${FORK}/dimorfismo
 cd dimorfismo
 git checkout ${RAMA}
 docker build --no-cache --tag ${FORK}/dimorfismo:latest .
