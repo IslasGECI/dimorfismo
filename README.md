@@ -1,4 +1,4 @@
-# Dimorfismo Sexual de Albatros de Laysan
+# Dimorfismo Sexual de Albatros de Laysan en Isla Guadalupe
 
 Para reproducir lo que se encuentra en el repo oficial:
 
