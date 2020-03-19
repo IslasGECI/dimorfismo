@@ -22,3 +22,6 @@ git checkout ${RAMA}
 docker build --no-cache --tag ${FORK}/dimorfismo:latest .
 docker run --rm --volume ${PWD}:/workdir ${FORK}/dimorfismo:latest make
 ```
+
+
+
