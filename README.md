@@ -1,4 +1,4 @@
-# Dimorfismo Sexual de Albatros de Laysan
+# Dimorfismo Sexual de Albatros de Laysan en Isla Guadalupe
 
 Para reproducir lo que se encuentra en el repo oficial:
 
@@ -22,3 +22,6 @@ git checkout ${RAMA}
 docker build --no-cache --tag ${FORK}/dimorfismo:latest .
 docker run --rm --volume ${PWD}:/workdir ${FORK}/dimorfismo:latest make
 ```
+
+
+
