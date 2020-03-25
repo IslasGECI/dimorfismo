@@ -16,45 +16,42 @@
 \maketitle
 Teniendo la ecuación logística:
 \begin{equation}
-    \label{simple_equation}
+    \label{tripe_igualdad_sencilla}
     \frac{1}{1+e^{-z}} = \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )} = \frac{1}{1+\mbox{\mbox{exp}}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )}
 \end{equation}
 
-Donde, al tener que $N_{0}=1$, entonces la ecuación (1) puede ser expandida de la forma:
+Donde, al tener que $N_{0}=1$, entonces la ecuación \ref{tripe_igualdad_sencilla} puede ser expandida de la forma:
 \begin{equation}
-    \label{simple_equation}
+    \label{ecuacion_expandida}
     \frac{1}{1+\mbox{exp}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]}
 \end{equation}
 
-Donde (2) puede ser reescrito de la forma:
+Donde \ref{ecuacion_expandida} puede ser reescrito de la forma:
 \begin{equation}
-    \label{simple_equiation}    
-    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}(x_{1})+...+\beta_{n}N_{n} (x_{n})\right ) \right ]}
+    \label{ecuacion_expandida_reescrita}    
+    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N(x_{1})+...+\beta_{n}N(x_{n})\right ) \right ]}
 \end{equation}
 
-Notemos que en (3) la normalización $N$ depende de un $x_{i}$ .
-
-Definimos $A_{i}$ y $B_{i}$ como:
+Notemos que en \ref{ecuacion_expandida_reescrita} la normalización $N$ depende de un $x_{i}$. Definimos $A_{i}$ y $B_{i}$ como:
 
 \begin{equation}
-    \label{simple_equiation}
-    A_{i}= \mbox{mín}_{j=\left \{ 1,...,m_{i} \right \}}\left ( x_{i}^{j} \right )
+    \label{maximos_A}
+    A_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{mín}}\left ( x_{i}^{j} \right )
 \end{equation}
 
 \begin{equation}
-    \label{simple_equiation}
-    B_{i}= \mbox{máx}_{j=\left \{ 1,...,m_{i} \right \}}\left ( x_{i}^{j} \right )
+    \label{minimos_B}
+    B_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{máx}}\left ( x_{i}^{j} \right )
 \end{equation}
 
-Donde, en este caso, el superíndice $j$ representa el conjunto de anatomías $m_i$  en medición, mientras que el subíndice $i$ simboliza al i-ésimo albatros del conjunto.
-
+Donde, en este caso, el superíndice $j$ representa el j-ésimo individuo del conjunto de $m$ albatros, mientras que el subíndice $i$ simboliza la i-ésima anatomía en medición.
 
 Por lo tanto, sea 
-\begin{equation} N_{i} \left ( x_{i} \right )= \frac{x_{i}^{j} - \underset{j\in [m_{i} ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}{\underset{j\in [m_{i} ]}{\mbox{máx}}\left (  x_{i}^{j}\right )-\underset{j\in [m_{i} ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}
+\begin{equation} \label{normalizacion} N\left ( x_{i} \right )= \frac{x_{i} - \underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (  x_{i}^{j}\right )-\underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}
 \end{equation}
 
-Sustituyendo (6) en (3) tenemos que: 
-\begin{equation}
-    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}\frac{x_{1}^{j} - \underset{j\in [m_{1} ]}{\mbox{mín}}\left (  x_{1}^{j}\right )}{\underset{j\in [m_{1} ]}{\mbox{máx}}\left (  x_{1}^{j}\right )-\underset{j\in [m_{1} ]}{\mbox{mín}}\left (  x_{1}^{j}\right )}+...+\beta_{n}\frac{x_{n}^{j} - \underset{j\in [m_{n} ]}{\mbox{mín}}\left (  x_{n}^{j}\right )}{\underset{j\in [m_{n} ]}{\mbox{máx}}\left (  x_{n}^{j}\right )-\underset{j\in [m_{n} ]}{\mbox{mín}}\left (  x_{n}^{j}\right )}\right ) \right ]}
+Sustituyendo \ref{normalizacion} en \ref{ecuacion_expandida_reescrita} tenemos que: 
+\begin{equation} \label{ecuacion_chorizo}
+    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}\frac{x_{1}- \underset{j\in [m]}{\mbox{mín}}\left (x_{1}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (x_{1}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{1}^{j}\right )}+...+\beta_{n}\frac{x_{n} - \underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}{\underset{j\in [m]}{\mbox{máx}}\left (  x_{n}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}\right ) \right ]}
 \end{equation}
 \end{document}
