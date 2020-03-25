@@ -44,14 +44,14 @@ Notemos que en \ref{ecuacion_expandida_reescrita} la normalización $N$ depende 
     B_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{máx}}\left ( x_{i}^{j} \right )
 \end{equation}
 
-Donde, en este caso, el superíndice $j$ representa el conjunto de $m$-albatros, mientras que el subíndice $i$ simboliza la i-ésima anatomía en medición.
+Donde, en este caso, el superíndice $j$ representa el j-ésimo individuo del conjunto de $m$ albatros, mientras que el subíndice $i$ simboliza la i-ésima anatomía en medición.
 
 Por lo tanto, sea 
 \begin{equation} \label{normalizacion} N\left ( x_{i} \right )= \frac{x_{i} - \underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (  x_{i}^{j}\right )-\underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}
 \end{equation}
 
 Sustituyendo \ref{normalizacion} en \ref{ecuacion_expandida_reescrita} tenemos que: 
-\begin{equation} \label{ecuacion_chorrizo}
+\begin{equation} \label{ecuacion_chorizo}
     \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}\frac{x_{1}- \underset{j\in [m]}{\mbox{mín}}\left (x_{1}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (x_{1}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{1}^{j}\right )}+...+\beta_{n}\frac{x_{n} - \underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}{\underset{j\in [m]}{\mbox{máx}}\left (  x_{n}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}\right ) \right ]}
 \end{equation}
 \end{document}
