@@ -10,11 +10,6 @@ DatosCrudos = \
 	data/raw/datapackage.json \
 	data/raw/morfometria_albatros-laysan_guadalupe.csv 
 
-RScripts = \
-	src/01_create_parameter_logistic_model_LAAL.R \
-	src/02_evaluate_better_models.R \
-	src/03_predict_sex.R 
-
 csvTablaModelosLogisticos= \
 	data/processed/tabla_modelos_logisticos.csv
 
@@ -35,15 +30,15 @@ reports/funcion_logistica.pdf: reports/funcion_logistica.tex $(csvTablaModelosLo
 
 # IV. Sección de dependencias para los objetivos principales
 # ------------------------------------------------------------------------------------------------
-$(csvTablaModelosLogisticos): $(DatosCrudos) $(RScripts) src/dimorphism_model_class.R src/calculator_ROC_class.R src/evaluate_model_function.R src/get_prediction_sex_plot_function.R src/get_sex_probability_plot_function.R src/regretion_to_data_frame_coefficients_function.R
+$(csvTablaModelosLogisticos): $(DatosCrudos) src/01_create_parameter_logistic_model_LAAL.R src/dimorphism_model_class.R src/calculator_ROC_class.R src/evaluate_model_function.R src/get_prediction_sex_plot_function.R src/get_sex_probability_plot_function.R src/regretion_to_data_frame_coefficients_function.R
 	mkdir --parents data/processed
 	R --file=src/01_create_parameter_logistic_model_LAAL.R
 
-$(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico): $(DatosCrudos) $(RScripts) src/dimorphism_model_class.R src/calculator_ROC_class.R
+$(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico): $(DatosCrudos) src/02_evaluate_better_models.R src/dimorphism_model_class.R src/calculator_ROC_class.R
 	mkdir --parents data/processed
 	R --file=src/02_evaluate_better_models.R
 
-$(jsonParametrosModeloLogistico): $(DatosCrudos) $(RScripts) src/dimorphism_model_class.R src/calculator_ROC_class.R
+$(jsonParametrosModeloLogistico): $(DatosCrudos) src/03_predict_sex.R src/dimorphism_model_class.R src/calculator_ROC_class.R
 	mkdir --parents data/processed
 	R --file=src/03_predict_sex.R
 
