@@ -1,34 +1,30 @@
-# I. Sección de objetivos principales
-# ---------------------------------------------------------------------------------------------------
-.PHONY: all clean 
-
 all: reports/funcion_logistica.pdf
 
-# II. Sección de variables
+# I. Sección de variables
 # ------------------------------------------------------------------------------------------------
 DatosCrudos = \
 	data/raw/datapackage.json \
 	data/raw/morfometria_albatros-laysan_guadalupe.csv 
 
-csvTablaModelosLogisticos= \
+csvTablaModelosLogisticos = \
 	data/processed/tabla_modelos_logisticos.csv
 
-csvTablaMejoresModelos= \
+csvTablaMejoresModelos = \
 	data/processed/tabla_mejores_modelos.csv
 
-jsonParametrosMejorModeloLogistico= \
+jsonParametrosMejorModeloLogistico = \
 	data/processed/parametros_mejor_modelo_logistico_laal_ig.json
 
-jsonParametrosModeloLogistico= \
+jsonParametrosModeloLogistico = \
 	data/processed/parametros_modelo_logistico_laal_ig.json
 
-# III. Sección de requisitos de objetivos principales:
+# II. Sección de requisitos de objetivos principales:
 # ------------------------------------------------------------------------------------------------
 reports/funcion_logistica.pdf: reports/funcion_logistica.tex $(csvTablaModelosLogisticos) $(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico) $(jsonParametrosModeloLogistico)
 	pdflatex -output-directory=$(<D) $<
 	pdflatex -output-directory=$(<D) $<
 
-# IV. Sección de dependencias para los objetivos principales
+# III. Sección de dependencias para los objetivos principales
 # ------------------------------------------------------------------------------------------------
 $(csvTablaModelosLogisticos): $(DatosCrudos) src/01_create_parameter_logistic_model_LAAL.R src/dimorphism_model_class.R src/calculator_ROC_class.R src/evaluate_model_function.R src/get_prediction_sex_plot_function.R src/get_sex_probability_plot_function.R src/regretion_to_data_frame_coefficients_function.R
 	mkdir --parents data/processed
@@ -42,10 +38,11 @@ $(jsonParametrosModeloLogistico): $(DatosCrudos) src/03_predict_sex.R src/dimorp
 	mkdir --parents data/processed
 	R --file=src/03_predict_sex.R
 
-# V. Sección del resto de los phonies
+# IV. Sección del resto de los phonies
 # ------------------------------------------------------------------------------------------------
-# Elimina los residuos de LaTeX
+.PHONY: all clean
 
+# Elimina los residuos de LaTeX
 clean:
 	rm --force reports/*.aux
 	rm --force reports/*.log
