@@ -26,17 +26,17 @@ reports/funcion_logistica.pdf: reports/funcion_logistica.tex $(csvTablaModelosLo
 
 # III. Sección de dependencias para los objetivos principales
 # ------------------------------------------------------------------------------------------------
-$(csvTablaModelosLogisticos): $(DatosCrudos) src/01_create_parameter_logistic_model_LAAL.R src/dimorphism_model_class.R src/calculator_ROC_class.R src/evaluate_model_function.R src/get_prediction_sex_plot_function.R src/get_sex_probability_plot_function.R src/regretion_to_data_frame_coefficients_function.R
+$(csvTablaModelosLogisticos): src/01_create_parameter_logistic_model_LAAL.R $(DatosCrudos) src/dimorphism_model_class.R src/calculator_ROC_class.R src/evaluate_model_function.R src/get_prediction_sex_plot_function.R src/get_sex_probability_plot_function.R src/regretion_to_data_frame_coefficients_function.R
 	mkdir --parents $(@D)
-	R --file=src/01_create_parameter_logistic_model_LAAL.R
+	R --file=$<
 
-$(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico): $(DatosCrudos) src/02_evaluate_better_models.R src/dimorphism_model_class.R src/calculator_ROC_class.R
+$(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico): src/02_evaluate_better_models.R $(DatosCrudos) src/dimorphism_model_class.R src/calculator_ROC_class.R
 	mkdir --parents $(@D)
-	R --file=src/02_evaluate_better_models.R
+	R --file=$<
 
-$(jsonParametrosModeloLogistico): $(DatosCrudos) src/03_predict_sex.R src/dimorphism_model_class.R src/calculator_ROC_class.R
+$(jsonParametrosModeloLogistico): src/03_predict_sex.R $(DatosCrudos) src/dimorphism_model_class.R src/calculator_ROC_class.R
 	mkdir --parents $(@D)
-	R --file=src/03_predict_sex.R
+	R --file=$<
 
 # IV. Sección del resto de los phonies
 # ------------------------------------------------------------------------------------------------
