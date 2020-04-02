@@ -22,18 +22,17 @@ git checkout ${RAMA}
 docker build --no-cache --tag ${FORK}/dimorfismo:latest .
 docker run --rm --volume ${PWD}:/workdir ${FORK}/dimorfismo:latest make
 ```
-### Objetivos en el Proyecto de Vinculación con Valor en Créditos 2020-1
 
-#### Objetivos a corto plazo:
-    - [ ] Cerrar la rama feature/ScriptsR 
-    - [ ] Reproducir en el PDF los resultados obtenidos en los archivos .csv y .json
-    - [ ] Resporte Semanal.
-    - [ ]
-    - [ ]
+## Objetivos en el Proyecto de Vinculación con Valor en Créditos 2020-1
 
-#### Objetivos a largo plaza:
-    - [ ] Enriquecer scripts principales en R.
-    - [ ] Generar un PDF detallando la parte matemática del *artículo de Dimorfismo*.
-    - [ ] Reporte final
-    - [ ]
-    - [ ]
+### Objetivos a corto plazo:
+
+- [ ] Cerrar la rama feature/ScriptsR 
+- [ ] Reproducir en el PDF los resultados obtenidos en los archivos .csv y .json
+- [ ] Resporte Semanal.
+
+### Objetivos a largo plazo:
+
+- [ ] Enriquecer scripts principales en R.
+- [ ] Generar un PDF detallando la parte matemática del *artículo de Dimorfismo*.
+- [ ] Reporte final.
