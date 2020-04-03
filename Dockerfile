@@ -1,4 +1,4 @@
-FROM islasgeci/jupyter:3691
+FROM islasgeci/jupyter:5869
 
 RUN Rscript -e 'install.packages("rjson")'
 
