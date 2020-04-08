@@ -10,4 +10,4 @@ jobs:
     - name: Construye imagen
       run: docker build --tag islasgeci/dimorfismo .
     - name: Ejecuta objetivo principal del Makefile
-      run: docker run --volume ${PWD}:/workdir islasgeci/dimorfismo make 
+      run: docker run --volume ${PWD}:/workdir islasgeci/dimorfismo make
