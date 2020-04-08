@@ -1,0 +1,225 @@
+{
+    "name": "morfometria-albatros-laysan-guadalupe",
+    "homepage": "https://bitbucket.org/IslasGECI/datos-texto/src/default/datapackage/morfometria-albatros-laysan-guadalupe/",
+    "profile": "tabular-data-package",
+    "contributors": [
+        {
+            "title": "Mariana Salinas",
+            "email": "mariana.salinas@islas.org.mx",
+            "organization": "GECI",
+            "role": "author"
+        },
+        {
+            "title": "Yutzil Lora",
+            "email": "yutzil.lora@islas.org.mx",
+            "organization": "GECI",
+            "role": "contributor"
+        },
+        {
+            "title": "Haran Peiro-Nuño",
+            "email": "hpeiro@uabc.edu.mx",
+            "organization": "GECI",
+            "role": "maintainer"
+        }
+    ],
+    "description": "Morfometría de albatros de Laysan en Isla Guadalupe (2015-2016) para determinar el dimorfismo sexual de esta especie mediante regresión logística.",
+    "institution": "Grupo de Ecología y Conservación de Islas",
+    "sources": [
+        {
+            "title": "Julio Hernández Montoya",
+            "email": "julio.montoya@islas.org.mx"
+        }
+    ],
+    "resources": [
+        {
+            "name": "morfometria_albatros-laysan_guadalupe",
+            "description": "Morfometría de albatros de Laysan en Isla Guadalupe (2015-2016)",
+            "encoding": "utf-8",
+            "format": "csv",
+            "mediatype": "text/csv",
+            "path": "morfometria_albatros-laysan_guadalupe.csv",
+            "profile": "tabular-data-resource",
+            "source": "Medidas in situ",
+            "title": "Laysan Albatross morphometry from Guadalupe Island",
+            "titulo": "Morfometría de Albatros de Laysan en Isla Guadalupe",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "fecha",
+                        "axis": "T",
+                        "long_name": "Year",
+                        "nombre_largo": "Año",
+                        "standard_name": "date",
+                        "type": "integer",
+                        "constraints": {
+                            "minumum": 2015
+                        }
+                    },
+                    {
+                        "name": "subcolonia",
+                        "long_name": "Subcolony",
+                        "nombre_largo": "Subcolonia",
+                        "type": "string",
+                        "constraints": {
+                            "enum": [
+                                "Punta Sur",
+                                "Zapato",
+                                "Morro Prieto"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "nidoPS",
+                        "long_name": "Nest",
+                        "nombre_largo": "Nido",
+                        "type": "integer",
+                        "constraints": {
+                            "minumum": 1
+                        }
+                    },
+                    {
+                        "name": "darvic",
+                        "long_name": "Darvic",
+                        "nombre_largo": "Darvic",
+                        "type": "string"
+                    },
+                    {
+                        "name": "sexo",
+                        "long_name": "Sex",
+                        "nombre_largo": "Sexo",
+                        "type": "string",
+                        "constraints": {
+                            "enum": [
+                                "H",
+                                "M"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "longitudCraneo",
+                        "long_name": "Skull length",
+                        "nombre_largo": "Longitud del cráneo",
+                        "type": "number",
+                        "units": "mm",
+                        "constraints": {
+                            "minimum": 0.01
+                        }
+                    },
+                    {
+                        "name": "longitudPico",
+                        "long_name": "Beak length",
+                        "nombre_largo": "Longitud del pico",
+                        "type": "number",
+                        "units": "mm",
+                        "constraints": {
+                            "minimum": 0.01
+                        }
+                    },
+                    {
+                        "name": "longitudNarina",
+                        "long_name": "Nare length",
+                        "nombre_largo": "Longitud de la narina",
+                        "type": "number",
+                        "units": "mm",
+                        "constraints": {
+                            "minimum": 0.01
+                        }
+                    },
+                    {
+                        "name": "anchoCraneo",
+                        "long_name": "Skull width",
+                        "nombre_largo": "Ancho del cráneo",
+                        "type": "number",
+                        "units": "mm",
+                        "constraints": {
+                            "minimum": 0.01
+                        }
+                    },
+                    {
+                        "name": "altoPico",
+                        "long_name": "Beak height",
+                        "nombre_largo": "Alto del pico",
+                        "type": "number",
+                        "units": "mm",
+                        "constraints": {
+                            "minimum": 0.01
+                        }
+                    },
+                    {
+                        "name": "anchoPico",
+                        "long_name": "Beak width",
+                        "nombre_largo": "Ancho del pico",
+                        "type": "number",
+                        "units": "mm",
+                        "constraints": {
+                            "minimum": 0.01
+                        }
+                    },
+                    {
+                        "name": "tarso",
+                        "long_name": "Tarsus",
+                        "nombre_largo": "Tarso",
+                        "type": "number",
+                        "units": "mm",
+                        "constraints": {
+                            "minimum": 0.01
+                        }
+                    },
+                    {
+                        "name": "longAlaCerrada",
+                        "long_name": "Closed wing length",
+                        "nombre_largo": "Longitud del ala cerrada",
+                        "type": "number",
+                        "units": "cm",
+                        "constraints": {
+                            "minimum": 0.01
+                        }
+                    },
+                    {
+                        "name": "longAlaAbierta",
+                        "long_name": "Opened wing length",
+                        "nombre_largo": "Longitud del ala abierta",
+                        "type": "number",
+                        "units": "cm",
+                        "constraints": {
+                            "minimum": 0.01
+                        }
+                    },
+                    {
+                        "name": "mediaEnvergadura",
+                        "long_name": "Half wingspan",
+                        "nombre_largo": "Media envergadura",
+                        "type": "number",
+                        "units": "cm",
+                        "constraints": {
+                            "minimum": 0.01
+                        }
+                    },
+                    {
+                        "name": "envergadura",
+                        "long_name": "Wingspan",
+                        "nombre_largo": "Envergadura",
+                        "type": "number",
+                        "units": "cm",
+                        "constraints": {
+                            "minimum": 0.01
+                        }
+                    },
+                    {
+                        "name": "peso",
+                        "long_name": "Weight",
+                        "nombre_largo": "Peso",
+                        "type": "number",
+                        "units": "kg",
+                        "constraints": {
+                            "minimum": 0.01
+                        }
+                    }
+                ],
+                "missingValues": [
+                    "NA"
+                ]
+            }
+        }
+    ]
+}
