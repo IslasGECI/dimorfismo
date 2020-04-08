@@ -27,12 +27,12 @@ docker run --rm --volume ${PWD}:/workdir ${FORK}/dimorfismo:latest make
 
 ### Objetivos a corto plazo:
 
-- [ ] Cerrar la rama feature/ScriptsR 
-- [ ] Reproducir en el PDF los resultados obtenidos en los archivos .csv y .json
-- [ ] Resporte Semanal.
+- [ ] Desarrollar archivo Makefile para poder reenderizar PDF a partir de resultados en src.
+- [ ] Mostrar en el PDF los resultados obtenidos en los archivos .csv y .json .
+- [ ] Redactar un reporte semanal con las actividades realizadas declarando su intensión u objetivo.
 
 ### Objetivos a largo plazo:
 
-- [ ] Enriquecer scripts principales en R.
-- [ ] Generar un PDF detallando la parte matemática del *artículo de Dimorfismo*.
-- [ ] Reporte final.
+- [ ] Refactorizar programas principales en R.
+- [ ] Publicar un PDF detallando la parte matemática del *artículo de Dimorfismo* en la plataforma de arXiv.
+- [ ] Reporte final con base en reportes semanales.
