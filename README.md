@@ -36,3 +36,4 @@ docker run --rm --volume ${PWD}:/workdir ${FORK}/dimorfismo:latest make
 - [ ] Refactorizar programas principales en R.
 - [ ] Publicar un PDF detallando la parte matemática del *artículo de Dimorfismo* en la plataforma de [arXiv](https://arxiv.org/).
 - [ ] Reporte final con base en reportes semanales.
+- [ ] Cubrir el código con pruebas.
