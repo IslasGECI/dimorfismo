@@ -20,16 +20,26 @@ data_processed_1 = '../data/processed/parametros_mejor_modelo_logistico_laal_ig.
 with open(data_processed_1, encoding='utf8') as results_1_file:
     parametros_mejor = json.load(results_1_file)
 
-##Declaro variables a utilizar
+##Declaro variables a utilizar 
+##Primer archivo
+m_variables_normalizacion = parametros_mejor ["parametrosNormalizacion"]
+m_valor_minimo = m_variables_normalizacion ["valorMinimo"]
+m_valor_maximo = m_variables_normalizacion ["valorMaximo"]
+
 m_variables_modelo = parametros_mejor["parametrosModelo"]
 m_longitud_craneo = m_variables_modelo[1]
 m_altura_pico = m_variables_modelo[2]
 m_longitud_pico = m_variables_modelo[3]
 m_tarso = m_variables_modelo [4]
 
+#Segudo archivo
 data_processed_2 = '../data/processed/parametros_modelo_logistico_laal_ig.json'
 with open(data_processed_2, encoding='utf8') as results_2_file:
     parametros_modelos = json.load(results_2_file)
+
+variables_normalizacion = parametros_mejor ["parametrosNormalizacion"]
+valor_minimo = variables_normalizacion ["valorMinimo"]
+valor_maximo = variables_normalizacion ["valorMaximo"]
 
 variables_modelo = parametros_modelos["parametrosModelo"]
 longitud_craneo = variables_modelo[1]
@@ -102,39 +112,39 @@ En la \ref{modeloLogistico} se muestran los valores estimados de las direntes mo
 \begin{table}[h]
     \centering
     \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{|c|c|}
+    \begin{tabular}{|c|c|c|c|}
     \hline
-    Morfometría & Valor Estimado\\
+    Morfometría & Valor Mínimo & Valor Máximo & Valor Estimado\\
     \hline
-    Longitud Craneo & \py{longitud_craneo["Estimate"]} \\
+    Longitud Craneo & \py{valor_minimo["longitudCraneo"][0]} & \py{valor_maximo["longitudCraneo"][0]} & \py{longitud_craneo["Estimate"]} \\
     \hline
-    Altura Pico & \py{altura_pico["Estimate"]} \\
+    Altura Pico & \py{valor_minimo["altoPico"][0]} & \py{valor_maximo["altoPico"][0]} & \py{altura_pico["Estimate"]} \\
     \hline
-    Longitud Pico & \py{longitud_pico["Estimate"]} \\
+    Longitud Pico & \py{valor_minimo["longitudPico"][0]} & \py{valor_maximo["longitudPico"][0]} & \py{longitud_pico["Estimate"]} \\
     \hline
-    Tarso & \py{tarso["Estimate"]} \\
+    Tarso & \py{valor_minimo["tarso"][0]} & \py{valor_maximo["tarso"][0]} & \py{tarso["Estimate"]} \\
     \hline
     \end{tabular}
     \label{modeloLogistico}
 \end{table}
 
 
-En la \ref{mejorModeloLogistico} se muestran los valores estimados de las direntes morfometrias en el archivo:
+En la \ref{mejorModeloLogistico} se muestran los valores estimados de las direntes morfometrias en el archivo .json :
 
 \begin{table}[htbp]
     \centering
     \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{|c|c|}
+    \begin{tabular}{|c|c|c|c|}
     \hline
-    Morfometría & Valor Estimado\\
+    Morfometría & Valor Mínimo & Valor Máximo & Valor Estimado\\
     \hline
-    Longitud Craneo & \py{m_longitud_craneo["Estimate"]} \\
+    Longitud Craneo & \py{m_valor_minimo["longitudCraneo"][0]} & \py{m_valor_maximo["longitudCraneo"][0]} & \py{m_longitud_craneo["Estimate"]} \\
     \hline
-    Altura Pico & \py{m_altura_pico["Estimate"]} \\
+    Altura Pico & \py{m_valor_minimo["altoPico"][0]} & \py{m_valor_maximo["altoPico"][0]} & \py{m_altura_pico["Estimate"]} \\
     \hline
-    Longitud Pico & \py{m_longitud_pico["Estimate"]} \\
+    Longitud Pico & \py{m_valor_minimo["longitudPico"][0]} & \py{m_valor_maximo["longitudPico"][0]}& \py{m_longitud_pico["Estimate"]} \\
     \hline
-    Tarso & \py{m_tarso["Estimate"]} \\
+    Tarso & \py{m_valor_minimo["tarso"][0]} & \py{m_valor_maximo["tarso"][0]}& \py{m_tarso["Estimate"]} \\
     \hline
     \end{tabular}
     \label{mejorModeloLogistico}
