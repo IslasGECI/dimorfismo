@@ -26,8 +26,10 @@ jsonParametrosModeloLogistico = \
 # II. Sección de requisitos de objetivos principales:
 # ------------------------------------------------------------------------------------------------
 reports/funcion_logistica.pdf: reports/funcion_logistica.tex $(csvTablaModelosLogisticos) $(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico) $(jsonParametrosModeloLogistico)
-	pdflatex -output-directory=$(<D) $<
-	pdflatex -output-directory=$(<D) $<
+	cd $(<D) && pdflatex $(<F)
+	cd $(<D) && pythontex $(<F)
+	cd $(<D) && pdflatex $(<F)
+	cd $(<D) && pdflatex $(<F)
 
 # III. Sección de dependencias para los objetivos principales
 # ------------------------------------------------------------------------------------------------
