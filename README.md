@@ -23,5 +23,17 @@ docker build --no-cache --tag ${FORK}/dimorfismo:latest .
 docker run --rm --volume ${PWD}:/workdir ${FORK}/dimorfismo:latest make
 ```
 
+## Objetivos en el Proyecto de Vinculación con Valor en Créditos 2020-1
 
+### Objetivos a corto plazo:
 
+- [x] Desarrollar archivo Makefile para poder reenderizar PDF a partir de resultados en src.
+- [ ] Mostrar en el PDF los resultados obtenidos en los archivos .csv y .json .
+- [ ] Redactar un reporte semanal con las actividades realizadas declarando su intensión u objetivo.
+
+### Objetivos a largo plazo:
+
+- [ ] Refactorizar programas principales en R.
+- [ ] Publicar un PDF detallando la parte matemática del *artículo de Dimorfismo* en la plataforma de [arXiv](https://arxiv.org/).
+- [ ] Reporte final con base en reportes semanales.
+- [ ] Cubrir el código con pruebas.
