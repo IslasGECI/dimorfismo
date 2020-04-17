@@ -51,4 +51,6 @@ clean:
 	rm --force reports/*.aux
 	rm --force reports/*.log
 	rm --force reports/*.pdf
+	rm --force reports/*.pytxcode
 	rm --force --recursive data/processed
+	rm --force --recursive reports/pythontex*
