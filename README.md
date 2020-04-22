@@ -27,7 +27,7 @@ docker run --rm --volume ${PWD}:/workdir ${FORK}/dimorfismo:latest make
 
 ### Objetivos a corto plazo:
 
-- [ ] Redactar un [reporte] semanal (https://github.com/IslasGECI/ejemplo_para_andrea/pull/4) con las actividades realizadas declarando su intensión u objetivo.
+- [ ] Redactar un [reporte](https://github.com/IslasGECI/ejemplo_para_andrea/pull/4) semanal con las actividades realizadas declarando su intensión u objetivo.
 - [ ] Cubrir el código con pruebas.
 - [x] Desarrollar archivo Makefile para poder reenderizar PDF a partir de resultados en src.
 - [x] Mostrar en el PDF los resultados obtenidos en los archivos .csv y .json .
