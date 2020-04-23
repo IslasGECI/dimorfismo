@@ -44,7 +44,7 @@ $(jsonParametrosModeloLogistico): src/03_predict_sex.R $(DatosCrudos) $(csvTabla
 
 # IV. Sección del resto de los phonies
 # ------------------------------------------------------------------------------------------------
-.PHONY: all clean
+.PHONY: all clean tests
 
 # Elimina los residuos de LaTeX
 clean:
@@ -54,3 +54,6 @@ clean:
 	rm --force reports/*.pytxcode
 	rm --force --recursive data/processed
 	rm --force --recursive reports/pythontex*
+
+tests:
+	R -e "testthat::test_dir('tests/testthat/', report = 'summary')"
