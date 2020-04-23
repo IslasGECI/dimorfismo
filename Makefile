@@ -1,4 +1,4 @@
-all: reports/funcion_logistica.pdf
+all: tests 
 
 define runScript
 	mkdir --parents $(@D)
