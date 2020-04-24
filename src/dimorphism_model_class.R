@@ -10,7 +10,7 @@ ModeloDimorfismo <- R6Class("ModeloDimorfismo",
       private$ParametrosModelo <- jsonParametros$parametrosModelo
     },
     predict = function(TablaDatosMorfometricos){
-      # escribir codigo para predecir sexo
+      # escribir codigo para predecir Sexo
       z <- private$getValue("(Intercept)")
       iVarible <- 1
       for (variable in private$ParametrosModelo){

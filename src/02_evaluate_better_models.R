@@ -32,7 +32,7 @@ for(i_renglon in 1:n_renglones) {
   ModeloDimorfismoAlbatros$loadParameters("data/processed/parametros_modelo_logistico_laal_ig.json")
   
   prob <- ModeloDimorfismoAlbatros$predict(Datos)
-  y_test <- ifelse(Datos$sexo == 'M', 1, 0)
+  y_test <- ifelse(Datos$Sexo == 'M', 1, 0)
   datos_roc <- data.frame(y_test, prob)
   errores <- append(errores, calculadorROC$calculateError(datos_roc,umbral))
 }

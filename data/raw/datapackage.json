@@ -45,7 +45,7 @@
             "schema": {
                 "fields": [
                     {
-                        "name": "fecha",
+                        "name": "Fecha",
                         "axis": "T",
                         "long_name": "Year",
                         "nombre_largo": "Año",
@@ -56,7 +56,7 @@
                         }
                     },
                     {
-                        "name": "subcolonia",
+                        "name": "Subcolonia",
                         "long_name": "Subcolony",
                         "nombre_largo": "Subcolonia",
                         "type": "string",
@@ -69,7 +69,7 @@
                         }
                     },
                     {
-                        "name": "nidoPS",
+                        "name": "NidoPS",
                         "long_name": "Nest",
                         "nombre_largo": "Nido",
                         "type": "integer",
@@ -78,13 +78,13 @@
                         }
                     },
                     {
-                        "name": "darvic",
+                        "name": "Darvic",
                         "long_name": "Darvic",
                         "nombre_largo": "Darvic",
                         "type": "string"
                     },
                     {
-                        "name": "sexo",
+                        "name": "Sexo",
                         "long_name": "Sex",
                         "nombre_largo": "Sexo",
                         "type": "string",
@@ -156,7 +156,7 @@
                         }
                     },
                     {
-                        "name": "tarso",
+                        "name": "Tarso",
                         "long_name": "Tarsus",
                         "nombre_largo": "Tarso",
                         "type": "number",
@@ -196,7 +196,7 @@
                         }
                     },
                     {
-                        "name": "envergadura",
+                        "name": "Envergadura",
                         "long_name": "Wingspan",
                         "nombre_largo": "Envergadura",
                         "type": "number",
@@ -206,7 +206,7 @@
                         }
                     },
                     {
-                        "name": "peso",
+                        "name": "Peso",
                         "long_name": "Weight",
                         "nombre_largo": "Peso",
                         "type": "number",
