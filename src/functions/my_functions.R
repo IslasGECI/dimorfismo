@@ -3,5 +3,6 @@ write_a_word <- function(parametro){
 }
 
 resolve_riddle <- function(parametro_1, parametro_2){
-    return(5)
+    sol = (parametro_1 * parametro_2) + parametro_1
+    return(sol)
 }
