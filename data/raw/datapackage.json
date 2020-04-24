@@ -96,7 +96,7 @@
                         }
                     },
                     {
-                        "name": "longitudCraneo",
+                        "name": "Longitud_Craneo",
                         "long_name": "Skull length",
                         "nombre_largo": "Longitud del cráneo",
                         "type": "number",
@@ -106,7 +106,7 @@
                         }
                     },
                     {
-                        "name": "longitudPico",
+                        "name": "Longitud_Pico",
                         "long_name": "Beak length",
                         "nombre_largo": "Longitud del pico",
                         "type": "number",
@@ -116,7 +116,7 @@
                         }
                     },
                     {
-                        "name": "longitudNarina",
+                        "name": "Longitud_Narina",
                         "long_name": "Nare length",
                         "nombre_largo": "Longitud de la narina",
                         "type": "number",
@@ -126,7 +126,7 @@
                         }
                     },
                     {
-                        "name": "anchoCraneo",
+                        "name": "Ancho_Craneo",
                         "long_name": "Skull width",
                         "nombre_largo": "Ancho del cráneo",
                         "type": "number",
@@ -136,7 +136,7 @@
                         }
                     },
                     {
-                        "name": "altoPico",
+                        "name": "Altura_Pico",
                         "long_name": "Beak height",
                         "nombre_largo": "Alto del pico",
                         "type": "number",
@@ -146,7 +146,7 @@
                         }
                     },
                     {
-                        "name": "anchoPico",
+                        "name": "Ancho_Pico",
                         "long_name": "Beak width",
                         "nombre_largo": "Ancho del pico",
                         "type": "number",
@@ -166,7 +166,7 @@
                         }
                     },
                     {
-                        "name": "longAlaCerrada",
+                        "name": "Longitud_AlaCerrada",
                         "long_name": "Closed wing length",
                         "nombre_largo": "Longitud del ala cerrada",
                         "type": "number",
@@ -176,7 +176,7 @@
                         }
                     },
                     {
-                        "name": "longAlaAbierta",
+                        "name": "Longitud_AlaAbierta",
                         "long_name": "Opened wing length",
                         "nombre_largo": "Longitud del ala abierta",
                         "type": "number",
@@ -186,7 +186,7 @@
                         }
                     },
                     {
-                        "name": "mediaEnvergadura",
+                        "name": "Media_Envergadura",
                         "long_name": "Half wingspan",
                         "nombre_largo": "Media envergadura",
                         "type": "number",

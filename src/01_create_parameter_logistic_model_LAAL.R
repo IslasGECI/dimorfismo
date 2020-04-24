@@ -19,7 +19,7 @@ n_datos <- nrow(Datos)
 proporcion_entrenamiento <- 0.80
 proporcion_validacion <- 1 - proporcion_entrenamiento
 
-variablesParaModelo <- c("longitudCraneo", "longitudPico", "anchoCraneo", "altoPico", "Tarso", "longAlaCerrada", "longAlaAbierta", "Envergadura")
+variablesParaModelo <- c("Longitud_Craneo", "Longitud_Pico", "Ancho_Craneo", "Altura_Pico", "Tarso", "Longitud_AlaCerrada", "Longitud_AlaAbierta", "Envergadura")
 nombre_columnas <- c("(Intercept)", variablesParaModelo)
 n_repeticiones <- 10
 #2000
@@ -134,8 +134,8 @@ for(i in 1:n_repeticiones) {
 }
 close(barra_progeso)
 
-variables_finales <- c("(Intercept)", "longitudCraneo", "altoPico", "longitudPico", "Tarso", "anchoCraneo")
-variables_sin_intercepto <- c("longitudCraneo", "altoPico", "longitudPico", "Tarso", "anchoCraneo")
+variables_finales <- c("(Intercept)", "Longitud_Craneo", "Altura_Pico", "Longitud_Pico", "Tarso", "Ancho_Craneo")
+variables_sin_intercepto <- c("Longitud_Craneo", "Altura_Pico", "Longitud_Pico", "Tarso", "Ancho_Craneo")
 
 tabla_modelo$coeficientes_modelo <- tabla_modelo$coeficientes_modelo[, variables_finales]
 
