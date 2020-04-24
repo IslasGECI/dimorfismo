@@ -52,7 +52,7 @@
                         "standard_name": "date",
                         "type": "integer",
                         "constraints": {
-                            "minumum": 2015
+                            "minumum": 2015, "maximum": 2018
                         }
                     },
                     {
@@ -74,7 +74,7 @@
                         "nombre_largo": "Nido",
                         "type": "integer",
                         "constraints": {
-                            "minumum": 1
+                            "minumum": 1 ,"maximum": 355
                         }
                     },
                     {
@@ -102,7 +102,7 @@
                         "type": "number",
                         "units": "mm",
                         "constraints": {
-                            "minimum": 0.01
+                            "minimum": 165.58 ,"maximum": 193.22
                         }
                     },
                     {
@@ -112,7 +112,7 @@
                         "type": "number",
                         "units": "mm",
                         "constraints": {
-                            "minimum": 0.01
+                            "minimum": 100.81 ,"maximum": 119.48
                         }
                     },
                     {
@@ -122,7 +122,7 @@
                         "type": "number",
                         "units": "mm",
                         "constraints": {
-                            "minimum": 0.01
+                            "minimum": 74.82 ,"maximum": 90.68
                         }
                     },
                     {
@@ -132,7 +132,7 @@
                         "type": "number",
                         "units": "mm",
                         "constraints": {
-                            "minimum": 0.01
+                            "minimum": 46.5, "maximum": 58.36
                         }
                     },
                     {
@@ -142,7 +142,7 @@
                         "type": "number",
                         "units": "mm",
                         "constraints": {
-                            "minimum": 0.01
+                            "minimum": 28.85, "maximum": 35.5
                         }
                     },
                     {
@@ -152,7 +152,7 @@
                         "type": "number",
                         "units": "mm",
                         "constraints": {
-                            "minimum": 0.01
+                            "minimum": 21.48, "maximum": 28.7
                         }
                     },
                     {
@@ -162,7 +162,7 @@
                         "type": "number",
                         "units": "mm",
                         "constraints": {
-                            "minimum": 0.01
+                            "minimum": 83.18, "maximum": 99.69
                         }
                     },
                     {
@@ -172,7 +172,7 @@
                         "type": "number",
                         "units": "cm",
                         "constraints": {
-                            "minimum": 0.01
+                            "minimum": 48.7, "maximum": 54.7
                         }
                     },
                     {
@@ -182,7 +182,7 @@
                         "type": "number",
                         "units": "cm",
                         "constraints": {
-                            "minimum": 0.01
+                            "minimum": 88.9, "maximum": 102
                         }
                     },
                     {
@@ -192,7 +192,7 @@
                         "type": "number",
                         "units": "cm",
                         "constraints": {
-                            "minimum": 0.01
+                            "minimum": 99.3, "maximum": 112.2
                         }
                     },
                     {
@@ -202,7 +202,7 @@
                         "type": "number",
                         "units": "cm",
                         "constraints": {
-                            "minimum": 0.01
+                            "minimum": 198.6, "maximum": 224.4
                         }
                     },
                     {
@@ -212,7 +212,7 @@
                         "type": "number",
                         "units": "kg",
                         "constraints": {
-                            "minimum": 0.01
+                            "minimum": 2.03, "maximum": 3.68
                         }
                     }
                 ],
