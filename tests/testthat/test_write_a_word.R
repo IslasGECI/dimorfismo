@@ -1,4 +1,4 @@
-source("../../src/functions/my_functions.R")
+source("../../src/functions/dimorfismo.R")
 test_that("La función regresa la palabra que metimos de argumento",
     {
         expect_equal(write_a_word("hola"), "hola")
