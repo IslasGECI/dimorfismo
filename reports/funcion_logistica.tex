@@ -74,22 +74,22 @@ with open('../data/processed/tabla_modelos_logisticos.csv') as results_4_file:
 Teniendo la ecuación logística:
 \begin{equation}
     \label{tripe_igualdad_sencilla}
-    \frac{1}{1+e^{-z}} = \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )} = \frac{1}{1+\mbox{\mbox{exp}}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )}
+    \frac{1}{1+e^{-z}} = \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )} = \frac{1}{1+\mbox{\mbox{exp}}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} ,
 \end{equation}
 
-Donde, al tener que $N_{0}=1$, entonces la ecuación \ref{tripe_igualdad_sencilla} puede ser expandida de la forma:
+donde, al tener que $N_{0}=1$, entonces la ecuación (\ref{tripe_igualdad_sencilla}) puede ser expandida de la forma:
 \begin{equation}
     \label{ecuacion_expandida}
-    \frac{1}{1+\mbox{exp}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]}
+    \frac{1}{1+\mbox{exp}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} ,
 \end{equation}
 
-Donde \ref{ecuacion_expandida} puede ser reescrito de la forma:
+donde (\ref{ecuacion_expandida}) puede ser reescrito de la forma:
 \begin{equation}
     \label{ecuacion_expandida_reescrita}    
-    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N(x_{1})+...+\beta_{n}N(x_{n})\right ) \right ]}
+    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N(x_{1})+...+\beta_{n}N(x_{n})\right ) \right ]} .
 \end{equation}
 
-Notemos que en \ref{ecuacion_expandida_reescrita} la normalización $N$ depende de un $x_{i}$. Definimos $A_{i}$ y $B_{i}$ como:
+Notemos que en la ecuacion (\ref{ecuacion_expandida_reescrita}) la normalización $N$ depende de un $x_{i}$. Definimos $A_{i}$ y $B_{i}$ como:
 
 \begin{equation}
     \label{maximos_A}
@@ -101,15 +101,15 @@ Notemos que en \ref{ecuacion_expandida_reescrita} la normalización $N$ depende 
     B_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{máx}}\left ( x_{i}^{j} \right )
 \end{equation}
 
-Donde, en este caso, el superíndice $j$ representa el j-ésimo individuo del conjunto de $m$ albatros, mientras que el subíndice $i$ simboliza la i-ésima anatomía en medición.
+Donde, en este caso, el superíndice $j$ representa el $j$-ésimo individuo del conjunto de $m$ albatros, mientras que el subíndice $i$ simboliza la $i$-ésima anatomía en medición.
 
 Por lo tanto, sea 
-\begin{equation} \label{normalizacion} N\left ( x_{i} \right )= \frac{x_{i} - \underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (  x_{i}^{j}\right )-\underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}
+\begin{equation} \label{normalizacion} N\left ( x_{i} \right )= \frac{x_{i} - \underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (  x_{i}^{j}\right )-\underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )} .
 \end{equation}
 
-Sustituyendo \ref{normalizacion} en \ref{ecuacion_expandida_reescrita} tenemos que: 
+Sustituyendo (\ref{normalizacion}) en (\ref{ecuacion_expandida_reescrita}) tenemos que: 
 \begin{equation} \label{ecuacion_chorizo}
-    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}\frac{x_{1}- \underset{j\in [m]}{\mbox{mín}}\left (x_{1}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (x_{1}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{1}^{j}\right )}+...+\beta_{n}\frac{x_{n} - \underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}{\underset{j\in [m]}{\mbox{máx}}\left (  x_{n}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}\right ) \right ]}
+    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}\frac{x_{1}- \underset{j\in [m]}{\mbox{mín}}\left (x_{1}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (x_{1}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{1}^{j}\right )}+...+\beta_{n}\frac{x_{n} - \underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}{\underset{j\in [m]}{\mbox{máx}}\left (  x_{n}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}\right ) \right ]} .
 \end{equation}
 
 \newpage
@@ -207,7 +207,7 @@ En la \ref{mejorModeloLogistico} se muestran los valores estimados de las dirent
     \hline
     \end{tabular}
     \label{mejorModeloLogistico}
-    \caption{Comparación de resultados obtenidos después de la normalizacion según la ecuación \ref{normalizacion} aplicada a las variables morfoloficas de Albatros Laysan. }
+    \caption{Comparación de resultados obtenidos después de la normalizacion según la ecuación (\ref{normalizacion}) aplicada a las variables morfoloficas de Albatros Laysan. }
 \end{table}
 
 \end{document}
