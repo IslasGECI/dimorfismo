@@ -13,14 +13,15 @@ docker run --rm --volume ${PWD}:/workdir islasgeci/dimorfismo:latest make
 Para examinar un _fork_:
 
 ```shell
-FORK='andrea-sanchez'
-RAMA='feature/scriptsR'
-rm --force --recursive dimorfismo
-git clone https://github.com/${FORK}/dimorfismo
-cd dimorfismo
-git checkout ${RAMA}
-docker build --no-cache --tag ${FORK}/dimorfismo:latest .
-docker run --rm --volume ${PWD}:/workdir ${FORK}/dimorfismo:latest make
+BRANCH='feature/tarea'
+REMOTE='andrea-sanchez'
+REPO='dimorfismo'
+rm --force --recursive ${REPO}
+git clone https://github.com/${REMOTE}/${REPO}
+cd ${REPO}
+git checkout ${BRANCH}
+docker build --no-cache --tag ${REMOTE}/${REPO}:latest .
+docker run --rm --volume ${PWD}:/workdir ${REMOTE}/${REPO}:latest make
 ```
 
 ## Objetivos en el Proyecto de Vinculación con Valor en Créditos 2020-1
