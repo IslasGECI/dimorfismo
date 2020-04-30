@@ -86,7 +86,7 @@
                         "nombre_largo": "Darvic",
                         "type": "string",
                         "constraints": {
-                            "pattern": "[0-9|A-Z][0-9|A-Z]{2}|\\d+"
+                            "pattern": "[0-9|A-Z]{3}|\\d+"
                         },
                         "description": ""
                     },
