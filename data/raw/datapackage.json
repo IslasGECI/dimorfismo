@@ -45,12 +45,13 @@
             "schema": {
                 "fields": [
                     {
-                        "name": "Fecha",
+                        "name": "Temporada",
                         "axis": "T",
                         "long_name": "Year",
                         "nombre_largo": "Año",
                         "standard_name": "date",
                         "type": "integer",
+                        "description": "",
                         "constraints": {
                             "minumum": 2015, "maximum": 2018
                         }
@@ -60,6 +61,7 @@
                         "long_name": "Subcolony",
                         "nombre_largo": "Subcolonia",
                         "type": "string",
+                        "description": "",
                         "constraints": {
                             "enum": [
                                 "Punta Sur",
@@ -69,10 +71,11 @@
                         }
                     },
                     {
-                        "name": "NidoPS",
+                        "name": "Nido_PS",
                         "long_name": "Nest",
                         "nombre_largo": "Nido",
                         "type": "integer",
+                        "description": "",
                         "constraints": {
                             "minumum": 1 ,"maximum": 355
                         }
@@ -81,13 +84,18 @@
                         "name": "Darvic",
                         "long_name": "Darvic",
                         "nombre_largo": "Darvic",
-                        "type": "string"
+                        "type": "string",
+                        "constraints": {
+                            "pattern": "[1-9|A-Z][0-9|A-Z]{2}|\\d+"
+                        },
+                        "description": ""
                     },
                     {
                         "name": "Sexo",
                         "long_name": "Sex",
                         "nombre_largo": "Sexo",
                         "type": "string",
+                        "description": "",
                         "constraints": {
                             "enum": [
                                 "H",
@@ -101,8 +109,9 @@
                         "nombre_largo": "Longitud del cráneo",
                         "type": "number",
                         "units": "mm",
+                        "description": "",
                         "constraints": {
-                            "minimum": 165.58 ,"maximum": 193.22
+                            "minimum": 165.57 ,"maximum": 193.23
                         }
                     },
                     {
@@ -111,8 +120,9 @@
                         "nombre_largo": "Longitud del pico",
                         "type": "number",
                         "units": "mm",
+                        "description": "",
                         "constraints": {
-                            "minimum": 100.81 ,"maximum": 119.48
+                            "minimum": 100.8 ,"maximum": 119.49
                         }
                     },
                     {
@@ -121,8 +131,9 @@
                         "nombre_largo": "Longitud de la narina",
                         "type": "number",
                         "units": "mm",
+                        "description": "",
                         "constraints": {
-                            "minimum": 74.82 ,"maximum": 90.68
+                            "minimum": 74.81 ,"maximum": 90.7
                         }
                     },
                     {
@@ -131,8 +142,9 @@
                         "nombre_largo": "Ancho del cráneo",
                         "type": "number",
                         "units": "mm",
+                        "description": "",
                         "constraints": {
-                            "minimum": 46.5, "maximum": 58.36
+                            "minimum": 46.4, "maximum": 58.7
                         }
                     },
                     {
@@ -141,8 +153,9 @@
                         "nombre_largo": "Alto del pico",
                         "type": "number",
                         "units": "mm",
+                        "description": "",
                         "constraints": {
-                            "minimum": 28.85, "maximum": 35.5
+                            "minimum": 28.84, "maximum": 35.51
                         }
                     },
                     {
@@ -151,8 +164,9 @@
                         "nombre_largo": "Ancho del pico",
                         "type": "number",
                         "units": "mm",
+                        "description": "",
                         "constraints": {
-                            "minimum": 21.48, "maximum": 28.7
+                            "minimum": 21.47, "maximum": 28.82
                         }
                     },
                     {
@@ -161,8 +175,9 @@
                         "nombre_largo": "Tarso",
                         "type": "number",
                         "units": "mm",
+                        "description": "",
                         "constraints": {
-                            "minimum": 83.18, "maximum": 99.69
+                            "minimum": 83.17, "maximum": 99.7
                         }
                     },
                     {
@@ -171,8 +186,9 @@
                         "nombre_largo": "Longitud del ala cerrada",
                         "type": "number",
                         "units": "cm",
+                        "description": "",
                         "constraints": {
-                            "minimum": 48.7, "maximum": 54.7
+                            "minimum": 48.6, "maximum": 54.8
                         }
                     },
                     {
@@ -181,8 +197,9 @@
                         "nombre_largo": "Longitud del ala abierta",
                         "type": "number",
                         "units": "cm",
+                        "description": "",
                         "constraints": {
-                            "minimum": 88.9, "maximum": 102
+                            "minimum": 88.8, "maximum": 102.1
                         }
                     },
                     {
@@ -191,8 +208,9 @@
                         "nombre_largo": "Media envergadura",
                         "type": "number",
                         "units": "cm",
+                        "description": "",
                         "constraints": {
-                            "minimum": 99.3, "maximum": 112.2
+                            "minimum": 99.2, "maximum": 112.3
                         }
                     },
                     {
@@ -201,8 +219,9 @@
                         "nombre_largo": "Envergadura",
                         "type": "number",
                         "units": "cm",
+                        "description": "",
                         "constraints": {
-                            "minimum": 198.6, "maximum": 224.4
+                            "minimum": 198.5, "maximum": 224.5
                         }
                     },
                     {
@@ -211,8 +230,9 @@
                         "nombre_largo": "Peso",
                         "type": "number",
                         "units": "kg",
+                        "description": "",
                         "constraints": {
-                            "minimum": 2.03, "maximum": 3.68
+                            "minimum": 2.02, "maximum": 3.69
                         }
                     }
                 ],
