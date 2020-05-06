@@ -51,7 +51,7 @@
                         "nombre_largo": "Año",
                         "standard_name": "date",
                         "type": "integer",
-                        "description": "",
+                        "description": "Año de periodo de monitoreo durante temporada de reproducción de Albatros Laysan",
                         "constraints": {
                             "minumum": 2015, "maximum": 2018
                         }
@@ -61,7 +61,7 @@
                         "long_name": "Subcolony",
                         "nombre_largo": "Subcolonia",
                         "type": "string",
-                        "description": "",
+                        "description": "Colonia de distrubución interna de Isla Guadalupe",
                         "constraints": {
                             "enum": [
                                 "Punta Sur",
@@ -75,7 +75,7 @@
                         "long_name": "Nest",
                         "nombre_largo": "Nido",
                         "type": "integer",
-                        "description": "",
+                        "description": "Código de identificación de refugios de Aves Laysan",
                         "constraints": {
                             "minumum": 1 ,"maximum": 355
                         }
@@ -85,17 +85,17 @@
                         "long_name": "Darvic",
                         "nombre_largo": "Darvic",
                         "type": "string",
+                        "description": "Código de identificación individual para cada Ave Laysan",
                         "constraints": {
                             "pattern": "[0-9|A-Z]{3}|\\d+"
-                        },
-                        "description": ""
+                        }
                     },
                     {
                         "name": "Sexo",
                         "long_name": "Sex",
                         "nombre_largo": "Sexo",
                         "type": "string",
-                        "description": "",
+                        "description": "Sexo del Ave Laysan extraído por medio sanguineo",
                         "constraints": {
                             "enum": [
                                 "H",
@@ -109,7 +109,7 @@
                         "nombre_largo": "Longitud del cráneo",
                         "type": "number",
                         "units": "mm",
-                        "description": "",
+                        "description": "Distancia en milímetros entre la punta del pico hasta el curvatura craneal respecto al plano Sagital del Ave",
                         "constraints": {
                             "minimum": 165.57 ,"maximum": 193.23
                         }
@@ -120,7 +120,7 @@
                         "nombre_largo": "Longitud del pico",
                         "type": "number",
                         "units": "mm",
-                        "description": "",
+                        "description": "Distancia en milímetros de longitud de extremo a extremo del pico respecto al plano Sagital del Ave",
                         "constraints": {
                             "minimum": 100.8 ,"maximum": 119.49
                         }
@@ -131,7 +131,7 @@
                         "nombre_largo": "Longitud de la narina",
                         "type": "number",
                         "units": "mm",
-                        "description": "",
+                        "description": "Distancia en milímetros del pico hasta los orificios de las fosas nasales respecto al plano Sagital del Ave",
                         "constraints": {
                             "minimum": 74.81 ,"maximum": 90.7
                         }
@@ -142,7 +142,7 @@
                         "nombre_largo": "Ancho del cráneo",
                         "type": "number",
                         "units": "mm",
-                        "description": "",
+                        "description": "Distancia mayor en milímetros entre extremos del craneo respecto al plano Coronal del Ave",
                         "constraints": {
                             "minimum": 46.4, "maximum": 58.7
                         }
@@ -153,7 +153,7 @@
                         "nombre_largo": "Alto del pico",
                         "type": "number",
                         "units": "mm",
-                        "description": "",
+                        "description": "Distancia del extremo inferior izquierdo al superior del pico pasando por las narinas respecto al plano Sagital del Ave",
                         "constraints": {
                             "minimum": 28.84, "maximum": 35.51
                         }
@@ -164,7 +164,7 @@
                         "nombre_largo": "Ancho del pico",
                         "type": "number",
                         "units": "mm",
-                        "description": "",
+                        "description": "Distancia en milímetros de una fosa nasal hacia la otra respecto al plano Coronal del Ave",
                         "constraints": {
                             "minimum": 21.47, "maximum": 28.82
                         }
@@ -175,7 +175,7 @@
                         "nombre_largo": "Tarso",
                         "type": "number",
                         "units": "mm",
-                        "description": "",
+                        "description": "Distancia en milímetros de extremo a extremo del tarsus respecto al plano Coronal del Ave",
                         "constraints": {
                             "minimum": 83.17, "maximum": 99.7
                         }
@@ -186,7 +186,7 @@
                         "nombre_largo": "Longitud del ala cerrada",
                         "type": "number",
                         "units": "cm",
-                        "description": "",
+                        "description": "Longitud en centímetros de las remerias primarias respecto al plano Coronal del Ave ",
                         "constraints": {
                             "minimum": 48.6, "maximum": 54.8
                         }
@@ -197,7 +197,7 @@
                         "nombre_largo": "Longitud del ala abierta",
                         "type": "number",
                         "units": "cm",
-                        "description": "",
+                        "description":"Longitud en centímetros de extremo a extremo del Ala completamente extendida respecto al plano Coronal del Ave",
                         "constraints": {
                             "minimum": 88.8, "maximum": 102.1
                         }
@@ -219,7 +219,7 @@
                         "nombre_largo": "Envergadura",
                         "type": "number",
                         "units": "cm",
-                        "description": "",
+                        "description": "Distancia en centímetros entre las dos puntas de las alas cuando están completamente extendidas respecto al plano Coronal del Ave",
                         "constraints": {
                             "minimum": 198.5, "maximum": 224.5
                         }
@@ -230,7 +230,7 @@
                         "nombre_largo": "Peso",
                         "type": "number",
                         "units": "kg",
-                        "description": "",
+                        "description": "Peso individual del Ave",
                         "constraints": {
                             "minimum": 2.02, "maximum": 3.69
                         }
