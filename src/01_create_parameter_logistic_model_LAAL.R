@@ -19,7 +19,7 @@ n_datos <- nrow(Datos)
 proporcion_entrenamiento <- 0.80
 proporcion_validacion <- 1 - proporcion_entrenamiento
 
-variablesParaModelo <- c("Longitud_Craneo", "Longitud_Pico", "Ancho_Craneo", "Altura_Pico", "Tarso", "Longitud_AlaCerrada", "Longitud_AlaAbierta", "Envergadura")
+variablesParaModelo <- c("Longitud_Craneo", "Longitud_Pico", "Ancho_Craneo", "Altura_Pico", "Tarso", "Longitud_Ala_Cerrada", "Longitud_Ala_Abierta", "Envergadura")
 nombre_columnas <- c("(Intercept)", variablesParaModelo)
 n_repeticiones <- 10
 #2000
