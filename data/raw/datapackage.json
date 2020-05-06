@@ -81,11 +81,11 @@
                         }
                     },
                     {
-                        "name": "Darvic",
+                        "name": "ID_Darvic",
                         "long_name": "Darvic",
                         "nombre_largo": "Darvic",
                         "type": "string",
-                        "description": "Código de identificación individual para cada Ave Laysan",
+                        "description": "Código de identificación representado en el anillo visible de cada Ave Laysan",
                         "constraints": {
                             "pattern": "[0-9|A-Z]{3}|\\d+"
                         }

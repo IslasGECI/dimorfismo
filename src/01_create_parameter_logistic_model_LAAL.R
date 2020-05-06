@@ -50,16 +50,16 @@ for(i in 1:n_repeticiones) {
   datos_entrenamiento <- Datos[indice_entrenamiento]
   datos_validacion <- Datos[indice_validacion]
   
-  setkey(datos_entrenamiento, Darvic)
-  individuosRepetidos <- data.table(Darvic=datos_entrenamiento[duplicated(Darvic)]$Darvic)
+  setkey(datos_entrenamiento, ID_Darvic)
+  individuosRepetidos <- data.table(ID_Darvic=datos_entrenamiento[duplicated(ID_Darvic)]$ID_Darvic)
   
   DatosNoNumericos <- datos_entrenamiento[unique(datos_entrenamiento), 
                                       .SD[, !sapply(.SD, is.numeric),with=FALSE], 
                                       mult="last"]
   DatosNumericos <- datos_entrenamiento[, 
                                     lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean, na.rm=T), 
-                                    by=Darvic]
-  DatosPromediados <- DatosNumericos[DatosNoNumericos[!duplicated(Darvic)]]
+                                    by=ID_Darvic]
+  DatosPromediados <- DatosNumericos[DatosNoNumericos[!duplicated(ID_Darvic)]]
   
   # Se definen variables para utilizarse en el texto que decribe los Datos.
   CamposMetaDatos <- data.table(Metadatos$resources$schema$fields[[1]])
@@ -69,7 +69,7 @@ for(i in 1:n_repeticiones) {
   # Se obtienen el nombre largo de las variables morfométricas
   nombresLargosMorfometria <- CamposMetaDatos[esMedidaMorfometrica,nombre_largo]
   #listaVariablesMorfometricas <- tolower(paste0(nombresLargosMorfometria[1], paste(", ", nombresLargosMorfometria[2:(nVariablesMorfometricas-1)], collapse = ""), " y ", nombresLargosMorfometria[nVariablesMorfometricas]))
-  nIndividuos <- length(unique(DatosPromediados$Darvic))
+  nIndividuos <- length(unique(DatosPromediados$ID_Darvic))
   
   DatosNormalizados <- DatosPromediados[!is.na(DatosPromediados$Peso), variablesParaModelo, with=FALSE]
   normalize <- function(columna) (columna - min(columna))/(max(columna)-min(columna))
@@ -81,7 +81,7 @@ for(i in 1:n_repeticiones) {
   RegresionTodas <- glm(formula = Sexo ~ ., data = DatosNormalizados, family = "binomial")
   # Aplicamos el método _stepwise_.  
   RegresionStep <- step(RegresionNula, scope = list(lower = RegresionNula, upper = RegresionTodas), direction = "both", trace = 0)
-  DatosNormalizados$Darvic <- DatosPromediados[!is.na(DatosPromediados$Peso),]$Darvic
+  DatosNormalizados$ID_Darvic <- DatosPromediados[!is.na(DatosPromediados$Peso),]$ID_Darvic
   
   CoeficientesStep  <- regretion2DataFrameCoefficients(RegresionStep)
   
