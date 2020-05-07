@@ -234,6 +234,13 @@
                         "constraints": {
                             "minimum": 2.02, "maximum": 3.69
                         }
+                    },
+                    {
+                        "name": "Notas",
+                        "long_name": "Notes",
+                        "nombre_largo": "Notas",
+                        "type": "string",
+                        "description": "Información revelante y adional proporcionada "
                     }
                 ],
                 "missingValues": [
