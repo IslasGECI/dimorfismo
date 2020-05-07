@@ -2,7 +2,6 @@ library(data.table)
 
 source("src/dimorphism_model_class.R")
 source("src/calculator_ROC_class.R")
-source("src/evaluate_model_function.R")
 source("src/get_prediction_sex_plot_function.R")
 source("src/get_sex_probability_plot_function.R")
 source("src/regretion_to_data_frame_coefficients_function.R")
