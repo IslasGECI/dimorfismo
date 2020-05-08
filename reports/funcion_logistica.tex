@@ -26,6 +26,7 @@ m_valor_minimo = m_variables_normalizacion ["valorMinimo"]
 m_valor_maximo = m_variables_normalizacion ["valorMaximo"]
 
 m_variables_modelo = parametros_mejor["parametrosModelo"]
+m_intercept = m_variables_modelo[0]
 m_longitud_craneo = m_variables_modelo[1]
 m_altura_pico = m_variables_modelo[2]
 m_longitud_pico = m_variables_modelo[3]
@@ -103,6 +104,9 @@ En la  se muestran los valores estimados de las diferentes morfometrias en el ar
     \hline
     \textbf{Morfometría} & \textbf{Valor Mínimo} & \textbf{Valor Máximo} & \textbf{Valor Estimado} & \textbf{Error Estándar} & \textbf{Valor Z} & \textbf{Pr} \\
     \hline
+    (Intercept) & - & - & \py{m_variables_modelo[0]['(Intercept)']} & \py{m_variables_modelo[0]['stdErrIntercept']} & \py{m_variables_modelo[0]['zValueIntercept']} & \py{m_variables_modelo[0]['PrIntercept']} \\
+
+    \hline
     Longitud Craneo & \py{m_variables_modelo[0]['minlongitudCraneo']} & \py{m_variables_modelo[0]['maxlongitudCraneo']} & \py{m_variables_modelo[0]['Longitud_Craneo']} & \py{m_variables_modelo[0]['stdErrlongitudCraneo']} & \py{m_variables_modelo[0]['zValuelongitudCraneo']} & \py{m_variables_modelo[0]['PrIntercept']}\\
     \hline
     Altura Pico & \py{m_variables_modelo[0]['minAltoPico']} & \py{m_variables_modelo[0]['maxAltoPico']} & \py{m_variables_modelo[0]['Altura_Pico']} & \py{m_variables_modelo[0]['stdErrAltoPico']} & \py{m_variables_modelo[0]['zValueAltoPico']} & \py{m_variables_modelo[0]['PrAltoPico']}\\
@@ -128,6 +132,8 @@ En la  se muestran los valores estimados de las diferentes morfometrias en el ar
     \begin{tabular}{|c|c|c|c|}
     \hline
     \textbf{Morfometría} & \textbf{Valor Mínimo} & \textbf{Valor Máximo} & \textbf{Valor Estimado}\\
+    \hline
+    (Intercept) & - & - & \py{m_intercept["Estimate"]} \\
     \hline
     Longitud Craneo & \py{m_valor_minimo["Longitud_Craneo"][0]} & \py{m_valor_maximo["Longitud_Craneo"][0]} & \py{m_longitud_craneo["Estimate"]} \\
     \hline
