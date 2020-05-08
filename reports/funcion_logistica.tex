@@ -1,17 +1,14 @@
 \documentclass{article}
-\usepackage{vmargin}
-\usepackage{graphicx}
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amssymb, amsmath, amsbsy} % simbolitos
-\usepackage{upgreek} % para poner letras griegas sin cursiva
-\usepackage{cancel} % para tachar
 \usepackage{mathdots} % para el comando \iddots
-\usepackage{mathrsfs} % para formato de letra
-\usepackage{stackrel} % para el comando \stackbin
 \usepackage{csvsimple}
 \usepackage{pythontex}
-\setpapersize{A4}
+\usepackage{ragged2e}
+\usepackage{chngpage} %tablas fuera de margenes
+\usepackage[margin=1.0in]{geometry}
+\renewcommand{\baselinestretch}{1.5}
 
 \begin{pycode}
 import json
@@ -46,8 +43,9 @@ with open('../data/processed/tabla_mejores_modelos.csv') as results_3_file:
 \begin{document}
 
 \title{Ecuación Logística}
-
+\author{Andrea Sánchez}
 \maketitle
+\begin{flushleft}
 
 Teniendo la ecuación logística:
 \begin{equation}
@@ -90,18 +88,20 @@ Sustituyendo (\ref{normalizacion}) en (\ref{ecuacion_expandida_reescrita}) tenem
     \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}\frac{x_{1}- \underset{j\in [m]}{\mbox{mín}}\left (x_{1}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (x_{1}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{1}^{j}\right )}+...+\beta_{n}\frac{x_{n} - \underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}{\underset{j\in [m]}{\mbox{máx}}\left (  x_{n}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}\right ) \right ]} .
 \end{equation}
 
-\newpage
-
 %Agregar resultados al docuemento
 
+\newpage
+
 %Agregar valores de .csv
+
+En la  se muestran los valores estimados de las diferentes morfometrias en el archivo \texttt{tabla\_mejores\_modelos.csv}:
 
 \begin{table}[h]
     \centering
     \renewcommand{\arraystretch}{1.3}
     \begin{tabular}{|c|c|c|c|c|c|c|}
     \hline
-    Morfometría & Valor Mínimo & Valor Máximo & Valor Estimado & Error Estándar & Valor Z & Pr \\
+    \textbf{Morfometría} & \textbf{Valor Mínimo} & \textbf{Valor Máximo} & \textbf{Valor Estimado} & \textbf{Error Estándar} & \textbf{Valor Z} & \textbf{Pr} \\
     \hline
     Longitud Craneo & \py{m_variables_modelo[0]['minlongitudCraneo']} & \py{m_variables_modelo[0]['maxlongitudCraneo']} & \py{m_variables_modelo[0]['Longitud_Craneo']} & \py{m_variables_modelo[0]['stdErrlongitudCraneo']} & \py{m_variables_modelo[0]['zValuelongitudCraneo']} & \py{m_variables_modelo[0]['PrIntercept']}\\
     \hline
@@ -120,14 +120,14 @@ Sustituyendo (\ref{normalizacion}) en (\ref{ecuacion_expandida_reescrita}) tenem
 
 %Agrega valores de .json
 
-En la \ref{mejorModeloLogistico} se muestran los valores estimados de las direntes morfometrias en el archivo .json :
+En la  se muestran los valores estimados de las diferentes morfometrias en el archivo \texttt{parametros\_mejor\_modelo\_logistico\_laal\_ig.json}:
 
-\begin{table}[htbp]
+\begin{table}[h]
     \centering
     \renewcommand{\arraystretch}{1.3}
     \begin{tabular}{|c|c|c|c|}
     \hline
-    Morfometría & Valor Mínimo & Valor Máximo & Valor Estimado\\
+    \textbf{Morfometría} & \textbf{Valor Mínimo} & \textbf{Valor Máximo} & \textbf{Valor Estimado}\\
     \hline
     Longitud Craneo & \py{m_valor_minimo["Longitud_Craneo"][0]} & \py{m_valor_maximo["Longitud_Craneo"][0]} & \py{m_longitud_craneo["Estimate"]} \\
     \hline
@@ -141,5 +141,5 @@ En la \ref{mejorModeloLogistico} se muestran los valores estimados de las dirent
     \label{mejorModeloLogistico}
     \caption{Variables predictoras obtenidas después de la normalizacion según la ecuación (\ref{normalizacion}). }
 \end{table}
-
+\end{flushleft}
 \end{document}
