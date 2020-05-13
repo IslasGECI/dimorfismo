@@ -71,7 +71,7 @@
                         }
                     },
                     {
-                        "name": "Nido_PS",
+                        "name": "ID_Nido",
                         "long_name": "Nest",
                         "nombre_largo": "Nido",
                         "type": "integer",
