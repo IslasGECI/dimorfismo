@@ -95,7 +95,7 @@
                         "long_name": "Sex",
                         "nombre_largo": "Sexo",
                         "type": "string",
-                        "description": "Sexo del Ave Laysan extraído por medio sanguineo",
+                        "description": "Sexo del Ave Laysan extraído por medio sanguineo donde H representa a hembras y M a machos",
                         "constraints": {
                             "enum": [
                                 "H",
