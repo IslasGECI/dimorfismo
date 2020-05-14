@@ -208,7 +208,7 @@
                         "nombre_largo": "Media envergadura",
                         "type": "number",
                         "units": "cm",
-                        "description": "",
+                        "description": "Distancia en centímetros entre un extremo del ala hasta el centro del pecho respecto al plano Coronal del Ave",
                         "constraints": {
                             "minimum": 99.2, "maximum": 112.3
                         }
