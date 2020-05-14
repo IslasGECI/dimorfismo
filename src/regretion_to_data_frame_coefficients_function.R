@@ -49,10 +49,10 @@
 #' @encoding utf-8
 #' @export
 #' 
-regretion2DataFrameCoefficients <- function(Regresion){
+regretion2DataFrameCoefficients <- function(Regresion) {
     ResumenRegresion <- summary.glm(Regresion)
-    ResumenRegresion$coefficients <- round(ResumenRegresion$coefficients,3)
-    DataFrame <- as.data.frame(ResumenRegresion$coefficients)  
+    ResumenRegresion$coefficients <- round(ResumenRegresion$coefficients, 3)
+    DataFrame <- as.data.frame(ResumenRegresion$coefficients)
     DataFrame <- cbind(rownames(DataFrame), DataFrame)
     colnames(DataFrame)[1] <- "Variables"
     return(DataFrame)
