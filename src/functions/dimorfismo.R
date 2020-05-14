@@ -9,7 +9,7 @@ resolve_riddle <- function(parameter_1, parameter_2) {
 
 is_library <- function(library) {
     installed <- installed.packages()
-    packages <- installed[ , 1]
+    packages <- installed[, 1]
     answer <- is.element(library, packages)
     return(answer)
 }
