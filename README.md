@@ -14,7 +14,7 @@ Para examinar un _fork_:
 
 ```shell
 FORK='andrea-sanchez'
-RAMA='feature/scriptsR'
+RAMA='release/COVID19'
 rm --force --recursive dimorfismo
 git clone https://github.com/${FORK}/dimorfismo
 cd dimorfismo
