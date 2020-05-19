@@ -7,7 +7,10 @@ nombreArchivoCSV <- file.path(directorioTDP, "morfometria_albatros-laysan_guadal
 Datos <- data.table::data.table(read.csv(nombreArchivoCSV))
 
 ruta_resultados <- "data/processed/"
-tabla_importada <- data.table::data.table(readr::read_csv(paste0(ruta_resultados, "tabla_mejores_modelos.csv")))
+tabla_importada <- data.table::data.table(readr::read_csv(
+                                paste0(ruta_resultados, "tabla_mejores_modelos.csv")
+                                )
+                            )
 calculadorROC <- ROC$new()
 n_renglones <- nrow(tabla_importada)
 
@@ -28,8 +31,10 @@ for (i_albatros in 1:nrow(Datos)) {
         listaParametrosModeloNormalizacion <- list(parametrosNormalizacion = parametrosNormalizacion, 
                                                     parametrosModelo = tabla_coeficientes_auxiliar)
         
-        readr::write_lines(jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), 
-                            path = "data/processed/parametros_modelo_logistico_laal_ig.json")
+        readr::write_lines(
+            jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), 
+            path = "data/processed/parametros_modelo_logistico_laal_ig.json"
+        )
         ModeloDimorfismoAlbatros <- ModeloDimorfismo$new()
         ModeloDimorfismoAlbatros$loadParameters("data/processed/parametros_modelo_logistico_laal_ig.json")
         

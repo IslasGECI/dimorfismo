@@ -5,9 +5,9 @@ source("src/calculator_ROC_class.R")
 source("src/regretion_to_data_frame_coefficients_function.R")
 
 directorioTDP <- ("data/raw/")
+rutaResultados <- ('data/processed/')
 nombreArchivoCSV <- file.path(directorioTDP, "morfometria_albatros-laysan_guadalupe.csv")
 nombreArchivoJSON <- file.path(directorioTDP, "datapackage.json")
-rutaResultados = ('data/processed/')
 
 Metadatos <- jsonlite::fromJSON(nombreArchivoJSON)
 Datos <- data.table(read.csv(nombreArchivoCSV))
@@ -85,7 +85,7 @@ for (i in 1:n_repeticiones) {
   DatosNormalizados$darvic <- DatosPromediados[!is.na(DatosPromediados$peso),]$darvic
   
   CoeficientesStep <- regretion2DataFrameCoefficients(RegresionStep)
-  
+
   ##
   for (i_coeficiente in rownames(CoeficientesStep)) {
     tabla_modelo$coeficientes_modelo[i, i_coeficiente] <- CoeficientesStep[i_coeficiente, "Estimate"]
@@ -118,11 +118,13 @@ for (i in 1:n_repeticiones) {
     tabla_modelo$parametros_normalizacion_maximos[i, i_par_normalizacion] <- maximo_datos_normalizacion[i_par_normalizacion]
   }
   ##
-  
-  readr::write_lines(jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), path = "data/processed/parametros_modelo_logistico_laal_ig.json")
+
+  readr::write_lines(
+    jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), 
+    path = "data/processed/parametros_modelo_logistico_laal_ig.json"
+  )
   ModeloDimorfismoAlbatros <- ModeloDimorfismo$new()
   ModeloDimorfismoAlbatros$loadParameters("data/processed/parametros_modelo_logistico_laal_ig.json")
-
   prob <- ModeloDimorfismoAlbatros$predict(datos_validacion)
   y_test <- ifelse(datos_validacion$sexo == 'M', 1, 0)
   datos_roc <- data.frame(y_test, prob)
@@ -156,11 +158,11 @@ tabla_completa <- data.table(cbind(tabla_modelo$coeficientes_modelo, tabla_umbra
                         tabla_modelo$parametros_normalizacion_maximos, tabla_modelo$error_estandar, tabla_modelo$valor_z, 
                         tabla_modelo$Pr))
 
-
 es_renglon_na <- apply(is.na(tabla_completa), MARGIN = 1, FUN = any)
 tabla_filtrada <- tabla_completa[!es_renglon_na, ]
 error_minimo <- min(tabla_filtrada$error)
 tabla_mejores_modelos <- tabla_filtrada[error == error_minimo]
  
 
-write_csv(tabla_mejores_modelos, paste0(rutaResultados,'tabla_modelos_logisticos.csv'))
+write_csv(tabla_mejores_modelos, paste0(
+rutaResultados,'tabla_modelos_logisticos.csv'))

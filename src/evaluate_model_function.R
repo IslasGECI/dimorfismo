@@ -28,5 +28,8 @@ evaluate_model <- function(datos_entrenamiento, datos_validacion) {
   
   listaError <- list(erros_variables_entrenamiento = error_todas_entrenamiento, error_variables_validacion = error_todas_validacion)
   
-  readr::write_lines(jsonlite::toJSON(listaError), path = "data/processed/error_calculado.json")
+  readr::write_lines(
+    jsonlite::toJSON(listaError), 
+    path = "data/processed/error_calculado.json"
+  )
 }

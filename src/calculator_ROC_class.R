@@ -12,8 +12,10 @@ ROC <- R6Class("ROC",
         self$rOC <- private$addCriterion(self$rOC)
         mejoresUmbrales <- self$rOC %>% 
             group_by(criterio) %>%
-            summarize(umbral = median(umbrales),
-                      error = median(pError)) %>%
+            summarize(
+                umbral = median(umbrales),
+                error = median(pError)
+            ) %>%
             arrange(criterio)
         return(mejoresUmbrales[1, c(2,3)])
     },

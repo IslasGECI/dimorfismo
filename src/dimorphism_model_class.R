@@ -24,12 +24,12 @@ ModeloDimorfismo <- R6Class("ModeloDimorfismo",
           }
 
           ColumnaNormalizada <- as.data.frame(apply(columna, 2, normalize))
-          z <- z + ColumnaNormalizada*private$getValue(variable$Variables)
+          z <- z + ColumnaNormalizada * private$getValue(variable$Variables)
           iVarible <- iVarible + 1
         }
       }
       probabilidad <- 1 / (1 + exp(-z))
-      colnames(probabilidad)<- "probability"
+      colnames(probabilidad) <- "probability"
       return(probabilidad)
     },
     getVariablesNames = function() {
