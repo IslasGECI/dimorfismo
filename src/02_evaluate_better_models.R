@@ -33,9 +33,8 @@ for (i_renglon in 1:n_renglones) {
                                              parametrosModelo = tabla_coeficientes_auxiliar)
   
   readr::write_lines(
-    jsonlite::toJSON(
-      listaParametrosModeloNormalizacion, pretty = T), 
-      path = jsonParametroModelo
+    jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), 
+    path = jsonParametroModelo
   )
 
   ModeloDimorfismoAlbatros <- ModeloDimorfismo$new()

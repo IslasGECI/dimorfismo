@@ -165,4 +165,5 @@ tabla_mejores_modelos <- tabla_filtrada[error == error_minimo]
  
 
 write_csv(tabla_mejores_modelos, paste0(
-rutaResultados,'tabla_modelos_logisticos.csv'))
+  rutaResultados,'tabla_modelos_logisticos.csv')
+)
