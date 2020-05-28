@@ -54,5 +54,5 @@ write_csv(tabla_importada[es_error_minimo, ],
 
 readr::write_lines(
   jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), 
-  path = jsonParametroModelo
+  path = "data/processed/parametros_mejor_modelo_logistico_laal_ig.json"
 )
