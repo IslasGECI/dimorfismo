@@ -2,7 +2,7 @@ library(data.table)
 
 #source("src/dimorphism_model_class.R")
 #source("src/calculator_ROC_class.R")
-source("src/regretion_to_data_frame_coefficients_function.R")
+source("../../src/regretion_to_data_frame_coefficients_function.R")
 
 icecream <- data.frame(
   temp=c(11.9, 14.2, 15.2, 16.4, 17.2, 18.1, 
@@ -15,3 +15,10 @@ pois.mod <- glm(units ~ temp, data=icecream,
 
 RegresionStep <- step(pois.mod)
 CoeficientesStep <- regretion2DataFrameCoefficients(RegresionStep)
+class(CoeficientesStep) == "data.frame"
+
+test_that("La función regresa la palabra que metimos de argumento",
+    {
+        expect_equal(class(CoeficientesStep), "data.frame")
+    }
+)
