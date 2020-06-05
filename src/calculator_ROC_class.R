@@ -6,7 +6,7 @@ ROC <- R6Class("ROC",
     rOC = NULL,
     initialize = function() {
     },
-    
+
     getBestThresholdAndError = function(datos) {
         self$rOC <- private$calculateROC(datos)
         self$rOC <- private$addCriterion(self$rOC)
@@ -27,6 +27,7 @@ ROC <- R6Class("ROC",
         return(pError)
     }
   ),
+
   private = list(
     classifyAnswer = function(renglon, umbral) {
         respuesta <- ifelse(renglon$prob > umbral, 1, 0)
@@ -34,7 +35,7 @@ ROC <- R6Class("ROC",
         clasificacion <- paste0(falsoOVerdadero, respuesta)
         return(clasificacion)
     },
-      
+
     calculateConfusion = function(datos, umbral) {
         confusion <- datos %>% 
         mutate(clasificacion=private$classifyAnswer(., umbral)) %>% 
@@ -68,7 +69,7 @@ ROC <- R6Class("ROC",
         error <- ((confusion[[2, 2]] + confusion[[1,2]]) / sum(confusion[, 2])) * 100
         return(error)
     },
-      
+
     calculateROC = function(datos) {
         umbrales <- 1:100 * 0.01
         fPR <- c()
@@ -84,7 +85,7 @@ ROC <- R6Class("ROC",
         ROC <- data.frame(umbrales, tPR, fPR, pError)
         return(ROC)
     },
-      
+
     addCriterion = function(rOC) {
         rOC <- rOC %>% 
             mutate(criterio = sqrt((fPR)^2 + (1 - tPR)^2)) 
