@@ -52,7 +52,7 @@ with open('../data/processed/tabla_mejores_modelos.csv') as results_3_file:
 Teniendo la ecuación logística:
 \begin{equation}
     \label{tripe_igualdad_sencilla}
-    \frac{1}{1+e^{-z}} = \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )} = \frac{1}{1+\mbox{\mbox{exp}}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} ,
+    f(z) = \frac{1}{1+e^{-z}} = \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )} = \frac{1}{1+\mbox{\mbox{exp}}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} ,
 \end{equation}
 
 donde, al tener que $N_{0}=1$, entonces podemos expandir la ecuación (\ref{tripe_igualdad_sencilla}) a la forma:
@@ -104,18 +104,7 @@ Sustituyendo (\ref{normalizacion}) en (\ref{ecuacion_expandida_reescrita}) tenem
     \hline
     \textbf{Morfometría} & \textbf{Valor Mínimo} & \textbf{Valor Máximo} & \textbf{Valor Estimado} & \textbf{Error Estándar} & \textbf{Valor Z} & \textbf{Pr($>\left|z\right|$)} \\
     \hline
-    (Intercept) & - & - & \py{m_variables_modelo[0]['(Intercept)']} & \py{m_variables_modelo[0]['stdErrIntercept']} & \py{m_variables_modelo[0]['zValueIntercept']} & \py{m_variables_modelo[0]['PrIntercept']}  \\
-    \hline
-    Longitud Craneo & \py{m_variables_modelo[0]['minlongitudCraneo']} & \py{m_variables_modelo[0]['maxlongitudCraneo']} & \py{m_variables_modelo[0]['Longitud_Craneo']} & \py{m_variables_modelo[0]['stdErrlongitudCraneo']} & \py{m_variables_modelo[0]['zValuelongitudCraneo']} & \py{m_variables_modelo[0]['PrIntercept']}\\
-    \hline
-    Altura Pico & \py{m_variables_modelo[0]['minAltoPico']} & \py{m_variables_modelo[0]['maxAltoPico']} & \py{m_variables_modelo[0]['Altura_Pico']} & \py{m_variables_modelo[0]['stdErrAltoPico']} & \py{m_variables_modelo[0]['zValueAltoPico']} & \py{m_variables_modelo[0]['PrAltoPico']}\\
-    \hline
-    Longitud Pico & \py{m_variables_modelo[0]['minLongitudPico']} & \py{m_variables_modelo[0]['maxLongitudPico']} & \py{m_variables_modelo[0]['Longitud_Pico']} & \py{m_variables_modelo[0]['stdErrLongitudPico']} & \py{m_variables_modelo[0]['zValueLongitudPico']} & \py{m_variables_modelo[0]['PrLongitudPico']}\\
-    \hline
-    Tarso & \py{m_variables_modelo[0]['minTarso']} & \py{m_variables_modelo[0]['maxTarso']} & \py{m_variables_modelo[0]['Tarso']} & \py{m_variables_modelo[0]['stdErrTarso']} & \py{m_variables_modelo[0]['zValueTarso']} & \py{m_variables_modelo[0]['PrTarso']}\\
-    \hline
-    Ancho Craneo & \py{m_variables_modelo[0]['minAnchoCraneo']} &\py{m_variables_modelo[0]['maxAnchoCraneo']} &\py{m_variables_modelo[0]['Ancho_Craneo']} &\py{m_variables_modelo[0]['stdErrAnchoCraneo']} &\py{m_variables_modelo[0]['zValueAnchoCraneo']} & \py{m_variables_modelo[0]['PrAnchoCraneo']} \\
-    \hline
+    \input{funcion_logistica_resultados_csv.tex}
     \end{tabular}
     \end{adjustbox}
     \\[10pt]
@@ -134,16 +123,7 @@ Sustituyendo (\ref{normalizacion}) en (\ref{ecuacion_expandida_reescrita}) tenem
     \hline
     \textbf{Morfometría} & \textbf{Valor Mínimo} & \textbf{Valor Máximo} & \textbf{Valor Estimado}\\
     \hline
-    (Intercept) & - & - & \py{m_intercept["Estimate"]} \\
-    \hline
-    Longitud Craneo & \py{m_valor_minimo["Longitud_Craneo"][0]} & \py{m_valor_maximo["Longitud_Craneo"][0]} & \py{m_longitud_craneo["Estimate"]} \\
-    \hline
-    Altura Pico & \py{m_valor_minimo["Altura_Pico"][0]} & \py{m_valor_maximo["Altura_Pico"][0]} & \py{m_altura_pico["Estimate"]} \\
-    \hline
-    Longitud Pico & \py{m_valor_minimo["Longitud_Pico"][0]} & \py{m_valor_maximo["Longitud_Pico"][0]}& \py{m_longitud_pico["Estimate"]} \\
-    \hline
-    Tarso & \py{m_valor_minimo["Tarso"][0]} & \py{m_valor_maximo["Tarso"][0]}& \py{m_tarso["Estimate"]} \\
-    \hline
+    \input{funcion_logistica_resultados_json.tex}
     \end{tabular}
     \label{mejorModeloLogistico}
     \\[10pt]
