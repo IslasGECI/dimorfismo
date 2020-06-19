@@ -49,21 +49,21 @@ with open('../data/processed/tabla_mejores_modelos.csv') as results_3_file:
 \maketitle
 \begin{flushleft}
 
-Teniendo la ecuación logística:
+Teniendo la función logística:
 \begin{equation}
     \label{tripe_igualdad_sencilla}
-    f(z) = \frac{1}{1+e^{-z}} = \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )} = \frac{1}{1+\mbox{\mbox{exp}}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} ,
+    f(z) = \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )}.
 \end{equation}
 
-donde, al tener que $N_{0}=1$, entonces podemos expandir la ecuación (\ref{tripe_igualdad_sencilla}) a la forma:
+Al ser $z$ una representación del escalar obtenido mediante la suma de multiplicaciones una a una de las componentes cartesianas de los vectores $\vec{\beta}$ y $\vec{N}$, y además, teniendo que $N_{0}=1$, entonces podemos expandir la ecuación (\ref{tripe_igualdad_sencilla}) a la forma:
 \begin{equation}
     \label{ecuacion_expandida}
-    \frac{1}{1+\mbox{exp}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} ,
+    f(z) = f(\vec{\beta} \cdot \vec{N}) = \frac{1}{1+\mbox{exp}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} ,
 \end{equation}
 
 de modo que, podemos reescribir la ecuación (\ref{ecuacion_expandida}) a la forma :
 \begin{equation}
-    \label{ecuacion_expandida_reescrita}    
+    \label{ecuacion_expandida_reescrita}
     \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N(x_{1})+...+\beta_{n}N(x_{n})\right ) \right ]} .
 \end{equation}
 
@@ -71,12 +71,12 @@ Notemos que en la ecuación (\ref{ecuacion_expandida_reescrita}) la normalizaci�
 
 \begin{equation}
     \label{maximos_A}
-    A_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{mín}}\left ( x_{i}^{j} \right )
+    A_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{mín}}\left ( x_{i}^{j} \right ) ,
 \end{equation}
 
 \begin{equation}
     \label{minimos_B}
-    B_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{máx}}\left ( x_{i}^{j} \right )
+    B_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{máx}}\left ( x_{i}^{j} \right ) .
 \end{equation}
 
 Donde, en este caso, el superíndice $j$ representa el $j$-ésimo individuo del conjunto de $m$ albatros, mientras que el subíndice $i$ simboliza la $i$-ésima anatomía en medición.
@@ -92,11 +92,13 @@ Sustituyendo (\ref{normalizacion}) en (\ref{ecuacion_expandida_reescrita}) tenem
 
 
 \newpage
+Con base en una muestra de 135 Albatros de Laysan recolectada en Isla Guadalupe desde 2014 a 2018 podemos generar los siguientes resultados.
+Donde, a partir de los ecuación (\ref{maximos_A}) obtenemos los valores maximos y por las ecuación (\ref{minimos_B}) los mínimos de cada variable predictora.
 %Agregar valores de .csv
 
 \begin{table}[ht]
     \centering
-    \caption{Variables predictoras para principales componentes de análisis de ($n$=135) albatros de Laysan en Isla Guadalupe desde 2014-2018.}
+    \caption{Variables predictoras para principales componentes de análisis.}
     \bigskip
     \begin{adjustbox}{width=1\textwidth}
     \renewcommand{\arraystretch}{1.3}
@@ -108,7 +110,7 @@ Sustituyendo (\ref{normalizacion}) en (\ref{ecuacion_expandida_reescrita}) tenem
     \end{tabular}
     \end{adjustbox}
     \\[10pt]
-    Resultados obtenidos del archivo \texttt{tabla\_mejores\_modelos.csv}.
+    Resultados obtenidos del archivo \texttt{tabla\_mejores\_modelos.csv}
     \label{modeloLogistico}
 \end{table}
 
@@ -116,7 +118,7 @@ Sustituyendo (\ref{normalizacion}) en (\ref{ecuacion_expandida_reescrita}) tenem
 
 \begin{table}[h]
     \centering
-    \caption{Variables predictoras obtenidas después de la normalizacion según la ecuación (\ref{normalizacion}) para principales componentes de análisis de ($n$=135) albatros de Laysan en Isla Guadalupe desde 2014-2018.}
+    \caption{Variables predictoras obtenidas después de la normalizacion según la ecuación (\ref{normalizacion}) para principales componentes de análisis.}
     \bigskip
     \renewcommand{\arraystretch}{1.3}
     \begin{tabular}{|c|c|c|c|}
@@ -127,7 +129,7 @@ Sustituyendo (\ref{normalizacion}) en (\ref{ecuacion_expandida_reescrita}) tenem
     \end{tabular}
     \label{mejorModeloLogistico}
     \\[10pt]
-    Resultados obtenidos del archivo \texttt{parametros\_mejor\_modelo\_logistico\_laal\_ig.json}.
+    Resultados obtenidos del archivo \texttt{parametros\_mejor\_modelo\_logistico\_laal\_ig.json}
 \end{table}
 \end{flushleft}
 \end{document}
