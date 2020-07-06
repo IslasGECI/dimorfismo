@@ -8,9 +8,7 @@ Datos <- data.table::data.table(read.csv(nombreArchivoCSV))
 
 ruta_resultados <- "data/processed/"
 tabla_importada <- data.table::data.table(readr::read_csv(
-                                paste0(ruta_resultados, "tabla_mejores_modelos.csv")
-                                )
-                            )
+                                paste0(ruta_resultados, "tabla_mejores_modelos.csv")))
 calculadorROC <- ROC$new()
 n_renglones <- nrow(tabla_importada)
 
@@ -19,7 +17,8 @@ for (i_albatros in 1:nrow(Datos)) {
     es_macho <- c()
     for (i_renglon in 1:n_renglones) {
         tabla_coeficientes_auxiliar <- tabla_importada[i_renglon, 1:5]
-        tabla_coeficientes_auxiliar <- data.frame(data.table::melt(tabla_coeficientes_auxiliar), row.names = colnames(tabla_coeficientes_auxiliar))
+        tabla_coeficientes_auxiliar <- data.frame(data.table::melt(tabla_coeficientes_auxiliar), 
+                                                    row.names = colnames(tabla_coeficientes_auxiliar))
         colnames(tabla_coeficientes_auxiliar) <- c("Variables", "Estimate")
         umbral <- as.numeric(tabla_importada[i_renglon, 6])
         tabla_parametros_maximos_normalizacion_auxiliar <- tabla_importada[i_renglon, 12:15]
@@ -41,5 +40,8 @@ for (i_albatros in 1:nrow(Datos)) {
         prob <- ModeloDimorfismoAlbatros$predict(dato)
         es_macho <- append(es_macho, as.logical(prob > umbral))
     }
-    print(paste(i_albatros, as.character(dato$sexo), sum(es_macho) / length(es_macho) * 100))
+    print(paste(i_albatros, 
+            as.character(dato$sexo), 
+            sum(es_macho) / length(es_macho) * 100)
+    )
 }

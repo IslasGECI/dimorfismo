@@ -1,4 +1,4 @@
-all: tests reports/funcion_logistica.pdf
+all: reports/funcion_logistica.pdf
 
 define runScript
 	mkdir --parents $(@D)
@@ -44,7 +44,7 @@ $(jsonParametrosModeloLogistico): src/03_predict_sex.R $(DatosCrudos) $(csvTabla
 
 # IV. Sección del resto de los phonies
 # ------------------------------------------------------------------------------------------------
-.PHONY: all clean tests
+.PHONY: all clean
 
 # Elimina los residuos de LaTeX
 clean:
@@ -54,6 +54,3 @@ clean:
 	rm --force reports/*.pytxcode
 	rm --force --recursive data/processed
 	rm --force --recursive reports/pythontex*
-
-tests:
-	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)"

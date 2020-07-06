@@ -9,7 +9,8 @@ Datos <- data.table::data.table(read.csv(nombreArchivoCSV))
 
 ruta_resultados <- "data/processed/"
 tabla_importada <- data.table::data.table(
-                    readr::read_csv(paste0(ruta_resultados, "tabla_modelos_logisticos.csv"))
+                    readr::read_csv(paste0(ruta_resultados,
+                            "tabla_modelos_logisticos.csv"))
                     )
 calculadorROC <- ROC$new()
 n_renglones <- nrow(tabla_importada)
@@ -31,7 +32,7 @@ for (i_renglon in 1:n_renglones) {
                                   valorMaximo = as.list(tabla_parametros_maximos_normalizacion_auxiliar))
   listaParametrosModeloNormalizacion <- list(parametrosNormalizacion = parametrosNormalizacion, 
                                              parametrosModelo = tabla_coeficientes_auxiliar)
-  
+
   readr::write_lines(
     jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), 
     path = jsonParametroModelo

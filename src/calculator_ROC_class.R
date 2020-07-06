@@ -38,7 +38,7 @@ ROC <- R6Class("ROC",
 
     calculateConfusion = function(datos, umbral) {
         confusion <- datos %>% 
-        mutate(clasificacion=private$classifyAnswer(., umbral)) %>% 
+        mutate(clasificacion = private$classifyAnswer(., umbral)) %>% 
         group_by(clasificacion) %>%
         summarize(N = n())
         return(confusion)
@@ -46,7 +46,7 @@ ROC <- R6Class("ROC",
       
     addMissing = function(confusion) {
         clasificacion <- c('F0','F1','V0','V1')
-        N <- c(0,0,0,0)
+        N <- c(0, 0, 0, 0)
         base <- data.frame(clasificacion, N)
         confusion <- confusion %>% merge(base, by = "clasificacion", all = T) %>% 
             mutate(N = N.x + N.y) %>% 
