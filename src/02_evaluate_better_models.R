@@ -5,7 +5,7 @@ directorioTDP <- ("data/raw")
 jsonParametroModelo <- ("data/processed/parametros_modelo_logistico_laal_ig.json")
 nombreArchivoCSV <- file.path(directorioTDP, "morfometria_albatros-laysan_guadalupe.csv")
 
-Datos <- data.table::data.table(read.csv(nombreArchivoCSV))
+data <- data.table::data.table(read.csv(nombreArchivoCSV))
 
 ruta_resultados <- "data/processed/"
 tabla_importada <- data.table::data.table(
@@ -23,7 +23,7 @@ for (i_renglon in 1:n_renglones) {
                                               row.names = colnames(tabla_coeficientes_auxiliar)
                                             )
   colnames(tabla_coeficientes_auxiliar) <- c("Variables", "Estimate")
-  umbral <- as.numeric(tabla_importada[i_renglon, 6])
+  threshold <- as.numeric(tabla_importada[i_renglon, 6])
   tabla_parametros_maximos_normalizacion_auxiliar <- tabla_importada[i_renglon, 12:15]
   colnames(tabla_parametros_maximos_normalizacion_auxiliar) <- rownames(tabla_coeficientes_auxiliar[2:5,])
   tabla_parametros_minimos_normalizacion_auxiliar <- tabla_importada[i_renglon, 8:11]
@@ -41,10 +41,10 @@ for (i_renglon in 1:n_renglones) {
   ModeloDimorfismoAlbatros <- ModeloDimorfismo$new()
   ModeloDimorfismoAlbatros$loadParameters(jsonParametroModelo)
 
-  prob <- ModeloDimorfismoAlbatros$predict(Datos)
-  y_test <- ifelse(Datos$sexo == 'M', 1, 0)
+  prob <- ModeloDimorfismoAlbatros$predict(data)
+  y_test <- ifelse(data$sexo == 'M', 1, 0)
   datos_roc <- data.frame(y_test, prob)
-  errores <- append(errores, calculadorROC$calculateError(datos_roc, umbral))
+  errores <- append(errores, calculadorROC$calculate_error(datos_roc, threshold))
 }
 
 es_error_minimo <- errores == min(errores)

@@ -10,8 +10,8 @@ nombreArchivoCSV <- file.path(directorioTDP, "morfometria_albatros-laysan_guadal
 nombreArchivoJSON <- file.path(directorioTDP, "datapackage.json")
 
 Metadatos <- jsonlite::fromJSON(nombreArchivoJSON)
-Datos <- data.table(read.csv(nombreArchivoCSV))
-n_datos <- nrow(Datos)
+data <- data.table(read.csv(nombreArchivoCSV))
+n_data <- nrow(data)
 
 proporcion_entrenamiento <- 0.80
 proporcion_validacion <- 1 - proporcion_entrenamiento
@@ -21,7 +21,7 @@ nombre_columnas <- c("(Intercept)", variablesParaModelo)
 n_repeticiones <- 10
 
 
-tabla_umbral_error <- data.frame(umbral <- c(), error <- c())
+tabla_umbral_error <- data.frame(threshold <- c(), error <- c())
 calculadorROC <- ROC$new()
 
 tabla_modelo <- list(coeficientes_modelo = data.frame(matrix(ncol = length(nombre_columnas),
@@ -51,12 +51,12 @@ barra_progeso <- txtProgressBar(min = 0,
 )
 
 for (i in 1:n_repeticiones) {
-  indice_entrenamiento <- sample(1:n_datos, round(proporcion_entrenamiento * n_datos))
+  indice_entrenamiento <- sample(1:n_data, round(proporcion_entrenamiento * n_data))
   indice_validacion <- -indice_entrenamiento
   
   # Se extraen los datos de 2015, 2016, 2017 ya que sólo estos se usaran para crear el modelo
-  datos_entrenamiento <- Datos[indice_entrenamiento]
-  datos_validacion <- Datos[indice_validacion]
+  datos_entrenamiento <- data[indice_entrenamiento]
+  datos_validacion <- data[indice_validacion]
   
   setkey(datos_entrenamiento, darvic)
   individuosRepetidos <- data.table(
@@ -160,7 +160,7 @@ for (i in 1:n_repeticiones) {
   prob <- ModeloDimorfismoAlbatros$predict(datos_validacion)
   y_test <- ifelse(datos_validacion$sexo == 'M', 1, 0)
   datos_roc <- data.frame(y_test, prob)
-  criterio_error <- calculadorROC$getBestThresholdAndError(datos_roc)
+  criterio_error <- calculadorROC$best_threshold_error(datos_roc)
   tabla_umbral_error <- rbind(tabla_umbral_error, criterio_error)
   setTxtProgressBar(barra_progeso, i)
 }
