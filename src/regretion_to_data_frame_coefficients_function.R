@@ -1,8 +1,8 @@
-regretion2DataFrameCoefficients <- function(Regresion) {
-    ResumenRegresion <- summary.glm(Regresion)
-    ResumenRegresion$coefficients <- round(ResumenRegresion$coefficients, 3)
-    DataFrame <- as.data.frame(ResumenRegresion$coefficients)
-    DataFrame <- cbind(rownames(DataFrame), DataFrame)
-    colnames(DataFrame)[1] <- "Variables"
-    return(DataFrame)
+regretion2DataFrameCoefficients <- function(regression) {
+    regression_summary <- summary.glm(regression)
+    regression_summary$coefficients <- round(regression_summary$coefficients, 3)
+    data_frame <- as.data.frame(regression_summary$coefficients)
+    data_frame <- cbind(rownames(data_frame), data_frame)
+    colnames(data_frame)[1] <- "Variables"
+    return(data_frame)
 }
