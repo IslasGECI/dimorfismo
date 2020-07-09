@@ -71,9 +71,9 @@ colnames(model_table$pr_value) <- column_names
 colnames(model_table$min_normalization_parameters) <- column_names
 colnames(model_table$max_normalization_parameters) <- column_names
 
-barra_progeso <- txtProgressBar(min = 0, 
-                                max = num_repetitions,
-                                style = 3
+progress_bar <- txtProgressBar(min = 0, 
+                               max = num_repetitions,
+                               style = 3
 )
 
 
@@ -115,7 +115,8 @@ for (i in 1:num_repetitions) {
   ]
 
   normalize <- function(column) { 
-    (column - min(column)) / (max(column) - min(column))
+    normalize_return <- (column - min(column)) / (max(column) - min(column))
+    return (normalize_return)
   }
 
   normalized_data <- as.data.frame(apply(normalized_data, 2, normalize))
@@ -196,9 +197,9 @@ for (i in 1:num_repetitions) {
   roc_data <- data.frame(y_test, prob)
   error_criteria <- calculador_ROC$best_threshold_error(roc_data)
   threshold_error_table <- rbind(threshold_error_table, error_criteria)
-  setTxtProgressBar(barra_progeso, i)
+  setTxtProgressBar(progress_bar, i)
 }
-close(barra_progeso) 
+close(progress_bar) 
 
 final_variables <- c("(Intercept)", "longitudCraneo", "altoPico",
                      "longitudPico", "tarso", "anchoCraneo")
