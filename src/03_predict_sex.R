@@ -7,41 +7,55 @@ csv_file <- file.path(tdp_path, "morfometria_albatros-laysan_guadalupe.csv")
 data <- data.table::data.table(read.csv(csv_file))
 
 results_path <- "data/processed/"
-imported_table <- data.table::data.table(readr::read_csv(
-                                paste0(results_path, "tabla_mejores_modelos.csv")))
+imported_table <- data.table::data.table(
+                    readr::read_csv(paste0(results_path, "tabla_mejores_modelos.csv")
+                )
+)
+
 calculador_ROC <- ROC$new()
 n_rows <- nrow(imported_table)
 
-for (i_albatros in 1:nrow(data)) {
-    dato <- data[i_albatros,]
-    es_macho <- c()
+for (i_albatross in 1:nrow(data)) {
+    dato <- data[i_albatross,]
+    males <- c()
     for (i_row in 1:n_rows) {
         auxiliar_coefficients_table <- imported_table[i_row, 1:5]
-        auxiliar_coefficients_table <- data.frame(data.table::melt(auxiliar_coefficients_table), 
-                                                    row.names = colnames(auxiliar_coefficients_table))
+        auxiliar_coefficients_table <- data.frame(
+                                        data.table::melt(auxiliar_coefficients_table), 
+                                        row.names = colnames(auxiliar_coefficients_table)
+        )
         colnames(auxiliar_coefficients_table) <- c("Variables", "Estimate")
         threshold <- as.numeric(imported_table[i_row, 6])
         max_auxiliar_normalized_parameters_table <- imported_table[i_row, 12:15]
         colnames(max_auxiliar_normalized_parameters_table) <- rownames(auxiliar_coefficients_table[2:5,])
         min_auxiliar_normalized_parameters_table <- imported_table[i_row, 8:11]
         colnames(min_auxiliar_normalized_parameters_table) <- rownames(auxiliar_coefficients_table[2:5,])
-        normalization_parameters <- list(minimum_value = as.list(min_auxiliar_normalized_parameters_table), 
-                                        maximum_value = as.list(max_auxiliar_normalized_parameters_table))
-        list_normalization_parameters <- list(normalization_parameters = normalization_parameters, 
-                                                    model_parameters = auxiliar_coefficients_table)
-        
+        normalization_parameters <- list(
+                                        minimum_value = as.list(min_auxiliar_normalized_parameters_table), 
+                                        maximum_value = as.list(max_auxiliar_normalized_parameters_table)
+        )
+        list_normalization_parameters <- list(
+                                            normalization_parameters = normalization_parameters, 
+                                            model_parameters = auxiliar_coefficients_table
+        )
+
         readr::write_lines(
             jsonlite::toJSON(list_normalization_parameters, pretty = T), 
             path = "data/processed/parametros_modelo_logistico_laal_ig.json"
         )
+
         dimorphism_model_albatross <- dimorphism_model$new()
         dimorphism_model_albatross$load_parameters("data/processed/parametros_modelo_logistico_laal_ig.json")
         
         prob <- dimorphism_model_albatross$predict(dato)
-        es_macho <- append(es_macho, as.logical(prob > threshold))
+        males <- append(males, as.logical(prob > threshold))
     }
-    print(paste(i_albatros, 
+
+    print(
+        paste(
+            i_albatross, 
             as.character(dato$sexo), 
-            sum(es_macho) / length(es_macho) * 100)
+            sum(males) / length(males) * 100
+        )
     )
 }
