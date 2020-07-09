@@ -1,4 +1,4 @@
-library(data.table) 
+library(data.table)
 
 source("src/dimorphism_model_class.R")
 source("src/calculator_ROC_class.R")
@@ -46,13 +46,13 @@ model_table <- list(
                 ),
                 pr_value = data.frame(
                             matrix(
-                              ncol = length(column_names), 
+                              ncol = length(column_names),
                               nrow = num_repetitions
                             )
                 ),
                 min_normalization_parameters = data.frame(
                                                 matrix(
-                                                  ncol = length(column_names), 
+                                                  ncol = length(column_names),
                                                   nrow = num_repetitions
                                                 )
                 ),
@@ -71,7 +71,7 @@ colnames(model_table$pr_value) <- column_names
 colnames(model_table$min_normalization_parameters) <- column_names
 colnames(model_table$max_normalization_parameters) <- column_names
 
-progress_bar <- txtProgressBar(min = 0, 
+progress_bar <- txtProgressBar(min = 0,
                                max = num_repetitions,
                                style = 3
 )
@@ -84,21 +84,21 @@ for (i in 1:num_repetitions) {
   # Se extraen los datos de 2015, 2016, 2017 ya que sólo estos se usaran para crear el modelo
   trainning_data <- data[trainning_index]
   validation_data <- data[validation_index]
-  
+
   setkey(trainning_data, darvic)
   repeated_individuals <- data.table(darvic = trainning_data[duplicated(darvic)]$darvic)
-  
-  no_numerical_data <- trainning_data[unique(trainning_data), 
-                                      .SD[, !sapply(.SD, is.numeric), with = FALSE], 
+
+  no_numerical_data <- trainning_data[unique(trainning_data),
+                                      .SD[, !sapply(.SD, is.numeric), with = FALSE],
                                       mult = "last"
   ]
 
-  numerical_data <- trainning_data[, 
-                                    lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean, na.rm = T), 
+  numerical_data <- trainning_data[,
+                                    lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean, na.rm = T),
                                     by = darvic
   ]
   averaged_data <- numerical_data[no_numerical_data[!duplicated(darvic)]]
-  
+
   # Se definen variables para utilizarse en el texto que decribe los Datos.
   metadata_fields <- data.table(metadata$resources$schema$fields[[1]])
   # Se identifican los `fields` en los metadata (son las variables de los Datos) con unidades definidas ya que estos (campos) describen a las variables morfométricas.
@@ -109,35 +109,35 @@ for (i in 1:num_repetitions) {
   #listaVariablesMorfometricas <- tolower(paste0(large_names_morphometry[1], paste(", ", large_names_morphometry[2:(n_morphometric_variables-1)], collapse = ""), " y ", large_names_morphometry[n_morphometric_variables]))
   n_individuals <- length(unique(averaged_data$darvic))
   #Hasta aqui
-  normalized_data <- averaged_data[!is.na(averaged_data$peso), 
-                                   variables_model, 
+  normalized_data <- averaged_data[!is.na(averaged_data$peso),
+                                   variables_model,
                                    with = FALSE
   ]
 
-  normalize <- function(column) { 
+  normalize <- function(column) {
     normalize_return <- (column - min(column)) / (max(column) - min(column))
-    return (normalize_return)
+    return(normalize_return)
   }
 
   normalized_data <- as.data.frame(apply(normalized_data, 2, normalize))
   normalized_data$sexo <- averaged_data[!is.na(averaged_data$peso),]$sexo
-  
+
   null_regression <- glm(formula = sexo ~ 1,
-                         data = normalized_data, 
+                         data = normalized_data,
                          family = "binomial"
   )
 
   # Hacemos el modelos utilizando las 11 varibles
-  all_regression <- glm(formula = sexo ~ ., 
-                        data = normalized_data, 
+  all_regression <- glm(formula = sexo ~ .,
+                        data = normalized_data,
                         family = "binomial"
   )
   # Aplicamos el método _stepwise_.  
-  step_regression <- step(null_regression, 
+  step_regression <- step(null_regression,
                         scope = list(
-                                  lower = null_regression, 
-                                  upper = all_regression), 
-                        direction = "both", 
+                                  lower = null_regression,
+                                  upper = all_regression),
+                        direction = "both",
                         trace = 0
   )
 
@@ -156,19 +156,19 @@ for (i in 1:num_repetitions) {
   #Crea un JSON como una lista de los parametros anteriores
   model_varibles_names <- names(step_regression$coefficients)
   model_varibles_names <- model_varibles_names[model_varibles_names != "(Intercept)"]
-  
-  model_used_data <- averaged_data[!is.na(averaged_data$peso), 
-                                   model_varibles_names, 
+
+  model_used_data <- averaged_data[!is.na(averaged_data$peso),
+                                   model_varibles_names,
                                    with = FALSE
   ]
   min_normalized_data <- apply(model_used_data, 2, min)
   max_normalized_data <- apply(model_used_data, 2, max)
-  
+
   normalization_parameters <- list(
     minimum_value = split(unname(min_normalized_data),
                           names(min_normalized_data)
     ),
-    maximum_value = split(unname(max_normalized_data), 
+    maximum_value = split(unname(max_normalized_data),
                           names(max_normalized_data)
     )
   )
@@ -186,7 +186,7 @@ for (i in 1:num_repetitions) {
   ##
 
   readr::write_lines(
-    jsonlite::toJSON(list_normalization_parameters, pretty = T), 
+    jsonlite::toJSON(list_normalization_parameters, pretty = T),
     path = "data/processed/parametros_modelo_logistico_laal_ig.json"
   )
 
@@ -199,17 +199,17 @@ for (i in 1:num_repetitions) {
   threshold_error_table <- rbind(threshold_error_table, error_criteria)
   setTxtProgressBar(progress_bar, i)
 }
-close(progress_bar) 
+close(progress_bar)
 
 final_variables <- c("(Intercept)", "longitudCraneo", "altoPico",
                      "longitudPico", "tarso", "anchoCraneo")
-no_intercept_variables <- c("longitudCraneo", "altoPico", "longitudPico", 
+no_intercept_variables <- c("longitudCraneo", "altoPico", "longitudPico",
                             "tarso", "anchoCraneo")
 
 model_table$model_coefficients <- model_table$model_coefficients[, final_variables]
 
 model_table$standard_error <- model_table$standard_error[, final_variables]
-colnames(model_table$standard_error) <- c("stdErrIntercept", "stdErrlongitudCraneo", "stdErrAltoPico", 
+colnames(model_table$standard_error) <- c("stdErrIntercept", "stdErrlongitudCraneo", "stdErrAltoPico",
                                           "stdErrLongitudPico", "stdErrTarso", "stdErrAnchoCraneo")
 
 model_table$z_value <- model_table$z_value[, final_variables]
@@ -221,35 +221,35 @@ colnames(model_table$pr_value) <- c("PrIntercept", "PrlongitudCraneo", "PrAltoPi
                                     "PrLongitudPico", "PrTarso", "PrAnchoCraneo")
 
 model_table$min_normalization_parameters <- model_table$min_normalization_parameters[, no_intercept_variables]
-colnames(model_table$min_normalization_parameters) <- c("minlongitudCraneo","minAltoPico",
+colnames(model_table$min_normalization_parameters) <- c("minlongitudCraneo", "minAltoPico",
                                                         "minLongitudPico", "minTarso", "minAnchoCraneo")
 
 model_table$max_normalization_parameters <- model_table$max_normalization_parameters[, no_intercept_variables]
-colnames(model_table$max_normalization_parameters) <- c("maxlongitudCraneo","maxAltoPico",
+colnames(model_table$max_normalization_parameters) <- c("maxlongitudCraneo", "maxAltoPico",
                                                         "maxLongitudPico", "maxTarso", "maxAnchoCraneo")
 
 completed_table <- data.table(
-                    cbind( 
-                      model_table$model_coefficients, 
+                    cbind(
+                      model_table$model_coefficients,
                       threshold_error_table,
-                      model_table$min_normalization_parameters, 
+                      model_table$min_normalization_parameters,
                       model_table$max_normalization_parameters,
-                      model_table$standard_error, 
+                      model_table$standard_error,
                       model_table$z_value,
                       model_table$pr_value
                     )
 )
 
 row_na <- apply(
-            is.na(completed_table), 
-            MARGIN = 1, 
+            is.na(completed_table),
+            MARGIN = 1,
             FUN = any
 )
-filtered_table <- completed_table[!row_na, ]
+filtered_table <- completed_table[!row_na,]
 minimum_error <- min(filtered_table$error)
 best_model_table <- filtered_table[error == minimum_error]
- 
+
 
 write_csv(best_model_table,
-  paste0(results_path,'tabla_modelos_logisticos.csv')
+  paste0(results_path, 'tabla_modelos_logisticos.csv')
 )

@@ -20,8 +20,8 @@ dimorphism_model <- R6Class("dimorphism_model",
           maximum <- as.numeric(private$normalization_parameters$maximum_value[variable$Variables])
 
           normalize <- function(column) {
-            normalize_return <- (column - minimum)/(maximum - minimum)
-            return (normalize_return)
+            normalize_return <- (column - minimum) / (maximum - minimum)
+            return(normalize_return)
           }
 
           normalized_column <- as.data.frame(apply(column, 2, normalize))
@@ -45,9 +45,9 @@ dimorphism_model <- R6Class("dimorphism_model",
   ),
 
   private = list(
-    model_parameters = NULL, 
-    normalization_parameters = NULL, 
-    
+    model_parameters = NULL,
+    normalization_parameters = NULL,
+
     get_value = function(variable_name) {
       for (variable in private$model_parameters) {
         if (variable$Variables == variable_name) {

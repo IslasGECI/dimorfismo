@@ -10,7 +10,7 @@ data <- data.table::data.table(read.csv(csv_file))
 results_path <- "data/processed/"
 imported_table <- data.table::data.table(
                     readr::read_csv(
-                      paste0(results_path,"tabla_modelos_logisticos.csv")
+                      paste0(results_path, "tabla_modelos_logisticos.csv")
                     )
 )
 calculador_ROC <- ROC$new()
@@ -34,12 +34,12 @@ for (i_row in 1:n_rows) {
                                 maximum_value = as.list(max_auxiliar_normalized_parameters_table)
   )
   list_normalization_parameters <- list(
-                                    normalization_parameters = normalization_parameters, 
+                                    normalization_parameters = normalization_parameters,
                                     model_parameters = auxiliar_coefficients_table
   )
 
   readr::write_lines(
-    jsonlite::toJSON(list_normalization_parameters, pretty = T), 
+    jsonlite::toJSON(list_normalization_parameters, pretty = T),
     path = json_path
   )
 
@@ -55,11 +55,11 @@ for (i_row in 1:n_rows) {
 minimun_error <- bugs == min(bugs)
 
 write_csv(
-  imported_table[minimun_error, ],
+  imported_table[minimun_error,],
   paste0(results_path, 'tabla_mejores_modelos.csv')
 )
 
 readr::write_lines(
-  jsonlite::toJSON(list_normalization_parameters, pretty = T), 
+  jsonlite::toJSON(list_normalization_parameters, pretty = T),
   path = "data/processed/parametros_mejor_modelo_logistico_laal_ig.json"
 )
