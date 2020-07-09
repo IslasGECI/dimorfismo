@@ -1,37 +1,37 @@
 source("src/dimorphism_model_class.R")
 source("src/calculator_ROC_class.R")
 
-TDP_path <- ("data/raw/")
-csv_file <- file.path(TDP_path, "morfometria_albatros-laysan_guadalupe.csv")
+tdp_path <- ("data/raw/")
+csv_file <- file.path(tdp_path, "morfometria_albatros-laysan_guadalupe.csv")
 
 data <- data.table::data.table(read.csv(csv_file))
 
-ruta_resultados <- "data/processed/"
-tabla_importada <- data.table::data.table(readr::read_csv(
-                                paste0(ruta_resultados, "tabla_mejores_modelos.csv")))
+results_path <- "data/processed/"
+imported_table <- data.table::data.table(readr::read_csv(
+                                paste0(results_path, "tabla_mejores_modelos.csv")))
 calculador_ROC <- ROC$new()
-n_renglones <- nrow(tabla_importada)
+n_rows <- nrow(imported_table)
 
 for (i_albatros in 1:nrow(data)) {
     dato <- data[i_albatros,]
     es_macho <- c()
-    for (i_renglon in 1:n_renglones) {
-        tabla_coeficientes_auxiliar <- tabla_importada[i_renglon, 1:5]
-        tabla_coeficientes_auxiliar <- data.frame(data.table::melt(tabla_coeficientes_auxiliar), 
-                                                    row.names = colnames(tabla_coeficientes_auxiliar))
-        colnames(tabla_coeficientes_auxiliar) <- c("Variables", "Estimate")
-        threshold <- as.numeric(tabla_importada[i_renglon, 6])
-        tabla_parametros_maximos_normalizacion_auxiliar <- tabla_importada[i_renglon, 12:15]
-        colnames(tabla_parametros_maximos_normalizacion_auxiliar) <- rownames(tabla_coeficientes_auxiliar[2:5,])
-        tabla_parametros_minimos_normalizacion_auxiliar <- tabla_importada[i_renglon, 8:11]
-        colnames(tabla_parametros_minimos_normalizacion_auxiliar) <- rownames(tabla_coeficientes_auxiliar[2:5,])
-        normalization_parameters <- list(minimum_value = as.list(tabla_parametros_minimos_normalizacion_auxiliar), 
-                                        maximum_value = as.list(tabla_parametros_maximos_normalizacion_auxiliar))
-        list_parameters_normalization <- list(normalization_parameters = normalization_parameters, 
-                                                    model_parameters = tabla_coeficientes_auxiliar)
+    for (i_row in 1:n_rows) {
+        auxiliar_coefficients_table <- imported_table[i_row, 1:5]
+        auxiliar_coefficients_table <- data.frame(data.table::melt(auxiliar_coefficients_table), 
+                                                    row.names = colnames(auxiliar_coefficients_table))
+        colnames(auxiliar_coefficients_table) <- c("Variables", "Estimate")
+        threshold <- as.numeric(imported_table[i_row, 6])
+        max_auxiliar_normalized_parameters_table <- imported_table[i_row, 12:15]
+        colnames(max_auxiliar_normalized_parameters_table) <- rownames(auxiliar_coefficients_table[2:5,])
+        min_auxiliar_normalized_parameters_table <- imported_table[i_row, 8:11]
+        colnames(min_auxiliar_normalized_parameters_table) <- rownames(auxiliar_coefficients_table[2:5,])
+        normalization_parameters <- list(minimum_value = as.list(min_auxiliar_normalized_parameters_table), 
+                                        maximum_value = as.list(max_auxiliar_normalized_parameters_table))
+        list_normalization_parameters <- list(normalization_parameters = normalization_parameters, 
+                                                    model_parameters = auxiliar_coefficients_table)
         
         readr::write_lines(
-            jsonlite::toJSON(list_parameters_normalization, pretty = T), 
+            jsonlite::toJSON(list_normalization_parameters, pretty = T), 
             path = "data/processed/parametros_modelo_logistico_laal_ig.json"
         )
         dimorphism_model_albatross <- dimorphism_model$new()

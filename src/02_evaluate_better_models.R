@@ -1,58 +1,65 @@
 source("src/dimorphism_model_class.R")
 source("src/calculator_ROC_class.R")
 
-TDP_path <- ("data/raw")
-jsonParametroModelo <- ("data/processed/parametros_modelo_logistico_laal_ig.json")
-csv_file <- file.path(TDP_path, "morfometria_albatros-laysan_guadalupe.csv")
+tdp_path <- ("data/raw")
+json_path <- ("data/processed/parametros_modelo_logistico_laal_ig.json")
+csv_file <- file.path(tdp_path, "morfometria_albatros-laysan_guadalupe.csv")
 
 data <- data.table::data.table(read.csv(csv_file))
 
-ruta_resultados <- "data/processed/"
-tabla_importada <- data.table::data.table(
-                    readr::read_csv(paste0(ruta_resultados,
-                            "tabla_modelos_logisticos.csv"))
+results_path <- "data/processed/"
+imported_table <- data.table::data.table(
+                    readr::read_csv(
+                      paste0(results_path,"tabla_modelos_logisticos.csv")
                     )
+)
 calculador_ROC <- ROC$new()
-n_renglones <- nrow(tabla_importada)
-errores <- c()
+n_rows <- nrow(imported_table)
+bugs <- c()
 
-for (i_renglon in 1:n_renglones) {
-  tabla_coeficientes_auxiliar <- tabla_importada[i_renglon, 1:5]
-  tabla_coeficientes_auxiliar <- data.frame(data.table::melt(
-                                              tabla_coeficientes_auxiliar), 
-                                              row.names = colnames(tabla_coeficientes_auxiliar)
-                                            )
-  colnames(tabla_coeficientes_auxiliar) <- c("Variables", "Estimate")
-  threshold <- as.numeric(tabla_importada[i_renglon, 6])
-  tabla_parametros_maximos_normalizacion_auxiliar <- tabla_importada[i_renglon, 12:15]
-  colnames(tabla_parametros_maximos_normalizacion_auxiliar) <- rownames(tabla_coeficientes_auxiliar[2:5,])
-  tabla_parametros_minimos_normalizacion_auxiliar <- tabla_importada[i_renglon, 8:11]
-  colnames(tabla_parametros_minimos_normalizacion_auxiliar) <- rownames(tabla_coeficientes_auxiliar[2:5,])
-  normalization_parameters <- list(minimum_value = as.list(tabla_parametros_minimos_normalizacion_auxiliar), 
-                                  maximum_value = as.list(tabla_parametros_maximos_normalizacion_auxiliar))
-  list_parameters_normalization <- list(normalization_parameters = normalization_parameters, 
-                                             model_parameters = tabla_coeficientes_auxiliar)
+for (i_row in 1:n_rows) {
+  auxiliar_coefficients_table <- imported_table[i_row, 1:5]
+  auxiliar_coefficients_table <- data.frame(data.table::melt(
+                                              auxiliar_coefficients_table),
+                                              row.names = colnames(auxiliar_coefficients_table)
+  )
+  colnames(auxiliar_coefficients_table) <- c("Variables", "Estimate")
+  threshold <- as.numeric(imported_table[i_row, 6])
+  max_auxiliar_normalized_parameters_table <- imported_table[i_row, 12:15]
+  colnames(max_auxiliar_normalized_parameters_table) <- rownames(auxiliar_coefficients_table[2:5,])
+  min_auxiliar_normalized_parameters_table <- imported_table[i_row, 8:11]
+  colnames(min_auxiliar_normalized_parameters_table) <- rownames(auxiliar_coefficients_table[2:5,])
+  normalization_parameters <- list(
+                                minimum_value = as.list(min_auxiliar_normalized_parameters_table),
+                                maximum_value = as.list(max_auxiliar_normalized_parameters_table)
+  )
+  list_normalization_parameters <- list(
+                                    normalization_parameters = normalization_parameters, 
+                                    model_parameters = auxiliar_coefficients_table
+  )
 
   readr::write_lines(
-    jsonlite::toJSON(list_parameters_normalization, pretty = T), 
-    path = jsonParametroModelo
+    jsonlite::toJSON(list_normalization_parameters, pretty = T), 
+    path = json_path
   )
 
   dimorphism_model_albatross <- dimorphism_model$new()
-  dimorphism_model_albatross$load_parameters(jsonParametroModelo)
+  dimorphism_model_albatross$load_parameters(json_path)
 
   prob <- dimorphism_model_albatross$predict(data)
   y_test <- ifelse(data$sexo == 'M', 1, 0)
   roc_data <- data.frame(y_test, prob)
-  errores <- append(errores, calculador_ROC$calculate_error(roc_data, threshold))
+  bugs <- append(bugs, calculador_ROC$calculate_error(roc_data, threshold))
 }
 
-es_error_minimo <- errores == min(errores)
-write_csv(tabla_importada[es_error_minimo, ],
-  paste0(ruta_resultados,'tabla_mejores_modelos.csv')
+minimun_error <- bugs == min(bugs)
+
+write_csv(
+  imported_table[minimun_error, ],
+  paste0(results_path, 'tabla_mejores_modelos.csv')
 )
 
 readr::write_lines(
-  jsonlite::toJSON(list_parameters_normalization, pretty = T), 
+  jsonlite::toJSON(list_normalization_parameters, pretty = T), 
   path = "data/processed/parametros_mejor_modelo_logistico_laal_ig.json"
 )

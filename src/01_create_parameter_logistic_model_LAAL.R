@@ -4,10 +4,10 @@ source("src/dimorphism_model_class.R")
 source("src/calculator_ROC_class.R")
 source("src/regretion_to_data_frame_coefficients_function.R")
 
-TDP_path <- ("data/raw/")
+tdp_path <- ("data/raw/")
 results_path <- ('data/processed/')
-csv_file <- file.path(TDP_path, "morfometria_albatros-laysan_guadalupe.csv")
-json_file <- file.path(TDP_path, "datapackage.json")
+csv_file <- file.path(tdp_path, "morfometria_albatros-laysan_guadalupe.csv")
+json_file <- file.path(tdp_path, "datapackage.json")
 
 metadata <- jsonlite::fromJSON(json_file)
 data <- data.table(read.csv(csv_file))
@@ -16,7 +16,8 @@ n_data <- nrow(data)
 trainning_proportion <- 0.80
 validation_proportion <- 1 - trainning_proportion
 
-variables_model <- c("longitudCraneo", "longitudPico", "anchoCraneo", "altoPico", "tarso", "longAlaCerrada", "longAlaAbierta", "envergadura")
+variables_model <- c("longitudCraneo", "longitudPico", "anchoCraneo", "altoPico",
+                     "tarso", "longAlaCerrada", "longAlaAbierta", "envergadura")
 column_names <- c("(Intercept)", variables_model)
 num_repetitions <- 10
 
@@ -24,18 +25,43 @@ num_repetitions <- 10
 threshold_error_table <- data.frame(threshold <- c(), error <- c())
 calculador_ROC <- ROC$new()
 
-model_table <- list(model_coefficients = data.frame(matrix(ncol = length(column_names),
-                                                             nrow = num_repetitions)), 
-                     standard_error = data.frame(matrix(ncol = length(column_names),
-                                                        nrow = num_repetitions)), 
-                     z_value = data.frame(matrix(ncol = length(column_names), 
-                                                  nrow = num_repetitions)), 
-                     pr_value = data.frame(matrix(ncol = length(column_names), 
-                                            nrow = num_repetitions)), 
-                     min_normalization_parameters = data.frame(matrix(ncol = length(column_names), 
-                                                                          nrow = num_repetitions)), 
-                     max_normalization_parameters = data.frame(matrix(ncol = length(column_names),
-                                                                           nrow = num_repetitions))
+model_table <- list(
+                model_coefficients = data.frame(
+                                      matrix(
+                                        ncol = length(column_names),
+                                        nrow = num_repetitions
+                                      )
+                ),
+                standard_error = data.frame(
+                                  matrix(
+                                    ncol = length(column_names),
+                                    nrow = num_repetitions
+                                  )
+                ),
+                z_value = data.frame(
+                          matrix(
+                            ncol = length(column_names),
+                            nrow = num_repetitions
+                          )
+                ),
+                pr_value = data.frame(
+                            matrix(
+                              ncol = length(column_names), 
+                              nrow = num_repetitions
+                            )
+                ),
+                min_normalization_parameters = data.frame(
+                                                matrix(
+                                                  ncol = length(column_names), 
+                                                  nrow = num_repetitions
+                                                )
+                ),
+                max_normalization_parameters = data.frame(
+                                                matrix(
+                                                  ncol = length(column_names),
+                                                  nrow = num_repetitions
+                                                )
+                )
 )
 
 colnames(model_table$model_coefficients) <- column_names
@@ -50,26 +76,27 @@ barra_progeso <- txtProgressBar(min = 0,
                                 style = 3
 )
 
-#hasta aquí 
+
 for (i in 1:num_repetitions) {
   trainning_index <- sample(1:n_data, round(trainning_proportion * n_data))
   validation_index <- -trainning_index
-  
+
   # Se extraen los datos de 2015, 2016, 2017 ya que sólo estos se usaran para crear el modelo
   trainning_data <- data[trainning_index]
   validation_data <- data[validation_index]
   
   setkey(trainning_data, darvic)
-  repeated_individuals <- data.table(
-                          darvic = trainning_data[duplicated(darvic)]$darvic
-                        )
+  repeated_individuals <- data.table(darvic = trainning_data[duplicated(darvic)]$darvic)
   
   no_numerical_data <- trainning_data[unique(trainning_data), 
                                       .SD[, !sapply(.SD, is.numeric), with = FALSE], 
-                                      mult = "last"]
+                                      mult = "last"
+  ]
+
   numerical_data <- trainning_data[, 
                                     lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean, na.rm = T), 
-                                    by = darvic]
+                                    by = darvic
+  ]
   averaged_data <- numerical_data[no_numerical_data[!duplicated(darvic)]]
   
   # Se definen variables para utilizarse en el texto que decribe los Datos.
@@ -83,8 +110,9 @@ for (i in 1:num_repetitions) {
   n_individuals <- length(unique(averaged_data$darvic))
   #Hasta aqui
   normalized_data <- averaged_data[!is.na(averaged_data$peso), 
-                                          variables_model, 
-                                          with = FALSE]
+                                   variables_model, 
+                                   with = FALSE
+  ]
 
   normalize <- function(column) { 
     (column - min(column)) / (max(column) - min(column))
@@ -93,24 +121,26 @@ for (i in 1:num_repetitions) {
   normalized_data <- as.data.frame(apply(normalized_data, 2, normalize))
   normalized_data$sexo <- averaged_data[!is.na(averaged_data$peso),]$sexo
   
-  null_regression <- glm(formula = sexo ~ 1, 
-                       data = normalized_data, 
-                       family = "binomial"
-                      )
+  null_regression <- glm(formula = sexo ~ 1,
+                         data = normalized_data, 
+                         family = "binomial"
+  )
+
   # Hacemos el modelos utilizando las 11 varibles
   all_regression <- glm(formula = sexo ~ ., 
                         data = normalized_data, 
                         family = "binomial"
-                      )
+  )
   # Aplicamos el método _stepwise_.  
   step_regression <- step(null_regression, 
                         scope = list(
                                   lower = null_regression, 
                                   upper = all_regression), 
                         direction = "both", 
-                        trace = 0)
+                        trace = 0
+  )
+
   normalized_data$darvic <- averaged_data[!is.na(averaged_data$peso),]$darvic
-  
   step_coefficients <- regretion2DataFrameCoefficients(step_regression)
 
   ##
@@ -127,24 +157,25 @@ for (i in 1:num_repetitions) {
   model_varibles_names <- model_varibles_names[model_varibles_names != "(Intercept)"]
   
   model_used_data <- averaged_data[!is.na(averaged_data$peso), 
-                                                   model_varibles_names, 
-                                                   with = FALSE]
+                                   model_varibles_names, 
+                                   with = FALSE
+  ]
   min_normalized_data <- apply(model_used_data, 2, min)
   max_normalized_data <- apply(model_used_data, 2, max)
   
   normalization_parameters <- list(
     minimum_value = split(unname(min_normalized_data),
-                        names(min_normalized_data)
-    ), 
+                          names(min_normalized_data)
+    ),
     maximum_value = split(unname(max_normalized_data), 
-                        names(max_normalized_data)
+                          names(max_normalized_data)
     )
   )
 
-  list_parameters_normalization <- list(
+  list_normalization_parameters <- list(
     normalization_parameters = normalization_parameters,
     model_parameters = step_coefficients
-    )
+  )
 
   ##
   for (i_pair_normalization in colnames(model_used_data)) {
@@ -154,7 +185,7 @@ for (i in 1:num_repetitions) {
   ##
 
   readr::write_lines(
-    jsonlite::toJSON(list_parameters_normalization, pretty = T), 
+    jsonlite::toJSON(list_normalization_parameters, pretty = T), 
     path = "data/processed/parametros_modelo_logistico_laal_ig.json"
   )
 
@@ -169,41 +200,55 @@ for (i in 1:num_repetitions) {
 }
 close(barra_progeso) 
 
-final_variables <- c("(Intercept)", "longitudCraneo", "altoPico", "longitudPico", "tarso", "anchoCraneo")
-no_intercept_variables <- c("longitudCraneo", "altoPico", "longitudPico", "tarso", "anchoCraneo")
+final_variables <- c("(Intercept)", "longitudCraneo", "altoPico",
+                     "longitudPico", "tarso", "anchoCraneo")
+no_intercept_variables <- c("longitudCraneo", "altoPico", "longitudPico", 
+                            "tarso", "anchoCraneo")
 
 model_table$model_coefficients <- model_table$model_coefficients[, final_variables]
 
 model_table$standard_error <- model_table$standard_error[, final_variables]
-colnames(model_table$standard_error) <- c("stdErrIntercept", "stdErrlongitudCraneo", "stdErrAltoPico", "stdErrLongitudPico", "stdErrTarso", "stdErrAnchoCraneo")
+colnames(model_table$standard_error) <- c("stdErrIntercept", "stdErrlongitudCraneo", "stdErrAltoPico", 
+                                          "stdErrLongitudPico", "stdErrTarso", "stdErrAnchoCraneo")
 
 model_table$z_value <- model_table$z_value[, final_variables]
-colnames(model_table$z_value) <- c("zValueIntercept", "zValuelongitudCraneo", "zValueAltoPico", "zValueLongitudPico", "zValueTarso", "zValueAnchoCraneo")
+colnames(model_table$z_value) <- c("zValueIntercept", "zValuelongitudCraneo", "zValueAltoPico",
+                                   "zValueLongitudPico", "zValueTarso", "zValueAnchoCraneo")
 
 model_table$pr_value <- model_table$pr_value[, final_variables]
-colnames(model_table$pr_value) <- c("PrIntercept", "PrlongitudCraneo", "PrAltoPico", "PrLongitudPico", "PrTarso", "PrAnchoCraneo")
+colnames(model_table$pr_value) <- c("PrIntercept", "PrlongitudCraneo", "PrAltoPico",
+                                    "PrLongitudPico", "PrTarso", "PrAnchoCraneo")
 
 model_table$min_normalization_parameters <- model_table$min_normalization_parameters[, no_intercept_variables]
-colnames(model_table$min_normalization_parameters) <- c("minlongitudCraneo","minAltoPico", "minLongitudPico", "minTarso", "minAnchoCraneo")
+colnames(model_table$min_normalization_parameters) <- c("minlongitudCraneo","minAltoPico",
+                                                        "minLongitudPico", "minTarso", "minAnchoCraneo")
 
 model_table$max_normalization_parameters <- model_table$max_normalization_parameters[, no_intercept_variables]
-colnames(model_table$max_normalization_parameters) <- c("maxlongitudCraneo","maxAltoPico", "maxLongitudPico", "maxTarso", "maxAnchoCraneo")
+colnames(model_table$max_normalization_parameters) <- c("maxlongitudCraneo","maxAltoPico",
+                                                        "maxLongitudPico", "maxTarso", "maxAnchoCraneo")
 
-completed_table <- data.table(cbind(model_table$model_coefficients, 
-                             threshold_error_table, model_table$min_normalization_parameters, 
-                             model_table$max_normalization_parameters, model_table$standard_error, 
-                             model_table$z_value, model_table$pr_value)
+completed_table <- data.table(
+                    cbind( 
+                      model_table$model_coefficients, 
+                      threshold_error_table,
+                      model_table$min_normalization_parameters, 
+                      model_table$max_normalization_parameters,
+                      model_table$standard_error, 
+                      model_table$z_value,
+                      model_table$pr_value
+                    )
 )
 
-row_na <- apply(is.na(completed_table), 
-                       MARGIN = 1, 
-                       FUN = any
-) 
+row_na <- apply(
+            is.na(completed_table), 
+            MARGIN = 1, 
+            FUN = any
+)
 filtered_table <- completed_table[!row_na, ]
 minimum_error <- min(filtered_table$error)
 best_model_table <- filtered_table[error == minimum_error]
  
 
-write_csv(best_model_table, 
+write_csv(best_model_table,
   paste0(results_path,'tabla_modelos_logisticos.csv')
 )
