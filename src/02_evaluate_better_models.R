@@ -28,18 +28,18 @@ for (i_renglon in 1:n_renglones) {
   colnames(tabla_parametros_maximos_normalizacion_auxiliar) <- rownames(tabla_coeficientes_auxiliar[2:5,])
   tabla_parametros_minimos_normalizacion_auxiliar <- tabla_importada[i_renglon, 8:11]
   colnames(tabla_parametros_minimos_normalizacion_auxiliar) <- rownames(tabla_coeficientes_auxiliar[2:5,])
-  parametrosNormalizacion <- list(valorMinimo = as.list(tabla_parametros_minimos_normalizacion_auxiliar), 
-                                  valorMaximo = as.list(tabla_parametros_maximos_normalizacion_auxiliar))
-  listaParametrosModeloNormalizacion <- list(parametrosNormalizacion = parametrosNormalizacion, 
-                                             parametrosModelo = tabla_coeficientes_auxiliar)
+  normalization_parameters <- list(minimum_value = as.list(tabla_parametros_minimos_normalizacion_auxiliar), 
+                                  maximum_value = as.list(tabla_parametros_maximos_normalizacion_auxiliar))
+  listaParametrosModeloNormalizacion <- list(normalization_parameters = normalization_parameters, 
+                                             model_parameters = tabla_coeficientes_auxiliar)
 
   readr::write_lines(
     jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), 
     path = jsonParametroModelo
   )
 
-  ModeloDimorfismoAlbatros <- ModeloDimorfismo$new()
-  ModeloDimorfismoAlbatros$loadParameters(jsonParametroModelo)
+  ModeloDimorfismoAlbatros <- dimorphism_model$new()
+  ModeloDimorfismoAlbatros$load_parameters(jsonParametroModelo)
 
   prob <- ModeloDimorfismoAlbatros$predict(data)
   y_test <- ifelse(data$sexo == 'M', 1, 0)

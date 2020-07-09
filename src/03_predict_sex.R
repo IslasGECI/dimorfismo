@@ -25,17 +25,17 @@ for (i_albatros in 1:nrow(data)) {
         colnames(tabla_parametros_maximos_normalizacion_auxiliar) <- rownames(tabla_coeficientes_auxiliar[2:5,])
         tabla_parametros_minimos_normalizacion_auxiliar <- tabla_importada[i_renglon, 8:11]
         colnames(tabla_parametros_minimos_normalizacion_auxiliar) <- rownames(tabla_coeficientes_auxiliar[2:5,])
-        parametrosNormalizacion <- list(valorMinimo = as.list(tabla_parametros_minimos_normalizacion_auxiliar), 
-                                        valorMaximo = as.list(tabla_parametros_maximos_normalizacion_auxiliar))
-        listaParametrosModeloNormalizacion <- list(parametrosNormalizacion = parametrosNormalizacion, 
-                                                    parametrosModelo = tabla_coeficientes_auxiliar)
+        normalization_parameters <- list(minimum_value = as.list(tabla_parametros_minimos_normalizacion_auxiliar), 
+                                        maximum_value = as.list(tabla_parametros_maximos_normalizacion_auxiliar))
+        listaParametrosModeloNormalizacion <- list(normalization_parameters = normalization_parameters, 
+                                                    model_parameters = tabla_coeficientes_auxiliar)
         
         readr::write_lines(
             jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), 
             path = "data/processed/parametros_modelo_logistico_laal_ig.json"
         )
-        ModeloDimorfismoAlbatros <- ModeloDimorfismo$new()
-        ModeloDimorfismoAlbatros$loadParameters("data/processed/parametros_modelo_logistico_laal_ig.json")
+        ModeloDimorfismoAlbatros <- dimorphism_model$new()
+        ModeloDimorfismoAlbatros$load_parameters("data/processed/parametros_modelo_logistico_laal_ig.json")
         
         prob <- ModeloDimorfismoAlbatros$predict(dato)
         es_macho <- append(es_macho, as.logical(prob > threshold))

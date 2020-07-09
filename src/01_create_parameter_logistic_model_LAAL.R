@@ -85,8 +85,8 @@ for (i in 1:n_repeticiones) {
                                           variablesParaModelo, 
                                           with = FALSE]
 
-  normalize <- function(columna) { 
-    (columna - min(columna)) / (max(columna) - min(columna))
+  normalize <- function(column) { 
+    (column - min(column)) / (max(column) - min(column))
   }
 
   DatosNormalizados <- as.data.frame(apply(DatosNormalizados, 2, normalize))
@@ -131,17 +131,17 @@ for (i in 1:n_repeticiones) {
   minimo_datos_normalizacion <- apply(DatosUtilizadosModelo, 2, min)
   maximo_datos_normalizacion <- apply(DatosUtilizadosModelo, 2, max)
   
-  parametrosNormalizacion <- list(
-    valorMinimo = split(unname(minimo_datos_normalizacion),
+  normalization_parameters <- list(
+    minimum_value = split(unname(minimo_datos_normalizacion),
                         names(minimo_datos_normalizacion)
     ), 
-    valorMaximo = split(unname(maximo_datos_normalizacion), 
+    maximum_value = split(unname(maximo_datos_normalizacion), 
                         names(maximo_datos_normalizacion)
     )
   )
   listaParametrosModeloNormalizacion <- list(
-    parametrosNormalizacion = parametrosNormalizacion,
-    parametrosModelo = CoeficientesStep
+    normalization_parameters = normalization_parameters,
+    model_parameters = CoeficientesStep
     )
 
   ##
@@ -155,8 +155,8 @@ for (i in 1:n_repeticiones) {
     jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), 
     path = "data/processed/parametros_modelo_logistico_laal_ig.json"
   )
-  ModeloDimorfismoAlbatros <- ModeloDimorfismo$new()
-  ModeloDimorfismoAlbatros$loadParameters("data/processed/parametros_modelo_logistico_laal_ig.json")
+  ModeloDimorfismoAlbatros <- dimorphism_model$new()
+  ModeloDimorfismoAlbatros$load_parameters("data/processed/parametros_modelo_logistico_laal_ig.json")
   prob <- ModeloDimorfismoAlbatros$predict(datos_validacion)
   y_test <- ifelse(datos_validacion$sexo == 'M', 1, 0)
   datos_roc <- data.frame(y_test, prob)

@@ -1,54 +1,55 @@
 library(R6)
 
-ModeloDimorfismo <- R6Class("ModeloDimorfismo",
+dimorphism_model <- R6Class("dimorphism_model",
   public = list(
-    loadParameters = function(JSONpath) {
+    load_parameters = function(json_path) {
       #escribir codigo para cargar los parametros
-      # Importa parametrosModelo
-      jsonParametros <- rjson::fromJSON(file = JSONpath)
-      private$ParametrosNormalizacion <- jsonParametros$parametrosNormalizacion
-      private$ParametrosModelo <- jsonParametros$parametrosModelo
+      # Importa model_parameters
+      json_parameters <- rjson::fromJSON(file = json_path)
+      private$normalization_parameters <- json_parameters$normalization_parameters
+      private$model_parameters <- json_parameters$model_parameters
     },
-    predict = function(TablaDatosMorfometricos) {
+    predict = function(morphometric_data_table) {
       # escribir codigo para predecir sexo
-      z <- private$getValue("(Intercept)")
-      iVarible <- 1
-      for (variable in private$ParametrosModelo) {
+      z <- private$get_value("(Intercept)")
+      i_variable <- 1
+      for (variable in private$model_parameters) {
         if (variable$Variables != "(Intercept)") {
-          columna <- TablaDatosMorfometricos[, variable$Variables, with = FALSE]
-          minimo <- as.numeric(private$ParametrosNormalizacion$valorMinimo[variable$Variables])
-          maximo <- as.numeric(private$ParametrosNormalizacion$valorMaximo[variable$Variables])
+          column <- morphometric_data_table[, variable$Variables, with = FALSE]
+          minimum <- as.numeric(private$normalization_parameters$minimum_value[variable$Variables])
+          maximum <- as.numeric(private$normalization_parameters$maximum_value[variable$Variables])
 
-          normalize <- function(columna) {
-            (columna - minimo)/(maximo - minimo)
+          normalize <- function(column) {
+            (column - minimum)/(maximum - minimum)
           }
 
-          ColumnaNormalizada <- as.data.frame(apply(columna, 2, normalize))
-          z <- z + ColumnaNormalizada * private$getValue(variable$Variables)
-          iVarible <- iVarible + 1
+          normalized_column <- as.data.frame(apply(column, 2, normalize))
+          z <- z + normalized_column * private$get_value(variable$Variables)
+          i_variable <- i_variable + 1
         }
       }
-      probabilidad <- 1 / (1 + exp(-z))
-      colnames(probabilidad) <- "probability"
-      return(probabilidad)
+      probability <- 1 / (1 + exp(-z))
+      colnames(probability) <- "probability"
+      return(probability)
     },
-    getVariablesNames = function() {
-      variablesModelo <- c()
-      
-      for (variable in private$ParametrosModelo) {
+    get_variables_names = function() {
+      model_variables <- c()
+      for (variable in private$model_parameters) {
         if (variable$Variables != "(Intercept)") {
-          variablesModelo <- c(variablesModelo, variable$Variables)
+          model_variables <- c(model_variables, variable$Variables)
         }
       }
-      return(variablesModelo)
+      return(model_variables)
     }
-  ), 
+  ),
+
   private = list(
-    ParametrosModelo = NULL, 
-    ParametrosNormalizacion = NULL, 
-    getValue = function(nombreVariable) {
-      for (variable in private$ParametrosModelo) {
-        if (variable$Variables == nombreVariable) {
+    model_parameters = NULL, 
+    normalization_parameters = NULL, 
+    
+    get_value = function(variable_name) {
+      for (variable in private$model_parameters) {
+        if (variable$Variables == variable_name) {
           return(variable$Estimate)
         }
       }
