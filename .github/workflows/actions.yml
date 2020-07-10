@@ -12,6 +12,6 @@ jobs:
     - name: Despelusa
       run: docker run islasgeci make lint
     - name: Corre pruebas
-      run: docker run islasgeci make test
+      run: docker run islasgeci make tests
     - name: Ejecuta objetivo principal del Makefile
       run: docker run islasgeci make
