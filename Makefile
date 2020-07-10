@@ -1,4 +1,4 @@
-all: reports/funcion_logistica.pdf
+all: tests reports/funcion_logistica.pdf
 
 define runScript
 	mkdir --parents $(@D)
@@ -44,7 +44,26 @@ $(jsonParametrosModeloLogistico): src/03_predict_sex.R $(DatosCrudos) $(csvTabla
 
 # IV. Sección del resto de los phonies
 # ------------------------------------------------------------------------------------------------
-.PHONY: all clean
+.PHONY: all lint clean
+
+lint:
+	R -e "library(lintr)" \
+      -e "lint('src/01_create_parameter_logistic_model_LAAL.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/02_evaluate_better_models.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/calculator_ROC_class.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))"
+
+tests:
+	R -e "library(lintr)" \
+      -e "lint('src/01_create_parameter_logistic_model_LAAL.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/02_evaluate_better_models.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/calculator_ROC_class.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))" \
+      | grep -e "\^" && exit 1 || exit 0
 
 # Elimina los residuos de LaTeX
 clean:
