@@ -1,57 +1,136 @@
 \documentclass{article}
-\usepackage{vmargin}
-\usepackage{graphicx}
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amssymb, amsmath, amsbsy} % simbolitos
-\usepackage{upgreek} % para poner letras griegas sin cursiva
-\usepackage{cancel} % para tachar
 \usepackage{mathdots} % para el comando \iddots
-\usepackage{mathrsfs} % para formato de letra
-\usepackage{stackrel} % para el comando \stackbin
-\setpapersize{A4}
+\usepackage{csvsimple}
+\usepackage{pythontex}
+\usepackage{ragged2e}
+\usepackage{adjustbox}
+\usepackage{chngpage} %tablas fuera de margenes
+\usepackage[margin=1.0in]{geometry}
+\renewcommand{\baselinestretch}{1.5}
+
+\begin{pycode}
+import json
+import csv
+
+##Declaro variables a utilizar 
+##Primer archivo
+
+data_processed_1 = '../data/processed/parametros_mejor_modelo_logistico_laal_ig.json'
+with open(data_processed_1, encoding='utf8') as results_1_file:
+    parametros_mejor = json.load(results_1_file)
+
+m_variables_normalizacion = parametros_mejor ["parametrosNormalizacion"]
+m_valor_minimo = m_variables_normalizacion ["valorMinimo"]
+m_valor_maximo = m_variables_normalizacion ["valorMaximo"]
+
+m_variables_modelo = parametros_mejor["parametrosModelo"]
+m_intercept = m_variables_modelo[0]
+m_longitud_craneo = m_variables_modelo[1]
+m_altura_pico = m_variables_modelo[2]
+m_longitud_pico = m_variables_modelo[3]
+m_tarso = m_variables_modelo [4]
+
+#segundo archivo
+m_variables_modelo = []
+with open('../data/processed/tabla_mejores_modelos.csv') as results_3_file:
+    reader = csv.DictReader(results_3_file)
+    for row in reader:
+        m_variables_modelo.append(row)
+
+\end{pycode}
 
 \begin{document}
+
 \title{Ecuación Logística}
+\author{Andrea Sánchez}
 \maketitle
-Teniendo la ecuación logística:
+\begin{flushleft}
+
+Teniendo la función logística:
 \begin{equation}
     \label{tripe_igualdad_sencilla}
-    \frac{1}{1+e^{-z}} = \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )} = \frac{1}{1+\mbox{\mbox{exp}}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )}
+    f(z) = \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )}.
 \end{equation}
 
-Donde, al tener que $N_{0}=1$, entonces la ecuación \ref{tripe_igualdad_sencilla} puede ser expandida de la forma:
+Al ser $z$ una representación del escalar obtenido mediante la suma de multiplicaciones una a una de las componentes cartesianas de los vectores $\vec{\beta}$ y $\vec{N}$, y además, teniendo que $N_{0}=1$, entonces podemos expandir la ecuación (\ref{tripe_igualdad_sencilla}) a la forma:
 \begin{equation}
     \label{ecuacion_expandida}
-    \frac{1}{1+\mbox{exp}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]}
+    f(z) = f(\vec{\beta} \cdot \vec{N}) = \frac{1}{1+\mbox{exp}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} ,
 \end{equation}
 
-Donde \ref{ecuacion_expandida} puede ser reescrito de la forma:
+de modo que, podemos reescribir la ecuación (\ref{ecuacion_expandida}) a la forma :
 \begin{equation}
-    \label{ecuacion_expandida_reescrita}    
-    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N(x_{1})+...+\beta_{n}N(x_{n})\right ) \right ]}
+    \label{ecuacion_expandida_reescrita}
+    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N(x_{1})+...+\beta_{n}N(x_{n})\right ) \right ]} .
 \end{equation}
 
-Notemos que en \ref{ecuacion_expandida_reescrita} la normalización $N$ depende de un $x_{i}$. Definimos $A_{i}$ y $B_{i}$ como:
+Notemos que en la ecuación (\ref{ecuacion_expandida_reescrita}) la normalización $\vec{N}$ depende de un $x_{i}$. Definimos $A_{i}$ y $B_{i}$ como:
 
 \begin{equation}
     \label{maximos_A}
-    A_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{mín}}\left ( x_{i}^{j} \right )
+    A_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{mín}}\left ( x_{i}^{j} \right ) ,
 \end{equation}
 
 \begin{equation}
     \label{minimos_B}
-    B_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{máx}}\left ( x_{i}^{j} \right )
+    B_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{máx}}\left ( x_{i}^{j} \right ) .
 \end{equation}
 
-Donde, en este caso, el superíndice $j$ representa el j-ésimo individuo del conjunto de $m$ albatros, mientras que el subíndice $i$ simboliza la i-ésima anatomía en medición.
+Donde, en este caso, el superíndice $j$ representa el $j$-ésimo individuo del conjunto de $m$ albatros, mientras que el subíndice $i$ simboliza la $i$-ésima anatomía en medición.
 
 Por lo tanto, sea 
-\begin{equation} \label{normalizacion} N\left ( x_{i} \right )= \frac{x_{i} - \underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (  x_{i}^{j}\right )-\underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}
+\begin{equation} \label{normalizacion} N\left ( x_{i} \right )= \frac{x_{i} - \underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (  x_{i}^{j}\right )-\underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )} .
 \end{equation}
 
-Sustituyendo \ref{normalizacion} en \ref{ecuacion_expandida_reescrita} tenemos que: 
+Sustituyendo (\ref{normalizacion}) en (\ref{ecuacion_expandida_reescrita}) tenemos que: 
 \begin{equation} \label{ecuacion_chorizo}
-    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}\frac{x_{1}- \underset{j\in [m]}{\mbox{mín}}\left (x_{1}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (x_{1}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{1}^{j}\right )}+...+\beta_{n}\frac{x_{n} - \underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}{\underset{j\in [m]}{\mbox{máx}}\left (  x_{n}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}\right ) \right ]}
+    \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}\frac{x_{1}- \underset{j\in [m]}{\mbox{mín}}\left (x_{1}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (x_{1}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{1}^{j}\right )}+...+\beta_{n}\frac{x_{n} - \underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}{\underset{j\in [m]}{\mbox{máx}}\left (  x_{n}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}\right ) \right ]} .
 \end{equation}
+
+
+\newpage
+Con base en una muestra de 135 Albatros de Laysan recolectada en Isla Guadalupe desde 2014 a 2018 podemos generar los siguientes resultados.
+Donde, a partir de los ecuación (\ref{maximos_A}) obtenemos los valores maximos y por las ecuación (\ref{minimos_B}) los mínimos de cada variable predictora.
+%Agregar valores de .csv
+
+\begin{table}[ht]
+    \centering
+    \caption{Variables predictoras para principales componentes de análisis.}
+    \bigskip
+    \begin{adjustbox}{width=1\textwidth}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    \textbf{Morfometría} & \textbf{Valor Mínimo} & \textbf{Valor Máximo} & \textbf{Valor Estimado} & \textbf{Error Estándar} & \textbf{Valor Z} & \textbf{Pr($>\left|z\right|$)} \\
+    \hline
+    \input{funcion_logistica_resultados_csv.tex}
+    \end{tabular}
+    \end{adjustbox}
+    \\[10pt]
+    Resultados obtenidos del archivo \texttt{tabla\_mejores\_modelos.csv}
+    \label{modeloLogistico}
+\end{table}
+
+%Agrega valores de .json
+
+\begin{table}[h]
+    \centering
+    \caption{Variables predictoras obtenidas después de la normalizacion según la ecuación (\ref{normalizacion}) para principales componentes de análisis.}
+    \bigskip
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Morfometría} & \textbf{Valor Mínimo} & \textbf{Valor Máximo} & \textbf{Valor Estimado}\\
+    \hline
+    \input{funcion_logistica_resultados_json.tex}
+    \end{tabular}
+    \label{mejorModeloLogistico}
+    \\[10pt]
+    Resultados obtenidos del archivo \texttt{parametros\_mejor\_modelo\_logistico\_laal\_ig.json}
+\end{table}
+
+\end{flushleft}
 \end{document}
