@@ -36,5 +36,5 @@ for (i_albatros in 1:nrow(Datos)){
         prob <- ModeloDimorfismoAlbatros$predict(dato)
         es_macho <- append(es_macho, as.logical(prob > umbral))
     }
-    print(paste(i_albatros, as.character(dato$sexo),sum(es_macho)/length(es_macho)*100))
+    print(paste(i_albatros, as.character(dato$Sexo),sum(es_macho)/length(es_macho)*100))
 }

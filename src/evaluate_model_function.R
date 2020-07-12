@@ -20,11 +20,11 @@ evaluate_model <- function(datos_entrenamiento, datos_validacion) {
   prediccion_entrenamiento[!es_macho_entrenamiento] = 0
   prediccion_validacion[!es_macho_validacion] = 0
   
-  correcto_entrenamiento <- (es_macho_entrenamiento & datos_entrenamiento$sexo == "M") | (!es_macho_entrenamiento & datos_entrenamiento$sexo == "H")
-  correcto_validacion <- (es_macho_validacion & datos_validacion$sexo == "M") | (!es_macho_validacion & datos_validacion$sexo == "H")
+  correcto_entrenamiento <- (es_macho_entrenamiento & datos_entrenamiento$Sexo == "M") | (!es_macho_entrenamiento & datos_entrenamiento$Sexo == "H")
+  correcto_validacion <- (es_macho_validacion & datos_validacion$Sexo == "M") | (!es_macho_validacion & datos_validacion$Sexo == "H")
   
-  error_todas_entrenamiento <- round(sum(correcto_entrenamiento/length(datos_entrenamiento$sexo))*100)
-  error_todas_validacion <- round(sum(correcto_validacion/length(datos_validacion$sexo))*100)
+  error_todas_entrenamiento <- round(sum(correcto_entrenamiento/length(datos_entrenamiento$Sexo))*100)
+  error_todas_validacion <- round(sum(correcto_validacion/length(datos_validacion$Sexo))*100)
   
   listaError <- list(erros_variables_entrenamiento = error_todas_entrenamiento, error_variables_validacion = error_todas_validacion)
   

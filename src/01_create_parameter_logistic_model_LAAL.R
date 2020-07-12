@@ -19,7 +19,7 @@ n_datos <- nrow(Datos)
 proporcion_entrenamiento <- 0.80
 proporcion_validacion <- 1 - proporcion_entrenamiento
 
-variablesParaModelo <- c("longitudCraneo", "longitudPico", "anchoCraneo", "altoPico", "tarso", "longAlaCerrada", "longAlaAbierta", "envergadura")
+variablesParaModelo <- c("Longitud_Craneo", "Longitud_Pico", "Ancho_Craneo", "Altura_Pico", "Tarso", "Longitud_Ala_Cerrada", "Longitud_Ala_Abierta", "Envergadura")
 nombre_columnas <- c("(Intercept)", variablesParaModelo)
 n_repeticiones <- 10
 #2000
@@ -50,16 +50,16 @@ for(i in 1:n_repeticiones) {
   datos_entrenamiento <- Datos[indice_entrenamiento]
   datos_validacion <- Datos[indice_validacion]
   
-  setkey(datos_entrenamiento, darvic)
-  individuosRepetidos <- data.table(darvic=datos_entrenamiento[duplicated(darvic)]$darvic)
+  setkey(datos_entrenamiento, ID_Darvic)
+  individuosRepetidos <- data.table(ID_Darvic=datos_entrenamiento[duplicated(ID_Darvic)]$ID_Darvic)
   
   DatosNoNumericos <- datos_entrenamiento[unique(datos_entrenamiento), 
                                       .SD[, !sapply(.SD, is.numeric),with=FALSE], 
                                       mult="last"]
   DatosNumericos <- datos_entrenamiento[, 
                                     lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean, na.rm=T), 
-                                    by=darvic]
-  DatosPromediados <- DatosNumericos[DatosNoNumericos[!duplicated(darvic)]]
+                                    by=ID_Darvic]
+  DatosPromediados <- DatosNumericos[DatosNoNumericos[!duplicated(ID_Darvic)]]
   
   # Se definen variables para utilizarse en el texto que decribe los Datos.
   CamposMetaDatos <- data.table(Metadatos$resources$schema$fields[[1]])
@@ -69,19 +69,19 @@ for(i in 1:n_repeticiones) {
   # Se obtienen el nombre largo de las variables morfométricas
   nombresLargosMorfometria <- CamposMetaDatos[esMedidaMorfometrica,nombre_largo]
   #listaVariablesMorfometricas <- tolower(paste0(nombresLargosMorfometria[1], paste(", ", nombresLargosMorfometria[2:(nVariablesMorfometricas-1)], collapse = ""), " y ", nombresLargosMorfometria[nVariablesMorfometricas]))
-  nIndividuos <- length(unique(DatosPromediados$darvic))
+  nIndividuos <- length(unique(DatosPromediados$ID_Darvic))
   
-  DatosNormalizados <- DatosPromediados[!is.na(DatosPromediados$peso), variablesParaModelo, with=FALSE]
+  DatosNormalizados <- DatosPromediados[!is.na(DatosPromediados$Peso), variablesParaModelo, with=FALSE]
   normalize <- function(columna) (columna - min(columna))/(max(columna)-min(columna))
   DatosNormalizados <- as.data.frame(apply(DatosNormalizados,2,normalize))
-  DatosNormalizados$sexo <- DatosPromediados[!is.na(DatosPromediados$peso),]$sexo
+  DatosNormalizados$Sexo <- DatosPromediados[!is.na(DatosPromediados$Peso),]$Sexo
   
-  RegresionNula <- glm(formula = sexo ~ 1, data = DatosNormalizados, family = "binomial")
+  RegresionNula <- glm(formula = Sexo ~ 1, data = DatosNormalizados, family = "binomial")
   # Hacemos el modelos utilizando las 11 varibles
-  RegresionTodas <- glm(formula = sexo ~ ., data = DatosNormalizados, family = "binomial")
+  RegresionTodas <- glm(formula = Sexo ~ ., data = DatosNormalizados, family = "binomial")
   # Aplicamos el método _stepwise_.  
   RegresionStep <- step(RegresionNula, scope = list(lower = RegresionNula, upper = RegresionTodas), direction = "both", trace = 0)
-  DatosNormalizados$darvic <- DatosPromediados[!is.na(DatosPromediados$peso),]$darvic
+  DatosNormalizados$ID_Darvic <- DatosPromediados[!is.na(DatosPromediados$Peso),]$ID_Darvic
   
   CoeficientesStep  <- regretion2DataFrameCoefficients(RegresionStep)
   
@@ -100,7 +100,7 @@ for(i in 1:n_repeticiones) {
   nombresVariablesModelo <- nombresVariablesModelo[nombresVariablesModelo != "(Intercept)"]
   
 
-  DatosUtilizadosModelo <- DatosPromediados[!is.na(DatosPromediados$peso), nombresVariablesModelo, with=FALSE]
+  DatosUtilizadosModelo <- DatosPromediados[!is.na(DatosPromediados$Peso), nombresVariablesModelo, with=FALSE]
   minimo_datos_normalizacion <- apply(DatosUtilizadosModelo,2,min)
   maximo_datos_normalizacion <- apply(DatosUtilizadosModelo,2,max)
   
@@ -126,7 +126,7 @@ for(i in 1:n_repeticiones) {
   ModeloDimorfismoAlbatros$loadParameters("data/processed/parametros_modelo_logistico_laal_ig.json")
 
   prob <- ModeloDimorfismoAlbatros$predict(datos_validacion)
-  y_test <- ifelse(datos_validacion$sexo == 'M', 1, 0)
+  y_test <- ifelse(datos_validacion$Sexo == 'M', 1, 0)
   datos_roc <- data.frame(y_test, prob)
   criterio_error <- calculadorROC$getBestThresholdAndError(datos_roc)
   tabla_umbral_error <- rbind(tabla_umbral_error, criterio_error)
@@ -134,8 +134,8 @@ for(i in 1:n_repeticiones) {
 }
 close(barra_progeso)
 
-variables_finales <- c("(Intercept)", "longitudCraneo", "altoPico", "longitudPico", "tarso", "anchoCraneo")
-variables_sin_intercepto <- c("longitudCraneo", "altoPico", "longitudPico", "tarso", "anchoCraneo")
+variables_finales <- c("(Intercept)", "Longitud_Craneo", "Altura_Pico", "Longitud_Pico", "Tarso", "Ancho_Craneo")
+variables_sin_intercepto <- c("Longitud_Craneo", "Altura_Pico", "Longitud_Pico", "Tarso", "Ancho_Craneo")
 
 tabla_modelo$coeficientes_modelo <- tabla_modelo$coeficientes_modelo[, variables_finales]
 
