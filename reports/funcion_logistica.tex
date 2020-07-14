@@ -1,17 +1,15 @@
 \documentclass{article}
-\usepackage{vmargin}
-\usepackage{graphicx}
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amssymb, amsmath, amsbsy} % simbolitos
-\usepackage{upgreek} % para poner letras griegas sin cursiva
-\usepackage{cancel} % para tachar
 \usepackage{mathdots} % para el comando \iddots
-\usepackage{mathrsfs} % para formato de letra
-\usepackage{stackrel} % para el comando \stackbin
 \usepackage{csvsimple}
 \usepackage{pythontex}
-\setpapersize{A4}
+\usepackage{ragged2e}
+\usepackage{adjustbox}
+\usepackage{chngpage} %tablas fuera de margenes
+\usepackage[margin=1.0in]{geometry}
+\renewcommand{\baselinestretch}{1.5}
 
 \begin{pycode}
 import json
@@ -56,156 +54,97 @@ with open('../data/processed/tabla_mejores_modelos.csv') as results_3_file:
     for row in reader:
         m_variables_modelo.append(row)
 
-#cuarto archivp
-variables_modelo = []
-with open('../data/processed/tabla_modelos_logisticos.csv') as results_4_file:
-    reader = csv.DictReader(results_4_file)
-    for row in reader:
-        variables_modelo.append(row)
-
 \end{pycode}
 
 \begin{document}
 
 \title{Ecuación Logística}
-
+\author{Andrea Sánchez}
 \maketitle
+\begin{flushleft}
 
-Teniendo la ecuación logística:
+Teniendo la función logística:
 \begin{equation}
     \label{tripe_igualdad_sencilla}
-    \frac{1}{1+e^{-z}} = \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )} = \frac{1}{1+\mbox{\mbox{exp}}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )}
+    f(z) = \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )}.
 \end{equation}
 
-Donde, al tener que $N_{0}=1$, entonces la ecuación \ref{tripe_igualdad_sencilla} puede ser expandida de la forma:
+Al ser $z$ una representación del escalar obtenido mediante la suma de multiplicaciones una a una de las componentes cartesianas de los vectores $\vec{\beta}$ y $\vec{N}$, y además, teniendo que $N_{0}=1$, entonces podemos expandir la ecuación (\ref{tripe_igualdad_sencilla}) a la forma:
 \begin{equation}
     \label{ecuacion_expandida}
-    \frac{1}{1+\mbox{exp}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]}
+    f(z) = f(\vec{\beta} \cdot \vec{N}) = \frac{1}{1+\mbox{exp}\left (-\sum_{i=0}^{n} \beta _{i}N_{i} \right )} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} ,
 \end{equation}
 
-Donde \ref{ecuacion_expandida} puede ser reescrito de la forma:
+de modo que, podemos reescribir la ecuación (\ref{ecuacion_expandida}) a la forma :
 \begin{equation}
-    \label{ecuacion_expandida_reescrita}    
-    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N(x_{1})+...+\beta_{n}N(x_{n})\right ) \right ]}
+    \label{ecuacion_expandida_reescrita}
+    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N_{1}+...+\beta_{n}N_{n} \right ) \right ]} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}N(x_{1})+...+\beta_{n}N(x_{n})\right ) \right ]} .
 \end{equation}
 
-Notemos que en \ref{ecuacion_expandida_reescrita} la normalización $N$ depende de un $x_{i}$. Definimos $A_{i}$ y $B_{i}$ como:
+Notemos que en la ecuación (\ref{ecuacion_expandida_reescrita}) la normalización $\vec{N}$ depende de un $x_{i}$. Definimos $A_{i}$ y $B_{i}$ como:
 
 \begin{equation}
     \label{maximos_A}
-    A_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{mín}}\left ( x_{i}^{j} \right )
+    A_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{mín}}\left ( x_{i}^{j} \right ) ,
 \end{equation}
 
 \begin{equation}
     \label{minimos_B}
-    B_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{máx}}\left ( x_{i}^{j} \right )
+    B_{i}= \underset{j\in \left \{ 1,...,m \right \}}{\mbox{máx}}\left ( x_{i}^{j} \right ) .
 \end{equation}
 
-Donde, en este caso, el superíndice $j$ representa el j-ésimo individuo del conjunto de $m$ albatros, mientras que el subíndice $i$ simboliza la i-ésima anatomía en medición.
+Donde, en este caso, el superíndice $j$ representa el $j$-ésimo individuo del conjunto de $m$ albatros, mientras que el subíndice $i$ simboliza la $i$-ésima anatomía en medición.
 
 Por lo tanto, sea 
-\begin{equation} \label{normalizacion} N\left ( x_{i} \right )= \frac{x_{i} - \underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (  x_{i}^{j}\right )-\underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}
+\begin{equation} \label{normalizacion} N\left ( x_{i} \right )= \frac{x_{i} - \underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (  x_{i}^{j}\right )-\underset{j\in [m ]}{\mbox{mín}}\left (  x_{i}^{j}\right )} .
 \end{equation}
 
-Sustituyendo \ref{normalizacion} en \ref{ecuacion_expandida_reescrita} tenemos que: 
+Sustituyendo (\ref{normalizacion}) en (\ref{ecuacion_expandida_reescrita}) tenemos que: 
 \begin{equation} \label{ecuacion_chorizo}
-    \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}\frac{x_{1}- \underset{j\in [m]}{\mbox{mín}}\left (x_{1}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (x_{1}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{1}^{j}\right )}+...+\beta_{n}\frac{x_{n} - \underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}{\underset{j\in [m]}{\mbox{máx}}\left (  x_{n}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}\right ) \right ]}
+    \frac{1}{1+\mbox{\mbox{exp}}\left ( -z\right )} = \frac{1}{1+\mbox{exp}\left [ -\left ( \beta _{0} + \beta _{1}\frac{x_{1}- \underset{j\in [m]}{\mbox{mín}}\left (x_{1}^{j}\right )}{\underset{j\in [m ]}{\mbox{máx}}\left (x_{1}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{1}^{j}\right )}+...+\beta_{n}\frac{x_{n} - \underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}{\underset{j\in [m]}{\mbox{máx}}\left (  x_{n}^{j}\right )-\underset{j\in [m]}{\mbox{mín}}\left (  x_{n}^{j}\right )}\right ) \right ]} .
 \end{equation}
 
+
 \newpage
-
-%Agregar resultados al docuemento
-
+Con base en una muestra de 135 Albatros de Laysan recolectada en Isla Guadalupe desde 2014 a 2018 podemos generar los siguientes resultados.
+Donde, a partir de los ecuación (\ref{maximos_A}) obtenemos los valores maximos y por las ecuación (\ref{minimos_B}) los mínimos de cada variable predictora.
 %Agregar valores de .csv
-\begin{table}[h]
+
+\begin{table}[ht]
     \centering
+    \caption{Variables predictoras para principales componentes de análisis.}
+    \bigskip
+    \begin{adjustbox}{width=1\textwidth}
     \renewcommand{\arraystretch}{1.3}
     \begin{tabular}{|c|c|c|c|c|c|c|}
     \hline
-    Morfometría & Valor Mínimo & Valor Máximo & Valor Estimado & Error Estándar & Valor Z & Pr \\
+    \textbf{Morfometría} & \textbf{Valor Mínimo} & \textbf{Valor Máximo} & \textbf{Valor Estimado} & \textbf{Error Estándar} & \textbf{Valor Z} & \textbf{Pr($>\left|z\right|$)} \\
     \hline
-    Longitud Craneo & \py{variables_modelo[0]['minlongitudCraneo']} & \py{variables_modelo[0]['maxlongitudCraneo']} & \py{variables_modelo[0]['longitudCraneo']} & \py{variables_modelo[0]['stdErrlongitudCraneo']} & \py{variables_modelo[0]['zValuelongitudCraneo']} & \py{variables_modelo[0]['PrIntercept']}\\
-    \hline
-    Altura Pico & \py{variables_modelo[0]['minAltoPico']} & \py{variables_modelo[0]['maxAltoPico']} & \py{variables_modelo[0]['altoPico']} & \py{variables_modelo[0]['stdErrAltoPico']} & \py{variables_modelo[0]['zValueAltoPico']} & \py{variables_modelo[0]['PrAltoPico']}\\
-    \hline
-    Longitud Pico & \py{variables_modelo[0]['minLongitudPico']} & \py{variables_modelo[0]['maxLongitudPico']} & \py{variables_modelo[0]['longitudPico']} & \py{variables_modelo[0]['stdErrLongitudPico']} & \py{variables_modelo[0]['zValueLongitudPico']} & \py{variables_modelo[0]['PrLongitudPico']}\\
-    \hline
-    Tarso & \py{variables_modelo[0]['minTarso']} & \py{variables_modelo[0]['maxTarso']} & \py{variables_modelo[0]['tarso']} & \py{variables_modelo[0]['stdErrTarso']} & \py{variables_modelo[0]['zValueTarso']} & \py{variables_modelo[0]['PrTarso']}\\
-    \hline
-    Ancho Craneo & \py{variables_modelo[0]['minAnchoCraneo']} &\py{variables_modelo[0]['maxAnchoCraneo']} &\py{variables_modelo[0]['anchoCraneo']} &\py{variables_modelo[0]['stdErrAnchoCraneo']} &\py{variables_modelo[0]['zValueAnchoCraneo']} & \py{variables_modelo[0]['PrAnchoCraneo']} \\
-    \hline
+    \input{funcion_logistica_resultados_csv.tex}
     \end{tabular}
+    \end{adjustbox}
+    \\[10pt]
+    Resultados obtenidos del archivo \texttt{tabla\_mejores\_modelos.csv}
     \label{modeloLogistico}
 \end{table}
-
-
-
-\begin{table}[h]
-    \centering
-    \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{|c|c|c|c|c|c|c|}
-    \hline
-    Morfometría & Valor Mínimo & Valor Máximo & Valor Estimado & Error Estándar & Valor Z & Pr \\
-    \hline
-    Longitud Craneo & \py{m_variables_modelo[0]['minlongitudCraneo']} & \py{m_variables_modelo[0]['maxlongitudCraneo']} & \py{m_variables_modelo[0]['longitudCraneo']} & \py{m_variables_modelo[0]['stdErrlongitudCraneo']} & \py{m_variables_modelo[0]['zValuelongitudCraneo']} & \py{m_variables_modelo[0]['PrIntercept']}\\
-    \hline
-    Altura Pico & \py{m_variables_modelo[0]['minAltoPico']} & \py{m_variables_modelo[0]['maxAltoPico']} & \py{m_variables_modelo[0]['altoPico']} & \py{m_variables_modelo[0]['stdErrAltoPico']} & \py{m_variables_modelo[0]['zValueAltoPico']} & \py{m_variables_modelo[0]['PrAltoPico']}\\
-    \hline
-    Longitud Pico & \py{m_variables_modelo[0]['minLongitudPico']} & \py{m_variables_modelo[0]['maxLongitudPico']} & \py{m_variables_modelo[0]['longitudPico']} & \py{m_variables_modelo[0]['stdErrLongitudPico']} & \py{m_variables_modelo[0]['zValueLongitudPico']} & \py{m_variables_modelo[0]['PrLongitudPico']}\\
-    \hline
-    Tarso & \py{m_variables_modelo[0]['minTarso']} & \py{m_variables_modelo[0]['maxTarso']} & \py{m_variables_modelo[0]['tarso']} & \py{m_variables_modelo[0]['stdErrTarso']} & \py{m_variables_modelo[0]['zValueTarso']} & \py{m_variables_modelo[0]['PrTarso']}\\
-    \hline
-    Ancho Craneo & \py{m_variables_modelo[0]['minAnchoCraneo']} &\py{m_variables_modelo[0]['maxAnchoCraneo']} &\py{m_variables_modelo[0]['anchoCraneo']} &\py{m_variables_modelo[0]['stdErrAnchoCraneo']} &\py{m_variables_modelo[0]['zValueAnchoCraneo']} & \py{m_variables_modelo[0]['PrAnchoCraneo']} \\
-    \hline
-    \end{tabular}
-    \label{modeloLogistico}
-\end{table}
-
-\newpage
 
 %Agrega valores de .json
 
-En la \ref{modeloLogistico} se muestran los valores estimados de las direntes morfometrias en el archivo:
-
 \begin{table}[h]
     \centering
+    \caption{Variables predictoras obtenidas después de la normalizacion según la ecuación (\ref{normalizacion}) para principales componentes de análisis.}
+    \bigskip
     \renewcommand{\arraystretch}{1.3}
     \begin{tabular}{|c|c|c|c|}
     \hline
-    Morfometría & Valor Mínimo & Valor Máximo & Valor Estimado\\
+    \textbf{Morfometría} & \textbf{Valor Mínimo} & \textbf{Valor Máximo} & \textbf{Valor Estimado}\\
     \hline
-    Longitud Craneo & \py{valor_minimo["longitudCraneo"][0]} & \py{valor_maximo["longitudCraneo"][0]} & \py{longitud_craneo["Estimate"]} \\
-    \hline
-    Altura Pico & \py{valor_minimo["altoPico"][0]} & \py{valor_maximo["altoPico"][0]} & \py{altura_pico["Estimate"]} \\
-    \hline
-    Longitud Pico & \py{valor_minimo["longitudPico"][0]} & \py{valor_maximo["longitudPico"][0]} & \py{longitud_pico["Estimate"]} \\
-    \hline
-    Tarso & \py{valor_minimo["tarso"][0]} & \py{valor_maximo["tarso"][0]} & \py{tarso["Estimate"]} \\
-    \hline
-    \end{tabular}
-    \label{modeloLogistico}
-\end{table}
-
-
-En la \ref{mejorModeloLogistico} se muestran los valores estimados de las direntes morfometrias en el archivo .json :
-
-\begin{table}[htbp]
-    \centering
-    \renewcommand{\arraystretch}{1.3}
-    \begin{tabular}{|c|c|c|c|}
-    \hline
-    Morfometría & Valor Mínimo & Valor Máximo & Valor Estimado\\
-    \hline
-    Longitud Craneo & \py{m_valor_minimo["longitudCraneo"][0]} & \py{m_valor_maximo["longitudCraneo"][0]} & \py{m_longitud_craneo["Estimate"]} \\
-    \hline
-    Altura Pico & \py{m_valor_minimo["altoPico"][0]} & \py{m_valor_maximo["altoPico"][0]} & \py{m_altura_pico["Estimate"]} \\
-    \hline
-    Longitud Pico & \py{m_valor_minimo["longitudPico"][0]} & \py{m_valor_maximo["longitudPico"][0]}& \py{m_longitud_pico["Estimate"]} \\
-    \hline
-    Tarso & \py{m_valor_minimo["tarso"][0]} & \py{m_valor_maximo["tarso"][0]}& \py{m_tarso["Estimate"]} \\
-    \hline
+    \input{funcion_logistica_resultados_json.tex}
     \end{tabular}
     \label{mejorModeloLogistico}
+    \\[10pt]
+    Resultados obtenidos del archivo \texttt{parametros\_mejor\_modelo\_logistico\_laal\_ig.json}
 \end{table}
 
+\end{flushleft}
 \end{document}
