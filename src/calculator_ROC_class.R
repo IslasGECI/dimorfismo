@@ -1,7 +1,7 @@
 library(R6)
 library(tidyverse)
 
-ROC <- R6Class("ROC",
+roc <- R6Class("roc",
   public = list(
     rOC = NULL,
     initialize = function() {
@@ -31,7 +31,7 @@ ROC <- R6Class("ROC",
   private = list(
     classify_answer = function(row, threshold) {
       answer <- ifelse(row$prob > threshold, 1, 0)
-      true_or_false <- ifelse(row$y_test == answer, 'V', 'F')
+      true_or_false <- ifelse(row$y_test == answer, "V", "F")
       clasification <- paste0(true_or_false, answer)
       return(clasification)
     },
@@ -45,7 +45,7 @@ ROC <- R6Class("ROC",
     },
 
     add_missing = function(confusion) {
-      clasification <- c('F0', 'F1', 'V0', 'V1')
+      clasification <- c("F0", "F1", "V0", "V1")
       N <- c(0, 0, 0, 0)
       base <- data.frame(clasification, N)
       confusion <- confusion %>%
@@ -83,8 +83,8 @@ ROC <- R6Class("ROC",
         tPR <- append(tPR, private$calculate_TPR(confusion))
         p_error <- append(p_error, private$calculate_error_rate(confusion))
       }
-      ROC <- data.frame(thresholds, tPR, fPR, p_error)
-      return(ROC)
+      roc <- data.frame(thresholds, tPR, fPR, p_error)
+      return(roc)
     },
 
     add_criterion = function(rOC) {

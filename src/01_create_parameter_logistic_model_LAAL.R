@@ -5,7 +5,7 @@ source("src/calculator_ROC_class.R")
 source("src/regretion_to_data_frame_coefficients_function.R")
 
 tdp_path <- ("data/raw/")
-results_path <- ('data/processed/')
+results_path <- ("data/processed/")
 csv_file <- file.path(tdp_path, "morfometria_albatros-laysan_guadalupe.csv")
 json_file <- file.path(tdp_path, "datapackage.json")
 
@@ -23,7 +23,7 @@ num_repetitions <- 10
 
 
 threshold_error_table <- data.frame(threshold <- c(), error <- c())
-calculador_ROC <- ROC$new()
+calculador_roc <- roc$new()
 
 model_table <- list(
                 model_coefficients = data.frame(
@@ -193,9 +193,9 @@ for (i in 1:num_repetitions) {
   dimorphism_model_albatross <- dimorphism_model$new()
   dimorphism_model_albatross$load_parameters("data/processed/parametros_modelo_logistico_laal_ig.json")
   prob <- dimorphism_model_albatross$predict(validation_data)
-  y_test <- ifelse(validation_data$Sexo == 'M', 1, 0)
+  y_test <- ifelse(validation_data$Sexo == "M", 1, 0)
   roc_data <- data.frame(y_test, prob)
-  error_criteria <- calculador_ROC$best_threshold_error(roc_data)
+  error_criteria <- calculador_roc$best_threshold_error(roc_data)
   threshold_error_table <- rbind(threshold_error_table, error_criteria)
   setTxtProgressBar(progress_bar, i)
 }
@@ -251,5 +251,5 @@ best_model_table <- filtered_table[error == minimum_error]
 
 
 write_csv(best_model_table,
-  paste0(results_path, 'tabla_modelos_logisticos.csv')
+  paste0(results_path, "tabla_modelos_logisticos.csv")
 )

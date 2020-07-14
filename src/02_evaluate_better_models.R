@@ -13,7 +13,7 @@ imported_table <- data.table::data.table(
                       paste0(results_path, "tabla_modelos_logisticos.csv")
                     )
 )
-calculador_ROC <- ROC$new()
+calculador_roc <- roc$new()
 n_rows <- nrow(imported_table)
 bugs <- c()
 
@@ -47,16 +47,16 @@ for (i_row in 1:n_rows) {
   dimorphism_model_albatross$load_parameters(json_path)
 
   prob <- dimorphism_model_albatross$predict(data)
-  y_test <- ifelse(data$Sexo == 'M', 1, 0)
+  y_test <- ifelse(data$Sexo == "M", 1, 0)
   roc_data <- data.frame(y_test, prob)
-  bugs <- append(bugs, calculador_ROC$calculate_error(roc_data, threshold))
+  bugs <- append(bugs, calculador_roc$calculate_error(roc_data, threshold))
 }
 
 minimun_error <- bugs == min(bugs)
 
 write_csv(
   imported_table[minimun_error,],
-  paste0(results_path, 'tabla_mejores_modelos.csv')
+  paste0(results_path, "tabla_mejores_modelos.csv")
 )
 
 readr::write_lines(

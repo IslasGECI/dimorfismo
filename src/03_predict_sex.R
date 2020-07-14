@@ -12,7 +12,7 @@ imported_table <- data.table::data.table(
                 )
 )
 
-calculador_ROC <- ROC$new()
+calculador_roc <- roc$new()
 n_rows <- nrow(imported_table)
 
 for (i_albatross in 1:nrow(data)) {
