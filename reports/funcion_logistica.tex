@@ -27,25 +27,12 @@ m_valor_minimo = m_variables_normalizacion ["minimum_value"]
 m_valor_maximo = m_variables_normalizacion ["maximum_value"]
 
 m_variables_modelo = parametros_mejor["model_parameters"]
+m_intercept = m_variables_modelo[0]
 m_longitud_craneo = m_variables_modelo[1]
 m_altura_pico = m_variables_modelo[2]
 m_longitud_pico = m_variables_modelo[3]
 m_tarso = m_variables_modelo [4]
 
-#Segudo archivo
-data_processed_2 = '../data/processed/parametros_modelo_logistico_laal_ig.json'
-with open(data_processed_2, encoding='utf8') as results_2_file:
-    parametros_modelos = json.load(results_2_file)
-
-variables_normalizacion = parametros_mejor ["normalization_parameters"]
-valor_minimo = variables_normalizacion ["minimum_value"]
-valor_maximo = variables_normalizacion ["maximum_value"]
-
-variables_modelo = parametros_modelos["model_parameters"]
-longitud_craneo = variables_modelo[1]
-altura_pico = variables_modelo[2]
-longitud_pico = variables_modelo[3]
-tarso = variables_modelo [4]
 
 #tercer archivo
 m_variables_modelo = []

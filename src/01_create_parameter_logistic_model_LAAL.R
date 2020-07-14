@@ -16,8 +16,8 @@ n_data <- nrow(data)
 trainning_proportion <- 0.80
 validation_proportion <- 1 - trainning_proportion
 
-variables_model <- c("longitudCraneo", "longitudPico", "anchoCraneo", "altoPico",
-                     "tarso", "longAlaCerrada", "longAlaAbierta", "envergadura")
+variables_model <- c("Longitud_Craneo", "Longitud_Pico", "Ancho_Craneo", "Altura_Pico",
+                     "Tarso", "Longitud_Ala_Cerrada", "Longitud_Ala_Abierta", "Envergadura")
 column_names <- c("(Intercept)", variables_model)
 num_repetitions <- 10
 
@@ -85,8 +85,8 @@ for (i in 1:num_repetitions) {
   trainning_data <- data[trainning_index]
   validation_data <- data[validation_index]
 
-  setkey(trainning_data, darvic)
-  repeated_individuals <- data.table(darvic = trainning_data[duplicated(darvic)]$darvic)
+  setkey(trainning_data, ID_Darvic)
+  repeated_individuals <- data.table(ID_Darvic = trainning_data[duplicated(ID_Darvic)]$ID_Darvic)
 
   no_numerical_data <- trainning_data[unique(trainning_data),
                                       .SD[, !sapply(.SD, is.numeric), with = FALSE],
@@ -95,9 +95,9 @@ for (i in 1:num_repetitions) {
 
   numerical_data <- trainning_data[,
                                     lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean, na.rm = T),
-                                    by = darvic
+                                    by = ID_Darvic
   ]
-  averaged_data <- numerical_data[no_numerical_data[!duplicated(darvic)]]
+  averaged_data <- numerical_data[no_numerical_data[!duplicated(ID_Darvic)]]
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
   metadata_fields <- data.table(metadata$resources$schema$fields[[1]])
@@ -107,9 +107,9 @@ for (i in 1:num_repetitions) {
   # Se obtienen el nombre largo de las variables morfométricas
   large_names_morphometry <- metadata_fields[morphometric_measurement, nombre_largo]
   #listaVariablesMorfometricas <- tolower(paste0(large_names_morphometry[1], paste(", ", large_names_morphometry[2:(n_morphometric_variables-1)], collapse = ""), " y ", large_names_morphometry[n_morphometric_variables]))
-  n_individuals <- length(unique(averaged_data$darvic))
+  n_individuals <- length(unique(averaged_data$ID_Darvic))
   #Hasta aqui
-  normalized_data <- averaged_data[!is.na(averaged_data$peso),
+  normalized_data <- averaged_data[!is.na(averaged_data$Peso),
                                    variables_model,
                                    with = FALSE
   ]
@@ -120,15 +120,15 @@ for (i in 1:num_repetitions) {
   }
 
   normalized_data <- as.data.frame(apply(normalized_data, 2, normalize))
-  normalized_data$sexo <- averaged_data[!is.na(averaged_data$peso),]$sexo
+  normalized_data$Sexo <- averaged_data[!is.na(averaged_data$Peso),]$Sexo
 
-  null_regression <- glm(formula = sexo ~ 1,
+  null_regression <- glm(formula = Sexo ~ 1,
                          data = normalized_data,
                          family = "binomial"
   )
 
   # Hacemos el modelos utilizando las 11 varibles
-  all_regression <- glm(formula = sexo ~ .,
+  all_regression <- glm(formula = Sexo ~ .,
                         data = normalized_data,
                         family = "binomial"
   )
@@ -141,7 +141,7 @@ for (i in 1:num_repetitions) {
                         trace = 0
   )
 
-  normalized_data$darvic <- averaged_data[!is.na(averaged_data$peso),]$darvic
+  normalized_data$ID_Darvic <- averaged_data[!is.na(averaged_data$Peso),]$ID_Darvic
   step_coefficients <- regretion2DataFrameCoefficients(step_regression)
 
   ##
@@ -157,7 +157,7 @@ for (i in 1:num_repetitions) {
   model_varibles_names <- names(step_regression$coefficients)
   model_varibles_names <- model_varibles_names[model_varibles_names != "(Intercept)"]
 
-  model_used_data <- averaged_data[!is.na(averaged_data$peso),
+  model_used_data <- averaged_data[!is.na(averaged_data$Peso),
                                    model_varibles_names,
                                    with = FALSE
   ]
@@ -193,7 +193,7 @@ for (i in 1:num_repetitions) {
   dimorphism_model_albatross <- dimorphism_model$new()
   dimorphism_model_albatross$load_parameters("data/processed/parametros_modelo_logistico_laal_ig.json")
   prob <- dimorphism_model_albatross$predict(validation_data)
-  y_test <- ifelse(validation_data$sexo == 'M', 1, 0)
+  y_test <- ifelse(validation_data$Sexo == 'M', 1, 0)
   roc_data <- data.frame(y_test, prob)
   error_criteria <- calculador_ROC$best_threshold_error(roc_data)
   threshold_error_table <- rbind(threshold_error_table, error_criteria)
@@ -201,10 +201,10 @@ for (i in 1:num_repetitions) {
 }
 close(progress_bar)
 
-final_variables <- c("(Intercept)", "longitudCraneo", "altoPico",
-                     "longitudPico", "tarso", "anchoCraneo")
-no_intercept_variables <- c("longitudCraneo", "altoPico", "longitudPico",
-                            "tarso", "anchoCraneo")
+final_variables <- c("(Intercept)", "Longitud_Craneo", "Altura_Pico",
+                     "Longitud_Pico", "Tarso", "Ancho_Craneo")
+no_intercept_variables <- c("Longitud_Craneo", "Altura_Pico", "Longitud_Pico",
+                            "Tarso", "Ancho_Craneo")
 
 model_table$model_coefficients <- model_table$model_coefficients[, final_variables]
 
