@@ -64,7 +64,6 @@ tests:
       -e "lint('src/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
       -e "lint('src/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))" \
       | grep -e "\^" && exit 1 || exit 0
-
 	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)"
 
 coverage:
