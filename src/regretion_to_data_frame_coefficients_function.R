@@ -1,4 +1,4 @@
-regretion2DataFrameCoefficients <- function(regression) {
+regretion_to_data_frame <- function(regression) {
   regression_summary <- summary.glm(regression)
   regression_summary$coefficients <- round(regression_summary$coefficients, 3)
   data_frame <- as.data.frame(regression_summary$coefficients)

@@ -71,8 +71,8 @@ colnames(model_table$pr_value) <- column_names
 colnames(model_table$min_normalization_parameters) <- column_names
 colnames(model_table$max_normalization_parameters) <- column_names
 
-progress_bar <- txtProgressBar(min = 0, 
-                               max = num_repetitions, 
+progress_bar <- txtProgressBar(min = 0,
+                               max = num_repetitions,
                                style = 3
 )
 
@@ -88,13 +88,13 @@ for (i in 1:num_repetitions) {
   setkey(trainning_data, ID_Darvic)
   repeated_individuals <- data.table(ID_Darvic = trainning_data[duplicated(ID_Darvic)]$ID_Darvic)
 
-  no_numerical_data <- trainning_data[unique(trainning_data), 
-                                      .SD[, !sapply(.SD, is.numeric), with = FALSE], 
+  no_numerical_data <- trainning_data[unique(trainning_data),
+                                      .SD[, !sapply(.SD, is.numeric), with = FALSE],
                                       mult = "last"
   ]
 
-  numerical_data <- trainning_data[, 
-                                    lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean, na.rm = T), 
+  numerical_data <- trainning_data[,
+                                    lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean, na.rm = T),
                                     by = ID_Darvic
   ]
   averaged_data <- numerical_data[no_numerical_data[!duplicated(ID_Darvic)]]
@@ -109,8 +109,8 @@ for (i in 1:num_repetitions) {
   #listaVariablesMorfometricas <- tolower(paste0(large_names_morphometry[1], paste(", ", large_names_morphometry[2:(n_morphometric_variables-1)], collapse = ""), " y ", large_names_morphometry[n_morphometric_variables]))
   n_individuals <- length(unique(averaged_data$ID_Darvic))
   #Hasta aqui
-  normalized_data <- averaged_data[!is.na(averaged_data$Peso), 
-                                   variables_model, 
+  normalized_data <- averaged_data[!is.na(averaged_data$Peso),
+                                   variables_model,
                                    with = FALSE
   ]
 
@@ -122,22 +122,22 @@ for (i in 1:num_repetitions) {
   normalized_data <- as.data.frame(apply(normalized_data, 2, normalize))
   normalized_data$Sexo <- averaged_data[!is.na(averaged_data$Peso), ]$Sexo
 
-  null_regression <- glm(formula = Sexo ~ 1, 
-                         data = normalized_data, 
+  null_regression <- glm(formula = Sexo ~ 1,
+                         data = normalized_data,
                          family = "binomial"
   )
 
   # Hacemos el modelos utilizando las 11 varibles
-  all_regression <- glm(formula = Sexo ~ ., 
-                        data = normalized_data, 
+  all_regression <- glm(formula = Sexo ~ .,
+                        data = normalized_data,
                         family = "binomial"
   )
-  # Aplicamos el método _stepwise_.  
-  step_regression <- step(null_regression, 
+  # Aplicamos el método _stepwise_.
+  step_regression <- step(null_regression,
                         scope = list(
-                                  lower = null_regression, 
-                                  upper = all_regression), 
-                        direction = "both", 
+                                  lower = null_regression,
+                                  upper = all_regression),
+                        direction = "both",
                         trace = 0
   )
 
@@ -157,24 +157,24 @@ for (i in 1:num_repetitions) {
   model_varibles_names <- names(step_regression$coefficients)
   model_varibles_names <- model_varibles_names[model_varibles_names != "(Intercept)"]
 
-  model_used_data <- averaged_data[!is.na(averaged_data$Peso), 
-                                   model_varibles_names, 
+  model_used_data <- averaged_data[!is.na(averaged_data$Peso),
+                                   model_varibles_names,
                                    with = FALSE
   ]
   min_normalized_data <- apply(model_used_data, 2, min)
   max_normalized_data <- apply(model_used_data, 2, max)
 
   normalization_parameters <- list(
-    minimum_value = split(unname(min_normalized_data), 
+    minimum_value = split(unname(min_normalized_data),
                           names(min_normalized_data)
     ), 
-    maximum_value = split(unname(max_normalized_data), 
+    maximum_value = split(unname(max_normalized_data),
                           names(max_normalized_data)
     )
   )
 
   list_normalization_parameters <- list(
-    normalization_parameters = normalization_parameters, 
+    normalization_parameters = normalization_parameters,
     model_parameters = step_coefficients
   )
 
@@ -186,7 +186,7 @@ for (i in 1:num_repetitions) {
   ##
 
   readr::write_lines(
-    jsonlite::toJSON(list_normalization_parameters, pretty = T), 
+    jsonlite::toJSON(list_normalization_parameters, pretty = T),
     path = "data/processed/parametros_modelo_logistico_laal_ig.json"
   )
 
@@ -230,19 +230,19 @@ colnames(model_table$max_normalization_parameters) <- c("maxlongitudCraneo", "ma
 
 completed_table <- data.table(
                     cbind(
-                      model_table$model_coefficients, 
-                      threshold_error_table, 
-                      model_table$min_normalization_parameters, 
-                      model_table$max_normalization_parameters, 
-                      model_table$standard_error, 
-                      model_table$z_value, 
+                      model_table$model_coefficients,
+                      threshold_error_table,
+                      model_table$min_normalization_parameters,
+                      model_table$max_normalization_parameters,
+                      model_table$standard_error,
+                      model_table$z_value,
                       model_table$pr_value
                     )
 )
 
 row_na <- apply(
-            is.na(completed_table), 
-            MARGIN = 1, 
+            is.na(completed_table),
+            MARGIN = 1,
             FUN = any
 )
 filtered_table <- completed_table[!row_na, ]
@@ -250,6 +250,6 @@ minimum_error <- min(filtered_table$error)
 best_model_table <- filtered_table[error == minimum_error]
 
 
-write_csv(best_model_table, 
+write_csv(best_model_table,
   paste0(results_path, "tabla_modelos_logisticos.csv")
 )

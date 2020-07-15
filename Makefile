@@ -21,7 +21,7 @@ jsonParametrosMejorModeloLogistico = \
 	data/processed/parametros_mejor_modelo_logistico_laal_ig.json
 
 jsonParametrosModeloLogistico = \
-	data/processed/parametros_modelo_logistico_laal_ig.json
+	data/processed/parametros_modelo_logistico.json
 
 # II. Sección de requisitos de objetivos principales:
 # ------------------------------------------------------------------------------------------------
