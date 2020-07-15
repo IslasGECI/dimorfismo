@@ -1,11 +1,11 @@
 library(R6)
 library(tidyverse)
 
-roc <- R6Class("roc",
+roc <- R6Class("roc", 
   public = list(
-    rOC = NULL,
+    rOC = NULL, 
     initialize = function() {
-    },
+    }, 
 
     best_threshold_error = function(data) {
       self$rOC <- private$roc_calculate(data)
@@ -13,12 +13,12 @@ roc <- R6Class("roc",
       best_thresholds <- self$rOC %>%
             group_by(criterion) %>%
             summarize(
-                threshold = median(thresholds),
+                threshold = median(thresholds), 
                 error = median(p_error)
             ) %>%
             arrange(criterion)
       return(best_thresholds[1, c(2, 3)])
-    },
+    }, 
 
     calculate_error = function(data, threshold) {
       confusion <- private$calculate_confusion(data, threshold)
@@ -26,7 +26,7 @@ roc <- R6Class("roc",
       p_error <- private$calculate_error_rate(confusion)
       return(p_error)
     }
-  ),
+  ), 
 
   private = list(
     classify_answer = function(row, threshold) {
@@ -34,7 +34,7 @@ roc <- R6Class("roc",
       true_or_false <- ifelse(row$y_test == answer, "V", "F")
       clasification <- paste0(true_or_false, answer)
       return(clasification)
-    },
+    }, 
 
     calculate_confusion = function(data, threshold) {
       confusion <- data %>%
@@ -42,7 +42,7 @@ roc <- R6Class("roc",
         group_by(clasification) %>%
         summarize(N = n())
       return(confusion)
-    },
+    }, 
 
     add_missing = function(confusion) {
       clasification <- c("F0", "F1", "V0", "V1")
@@ -54,22 +54,22 @@ roc <- R6Class("roc",
         mutate(N = ifelse(is.na(N), 0, N)) %>%
         select(c(1, 4))
       return(confusion)
-    },
+    }, 
 
     calculate_TPR = function(confusion) {
       tpr <- confusion[[4, 2]] / (confusion[[4, 2]] + confusion[[1, 2]])
       return(tpr)
-    },
+    }, 
 
     calculate_FRP = function(confusion) {
       fpr <- confusion[[2, 2]] / (confusion[[3, 2]] + confusion[[2, 2]])
       return(fpr)
-    },
+    }, 
 
     calculate_error_rate = function(confusion) {
       error <- ((confusion[[2, 2]] + confusion[[1, 2]]) / sum(confusion[, 2])) * 100
       return(error)
-    },
+    }, 
 
     roc_calculate = function(data) {
       thresholds <- 1:100 * 0.01
@@ -85,7 +85,7 @@ roc <- R6Class("roc",
       }
       roc <- data.frame(thresholds, tPR, fPR, p_error)
       return(roc)
-    },
+    }, 
 
     add_criterion = function(rOC) {
       rOC <- rOC %>%

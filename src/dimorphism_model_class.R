@@ -1,6 +1,6 @@
 library(R6)
 
-dimorphism_model <- R6Class("dimorphism_model",
+dimorphism_model <- R6Class("dimorphism_model", 
   public = list(
     load_parameters = function(json_path) {
       #escribir codigo para cargar los parametros
@@ -8,7 +8,7 @@ dimorphism_model <- R6Class("dimorphism_model",
       json_parameters <- rjson::fromJSON(file = json_path)
       private$normalization_parameters <- json_parameters$normalization_parameters
       private$model_parameters <- json_parameters$model_parameters
-    },
+    }, 
     predict = function(morphometric_data_table) {
       # escribir codigo para predecir Sexo
       z <- private$get_value("(Intercept)")
@@ -32,7 +32,7 @@ dimorphism_model <- R6Class("dimorphism_model",
       probability <- 1 / (1 + exp(-z))
       colnames(probability) <- "probability"
       return(probability)
-    },
+    }, 
     get_variables_names = function() {
       model_variables <- c()
       for (variable in private$model_parameters) {
@@ -42,11 +42,11 @@ dimorphism_model <- R6Class("dimorphism_model",
       }
       return(model_variables)
     }
-  ),
+  ), 
 
   private = list(
-    model_parameters = NULL,
-    normalization_parameters = NULL,
+    model_parameters = NULL, 
+    normalization_parameters = NULL, 
 
     get_value = function(variable_name) {
       for (variable in private$model_parameters) {
