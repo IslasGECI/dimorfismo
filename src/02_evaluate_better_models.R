@@ -9,9 +9,9 @@ data <- data.table::data.table(read.csv(csv_file))
 
 results_path <- "data/processed/"
 imported_table <- data.table::data.table(
-                    readr::read_csv(
-                      paste0(results_path, "tabla_modelos_logisticos.csv")
-                    )
+  readr::read_csv(
+    paste0(results_path, "tabla_modelos_logisticos.csv")
+  )
 )
 calculador_roc <- roc$new()
 n_rows_table <- nrow(imported_table)
@@ -20,8 +20,9 @@ bugs <- c()
 for (i_row in 1:n_rows_table) {
   auxiliar_coefficients_table <- imported_table[i_row, 1:5]
   auxiliar_coefficients_table <- data.frame(data.table::melt(
-                                              auxiliar_coefficients_table),
-                                              row.names = colnames(auxiliar_coefficients_table)
+    auxiliar_coefficients_table
+  ),
+  row.names = colnames(auxiliar_coefficients_table)
   )
   colnames(auxiliar_coefficients_table) <- c("Variables", "Estimate")
   threshold <- as.numeric(imported_table[i_row, 6])
@@ -30,12 +31,12 @@ for (i_row in 1:n_rows_table) {
   min_auxiliar_normalized_table <- imported_table[i_row, 8:11]
   colnames(min_auxiliar_normalized_table) <- rownames(auxiliar_coefficients_table[2:5, ])
   normalization_parameters <- list(
-                                minimum_value = as.list(min_auxiliar_normalized_table),
-                                maximum_value = as.list(max_auxiliar_normalized_table)
+    minimum_value = as.list(min_auxiliar_normalized_table),
+    maximum_value = as.list(max_auxiliar_normalized_table)
   )
   list_normalization_parameters <- list(
-                                    normalization_parameters = normalization_parameters,
-                                    model_parameters = auxiliar_coefficients_table
+    normalization_parameters = normalization_parameters,
+    model_parameters = auxiliar_coefficients_table
   )
 
   readr::write_lines(

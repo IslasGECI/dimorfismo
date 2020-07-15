@@ -3,7 +3,7 @@ library(R6)
 dimorphism_model <- R6Class("dimorphism_model",
   public = list(
     load_parameters = function(json_path) {
-      #escribir codigo para cargar los parametros
+      # escribir codigo para cargar los parametros
       # Importa model_parameters
       json_parameters <- rjson::fromJSON(file = json_path)
       private$normalization_parameters <- json_parameters$normalization_parameters

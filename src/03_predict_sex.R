@@ -6,8 +6,7 @@ csv_file <- file.path(tdp_path, "morfometria_albatros-laysan_guadalupe.csv")
 data <- data.table::data.table(read.csv(csv_file))
 results_path <- "data/processed/"
 imported_table <- data.table::data.table(
-  readr::read_csv(paste0(results_path, "tabla_mejores_modelos.csv")
-  )
+  readr::read_csv(paste0(results_path, "tabla_mejores_modelos.csv"))
 )
 
 calculador_roc <- roc$new()

@@ -11,12 +11,12 @@ roc <- R6Class("roc",
       self$roc_data <- private$roc_calculate(data)
       self$roc_data <- private$add_criterion(self$roc_data)
       best_thresholds <- self$roc_data %>%
-            group_by(criterion) %>%
-            summarize(
-                threshold = median(thresholds),
-                error = median(p_error)
-            ) %>%
-            arrange(criterion)
+        group_by(criterion) %>%
+        summarize(
+          threshold = median(thresholds),
+          error = median(p_error)
+        ) %>%
+        arrange(criterion)
       return(best_thresholds[1, c(2, 3)])
     },
 
@@ -89,7 +89,7 @@ roc <- R6Class("roc",
 
     add_criterion = function(roc_data) {
       roc_data <- roc_data %>%
-            mutate(criterion = sqrt((fpr_data) ^ 2 + (1 - tpr_data) ^ 2))
+        mutate(criterion = sqrt((fpr_data)^2 + (1 - tpr_data)^2))
       return(roc_data)
     }
   )
