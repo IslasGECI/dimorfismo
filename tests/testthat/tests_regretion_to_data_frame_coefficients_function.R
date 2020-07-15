@@ -1,4 +1,5 @@
 library(data.table)
+library(testthat)
 
 setwd("/workdir/")
 source("src/regretion_to_data_frame_coefficients_function.R")

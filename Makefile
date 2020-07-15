@@ -67,6 +67,9 @@ tests:
 
 	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)"
 
+coverage:
+	R -e "covr::file_coverage('src/regretion_to_data_frame_coefficients_function.R', 'tests/testthat/tests_regretion_to_data_frame_coefficients_function.R')"
+
 # Elimina los residuos de LaTeX
 clean:
 	rm --force reports/*.aux

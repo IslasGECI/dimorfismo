@@ -15,3 +15,5 @@ jobs:
       run: docker run islasgeci make tests
     - name: Ejecuta objetivo principal del Makefile
       run: docker run islasgeci make
+    - name: Ejecuta covertura de pruebas
+      run: docker run islasgeci make coverage
