@@ -13,7 +13,7 @@ jobs:
       run: docker run islasgeci make lint
     - name: Corre pruebas
       run: docker run islasgeci make tests
+    - name: Evalúa cobertura de código con pruebas
+      run: docker run islasgeci make coverage
     - name: Ejecuta objetivo principal del Makefile
       run: docker run islasgeci make
-    - name: Ejecuta covertura de pruebas
-      run: docker run islasgeci make coverage
