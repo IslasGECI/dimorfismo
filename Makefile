@@ -44,7 +44,7 @@ $(jsonParametrosModeloLogistico): src/03_predict_sex.R $(DatosCrudos) $(csvTabla
 
 # IV. Sección del resto de los phonies
 # ------------------------------------------------------------------------------------------------
-.PHONY: all lint clean tests
+.PHONY: all lint clean tests coverage
 
 lint:
 	R -e "library(lintr)" \
