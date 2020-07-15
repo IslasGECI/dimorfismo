@@ -71,7 +71,7 @@
                         }
                     },
                     {
-                        "name": "ID_Nido",
+                        "name": "id_nido",
                         "long_name": "Nest",
                         "nombre_largo": "Nido",
                         "type": "integer",
@@ -81,7 +81,7 @@
                         }
                     },
                     {
-                        "name": "ID_Darvic",
+                        "name": "id_darvic",
                         "long_name": "Darvic",
                         "nombre_largo": "Darvic",
                         "type": "string",
@@ -91,7 +91,7 @@
                         }
                     },
                     {
-                        "name": "Sexo",
+                        "name": "sexo",
                         "long_name": "Sex",
                         "nombre_largo": "Sexo",
                         "type": "string",

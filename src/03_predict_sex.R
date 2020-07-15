@@ -1,40 +1,58 @@
 source("src/dimorphism_model_class.R")
 source("src/calculator_ROC_class.R")
 
-directorioTDP <- ("data/raw/")
-nombreArchivoCSV <- file.path(directorioTDP,"morfometria_albatros-laysan_guadalupe.csv")
+tdp_path <- ("data/raw/")
+csv_file <- file.path(tdp_path, "morfometria_albatros-laysan_guadalupe.csv")
+data <- data.table::data.table(read.csv(csv_file))
+results_path <- "data/processed/"
+imported_table <- data.table::data.table(
+  readr::read_csv(paste0(results_path, "tabla_mejores_modelos.csv"))
+)
 
-Datos <- data.table::data.table(read.csv(nombreArchivoCSV))
+calculador_roc <- roc$new()
+n_rows_table <- nrow(imported_table)
+n_rows_data <- nrow(data)
 
-ruta_resultados <- "data/processed/"
-tabla_importada <- data.table::data.table(readr::read_csv(paste0(ruta_resultados,"tabla_mejores_modelos.csv")))
-calculadorROC <- ROC$new()
-n_renglones <- nrow(tabla_importada)
+for (i_albatross in 1:n_rows_data) {
+  dato <- data[i_albatross, ]
+  males <- c()
+  for (i_row in 1:n_rows_table) {
+    auxiliar_coefficients_table <- imported_table[i_row, 1:5]
+    auxiliar_coefficients_table <- data.frame(
+      data.table::melt(auxiliar_coefficients_table),
+      row.names = colnames(auxiliar_coefficients_table)
+    )
+    colnames(auxiliar_coefficients_table) <- c("Variables", "Estimate")
+    threshold <- as.numeric(imported_table[i_row, 6])
+    max_auxiliar_normalized_table <- imported_table[i_row, 12:15]
+    colnames(max_auxiliar_normalized_table) <- rownames(auxiliar_coefficients_table[2:5, ])
+    min_auxiliar_normalized_table <- imported_table[i_row, 8:11]
+    colnames(min_auxiliar_normalized_table) <- rownames(auxiliar_coefficients_table[2:5, ])
+    normalization_parameters <- list(
+      minimum_value = as.list(min_auxiliar_normalized_table),
+      maximum_value = as.list(max_auxiliar_normalized_table)
+    )
+    list_normalization_parameters <- list(
+      normalization_parameters = normalization_parameters,
+      model_parameters = auxiliar_coefficients_table
+    )
 
-for (i_albatros in 1:nrow(Datos)){
-    dato <- Datos[i_albatros,]
-    es_macho <- c()
-    for(i_renglon in 1:n_renglones) {
-        tabla_coeficientes_auxiliar <- tabla_importada[i_renglon, 1:5]
-        tabla_coeficientes_auxiliar <- data.frame(data.table::melt(tabla_coeficientes_auxiliar), row.names = colnames(tabla_coeficientes_auxiliar))
-        colnames(tabla_coeficientes_auxiliar) <- c("Variables", "Estimate")
-        umbral <- as.numeric(tabla_importada[i_renglon, 6])
-        tabla_parametros_maximos_normalizacion_auxiliar <- tabla_importada[i_renglon, 12:15]
-        colnames(tabla_parametros_maximos_normalizacion_auxiliar) <- rownames(tabla_coeficientes_auxiliar[2:5,])
-        tabla_parametros_minimos_normalizacion_auxiliar <- tabla_importada[i_renglon, 8:11]
-        colnames(tabla_parametros_minimos_normalizacion_auxiliar) <- rownames(tabla_coeficientes_auxiliar[2:5,])
-        parametrosNormalizacion <- list(valorMinimo = as.list(tabla_parametros_minimos_normalizacion_auxiliar), 
-                                        valorMaximo = as.list(tabla_parametros_maximos_normalizacion_auxiliar))
-        listaParametrosModeloNormalizacion <- list(parametrosNormalizacion = parametrosNormalizacion, 
-                                                    parametrosModelo = tabla_coeficientes_auxiliar)
-        
-        readr::write_lines(jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), 
-                            path =  "data/processed/parametros_modelo_logistico_laal_ig.json")
-        ModeloDimorfismoAlbatros <- ModeloDimorfismo$new()
-        ModeloDimorfismoAlbatros$loadParameters("data/processed/parametros_modelo_logistico_laal_ig.json")
-        
-        prob <- ModeloDimorfismoAlbatros$predict(dato)
-        es_macho <- append(es_macho, as.logical(prob > umbral))
-    }
-    print(paste(i_albatros, as.character(dato$Sexo),sum(es_macho)/length(es_macho)*100))
+    readr::write_lines(
+      jsonlite::toJSON(list_normalization_parameters, pretty = T),
+      path = "data/processed/parametros_modelo_logistico.json"
+    )
+
+    dimorphism_model_albatross <- dimorphism_model$new()
+    dimorphism_model_albatross$load_parameters("data/processed/parametros_modelo_logistico.json")
+    prob <- dimorphism_model_albatross$predict(dato)
+    males <- append(males, as.logical(prob > threshold))
+  }
+
+  print(
+    paste(
+      i_albatross,
+      as.character(dato$sexo),
+      sum(males) / length(males) * 100
+    )
+  )
 }

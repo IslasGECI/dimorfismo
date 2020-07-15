@@ -22,18 +22,19 @@ data_processed_1 = '../data/processed/parametros_mejor_modelo_logistico_laal_ig.
 with open(data_processed_1, encoding='utf8') as results_1_file:
     parametros_mejor = json.load(results_1_file)
 
-m_variables_normalizacion = parametros_mejor ["parametrosNormalizacion"]
-m_valor_minimo = m_variables_normalizacion ["valorMinimo"]
-m_valor_maximo = m_variables_normalizacion ["valorMaximo"]
+m_variables_normalizacion = parametros_mejor ["normalization_parameters"]
+m_valor_minimo = m_variables_normalizacion ["minimum_value"]
+m_valor_maximo = m_variables_normalizacion ["maximum_value"]
 
-m_variables_modelo = parametros_mejor["parametrosModelo"]
+m_variables_modelo = parametros_mejor["model_parameters"]
 m_intercept = m_variables_modelo[0]
 m_longitud_craneo = m_variables_modelo[1]
 m_altura_pico = m_variables_modelo[2]
 m_longitud_pico = m_variables_modelo[3]
 m_tarso = m_variables_modelo [4]
 
-#segundo archivo
+
+#tercer archivo
 m_variables_modelo = []
 with open('../data/processed/tabla_mejores_modelos.csv') as results_3_file:
     reader = csv.DictReader(results_3_file)

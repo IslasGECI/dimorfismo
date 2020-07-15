@@ -1,4 +1,14 @@
-all: reports/funcion_logistica.pdf
+all: tests reports/funcion_logistica.pdf
+
+define runLint
+	R -e "library(lintr)" \
+      -e "lint('src/01_create_parameter_logistic_model_LAAL.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/02_evaluate_better_models.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/calculator_ROC_class.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))"
+endef
 
 define runScript
 	mkdir --parents $(@D)
@@ -21,7 +31,7 @@ jsonParametrosMejorModeloLogistico = \
 	data/processed/parametros_mejor_modelo_logistico_laal_ig.json
 
 jsonParametrosModeloLogistico = \
-	data/processed/parametros_modelo_logistico_laal_ig.json
+	data/processed/parametros_modelo_logistico.json
 
 # II. Sección de requisitos de objetivos principales:
 # ------------------------------------------------------------------------------------------------
@@ -33,7 +43,7 @@ reports/funcion_logistica.pdf: reports/funcion_logistica.tex $(csvTablaModelosLo
 
 # III. Sección de dependencias para los objetivos principales
 # ------------------------------------------------------------------------------------------------
-$(csvTablaModelosLogisticos): src/01_create_parameter_logistic_model_LAAL.R $(DatosCrudos) src/dimorphism_model_class.R src/calculator_ROC_class.R src/evaluate_model_function.R src/get_prediction_sex_plot_function.R src/get_sex_probability_plot_function.R src/regretion_to_data_frame_coefficients_function.R
+$(csvTablaModelosLogisticos): src/01_create_parameter_logistic_model_LAAL.R $(DatosCrudos) src/dimorphism_model_class.R src/calculator_ROC_class.R src/regretion_to_data_frame_coefficients_function.R
 	$(runScript)
 
 $(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico): src/02_evaluate_better_models.R $(DatosCrudos) $(csvTablaModelosLogisticos) src/dimorphism_model_class.R src/calculator_ROC_class.R
@@ -44,7 +54,17 @@ $(jsonParametrosModeloLogistico): src/03_predict_sex.R $(DatosCrudos) $(csvTabla
 
 # IV. Sección del resto de los phonies
 # ------------------------------------------------------------------------------------------------
-.PHONY: all clean
+.PHONY: all lint clean tests coverage
+
+lint:
+	$(runLint)
+	$(runLint) | grep -e "\^" && exit 1 || exit 0
+
+tests:
+	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)"
+
+coverage:
+	R -e "covr::file_coverage('src/regretion_to_data_frame_coefficients_function.R', 'tests/testthat/tests_regretion_to_data_frame_coefficients_function.R')"
 
 # Elimina los residuos de LaTeX
 clean:
