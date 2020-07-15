@@ -9,7 +9,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Construye imagen
       run: docker build --tag islasgeci .
-    - name: Despelusa
+    - name: Despeluza
       run: docker run islasgeci make lint
     - name: Corre pruebas
       run: docker run islasgeci make tests
