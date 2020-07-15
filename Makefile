@@ -1,5 +1,15 @@
 all: tests reports/funcion_logistica.pdf
 
+define runLint
+	R -e "library(lintr)" \
+      -e "lint('src/01_create_parameter_logistic_model_LAAL.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/02_evaluate_better_models.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/calculator_ROC_class.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('src/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))"
+endef
+
 define runScript
 	mkdir --parents $(@D)
 	R --file=$<
@@ -47,23 +57,10 @@ $(jsonParametrosModeloLogistico): src/03_predict_sex.R $(DatosCrudos) $(csvTabla
 .PHONY: all lint clean tests coverage
 
 lint:
-	R -e "library(lintr)" \
-      -e "lint('src/01_create_parameter_logistic_model_LAAL.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/02_evaluate_better_models.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/calculator_ROC_class.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))"
+	$(runLint)
+	$(runLint) | grep -e "\^" && exit 1 || exit 0
 
 tests:
-	R -e "library(lintr)" \
-      -e "lint('src/01_create_parameter_logistic_model_LAAL.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/02_evaluate_better_models.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/calculator_ROC_class.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))" \
-      | grep -e "\^" && exit 1 || exit 0
 	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)"
 
 coverage:
