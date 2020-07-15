@@ -51,7 +51,7 @@ for (i_albatross in 1:n_rows_data) {
   print(
     paste(
       i_albatross,
-      as.character(dato$Sexo),
+      as.character(dato$sexo),
       sum(males) / length(males) * 100
     )
   )

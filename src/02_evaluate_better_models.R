@@ -48,7 +48,7 @@ for (i_row in 1:n_rows_table) {
   dimorphism_model_albatross$load_parameters(json_path)
 
   prob <- dimorphism_model_albatross$predict(data)
-  y_test <- ifelse(data$Sexo == "M", 1, 0)
+  y_test <- ifelse(data$sexo == "M", 1, 0)
   roc_data <- data.frame(y_test, prob)
   bugs <- append(bugs, calculador_roc$calculate_error(roc_data, threshold))
 }

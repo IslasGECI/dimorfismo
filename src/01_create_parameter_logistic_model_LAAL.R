@@ -86,8 +86,8 @@ for (i in 1:num_repetitions) {
   trainning_data <- data[trainning_index]
   validation_data <- data[validation_index]
 
-  setkey(trainning_data, ID_Darvic)
-  repeated_individuals <- data.table(ID_Darvic = trainning_data[duplicated(ID_Darvic)]$ID_Darvic)
+  setkey(trainning_data, id_darvic)
+  repeated_individuals <- data.table(id_darvic = trainning_data[duplicated(id_darvic)]$id_darvic)
 
   no_numerical_data <- trainning_data[unique(trainning_data),
     .SD[, !sapply(.SD, is.numeric), with = FALSE],
@@ -96,9 +96,9 @@ for (i in 1:num_repetitions) {
 
   numerical_data <- trainning_data[,
     lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean, na.rm = T),
-    by = ID_Darvic
+    by = id_darvic
   ]
-  averaged_data <- numerical_data[no_numerical_data[!duplicated(ID_Darvic)]]
+  averaged_data <- numerical_data[no_numerical_data[!duplicated(id_darvic)]]
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
   metadata_fields <- data.table(metadata$resources$schema$fields[[1]])
@@ -108,7 +108,7 @@ for (i in 1:num_repetitions) {
   n_morphometric_variables <- sum(morphometric_measurement)
   # Se obtienen el nombre largo de las variables morfométricas
   large_names_morphometry <- metadata_fields[morphometric_measurement, nombre_largo]
-  n_individuals <- length(unique(averaged_data$ID_Darvic))
+  n_individuals <- length(unique(averaged_data$id_darvic))
   normalized_data <- averaged_data[!is.na(averaged_data$Peso),
     variables_model,
     with = FALSE
@@ -120,17 +120,17 @@ for (i in 1:num_repetitions) {
   }
 
   normalized_data <- as.data.frame(apply(normalized_data, 2, normalize))
-  normalized_data$Sexo <- averaged_data[!is.na(averaged_data$Peso), ]$Sexo
+  normalized_data$sexo <- averaged_data[!is.na(averaged_data$Peso), ]$sexo
 
   null_regression <- glm(
-    formula = Sexo ~ 1,
+    formula = sexo ~ 1,
     data = normalized_data,
     family = "binomial"
   )
 
   # Hacemos el modelos utilizando las 11 varibles
   all_regression <- glm(
-    formula = Sexo ~ .,
+    formula = sexo ~ .,
     data = normalized_data,
     family = "binomial"
   )
@@ -144,7 +144,7 @@ for (i in 1:num_repetitions) {
     trace = 0
   )
 
-  normalized_data$ID_Darvic <- averaged_data[!is.na(averaged_data$Peso), ]$ID_Darvic
+  normalized_data$id_darvic <- averaged_data[!is.na(averaged_data$Peso), ]$id_darvic
   step_coefficients <- regretion_to_data_frame(step_regression)
 
   for (i_coeficiente in rownames(step_coefficients)) {
@@ -197,7 +197,7 @@ for (i in 1:num_repetitions) {
   dimorphism_model_albatross <- dimorphism_model$new()
   dimorphism_model_albatross$load_parameters(json_path)
   prob <- dimorphism_model_albatross$predict(validation_data)
-  y_test <- ifelse(validation_data$Sexo == "M", 1, 0)
+  y_test <- ifelse(validation_data$sexo == "M", 1, 0)
   roc_data <- data.frame(y_test, prob)
   error_criteria <- calculador_roc$best_threshold_error(roc_data)
   threshold_error_table <- rbind(threshold_error_table, error_criteria)
