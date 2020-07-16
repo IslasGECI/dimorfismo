@@ -63,7 +63,7 @@ lint:
 tests:
 	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)"
 
-coverage:
+coverage: $(jsonLogisticModelParameters)
 	R -e "covr::file_coverage(c(\
 	'src/01_create_parameter_logistic_model_LAAL.R', \
 	'src/02_evaluate_better_models.R', \
