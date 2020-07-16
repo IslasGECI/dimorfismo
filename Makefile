@@ -17,25 +17,25 @@ endef
 
 # I. Sección de variables
 # ------------------------------------------------------------------------------------------------
-DatosCrudos = \
+RawData = \
 	data/raw/datapackage.json \
-	data/raw/morfometria_albatros-laysan_guadalupe.csv 
+	data/raw/laysan_albatross_morphometry_guadalupe.csv 
 
-csvTablaModelosLogisticos = \
-	data/processed/tabla_modelos_logisticos.csv
+csvLogisticModelTable = \
+	data/processed/logistic_model_table.csv
 
-csvTablaMejoresModelos = \
-	data/processed/tabla_mejores_modelos.csv
+csvBestModelTable = \
+	data/processed/best_models_table.csv
 
-jsonParametrosMejorModeloLogistico = \
-	data/processed/parametros_mejor_modelo_logistico_laal_ig.json
+jsonBestLogisticModelParameters = \
+	data/processed/best_logistic_model_parameters_laal_ig.json
 
-jsonParametrosModeloLogistico = \
-	data/processed/parametros_modelo_logistico.json
+jsonLogisticModelParameters = \
+	data/processed/logistic_model_parameters.json
 
 # II. Sección de requisitos de objetivos principales:
 # ------------------------------------------------------------------------------------------------
-reports/funcion_logistica.pdf: reports/funcion_logistica.tex $(csvTablaModelosLogisticos) $(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico) $(jsonParametrosModeloLogistico)
+reports/funcion_logistica.pdf: reports/logistic_function.tex $(csvLogisticModelTable) $(csvBestModelTable) $(jsonBestLogisticModelParameters) $(jsonLogisticModelParameters)
 	cd $(<D) && pdflatex $(<F)
 	cd $(<D) && pythontex $(<F)
 	cd $(<D) && pdflatex $(<F)
@@ -43,13 +43,13 @@ reports/funcion_logistica.pdf: reports/funcion_logistica.tex $(csvTablaModelosLo
 
 # III. Sección de dependencias para los objetivos principales
 # ------------------------------------------------------------------------------------------------
-$(csvTablaModelosLogisticos): src/01_create_parameter_logistic_model_LAAL.R $(DatosCrudos) src/dimorphism_model_class.R src/calculator_ROC_class.R src/regretion_to_data_frame_coefficients_function.R
+$(csvLogisticModelTable): src/01_create_parameter_logistic_model_LAAL.R $(RawData) src/dimorphism_model_class.R src/calculator_ROC_class.R src/regretion_to_data_frame_coefficients_function.R
 	$(runScript)
 
-$(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico): src/02_evaluate_better_models.R $(DatosCrudos) $(csvTablaModelosLogisticos) src/dimorphism_model_class.R src/calculator_ROC_class.R
+$(csvBestModelTable) $(jsonBestLogisticModelParameters): src/02_evaluate_better_models.R $(RawData) $(csvLogisticModelTable) src/dimorphism_model_class.R src/calculator_ROC_class.R
 	$(runScript)
 
-$(jsonParametrosModeloLogistico): src/03_predict_sex.R $(DatosCrudos) $(csvTablaMejoresModelos) src/dimorphism_model_class.R src/calculator_ROC_class.R
+$(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTable) src/dimorphism_model_class.R src/calculator_ROC_class.R
 	$(runScript)
 
 # IV. Sección del resto de los phonies
@@ -63,8 +63,16 @@ lint:
 tests:
 	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)"
 
-coverage:
-	R -e "covr::file_coverage('src/regretion_to_data_frame_coefficients_function.R', 'tests/testthat/tests_regretion_to_data_frame_coefficients_function.R')"
+coverage: $(jsonLogisticModelParameters)
+	R -e "covr::file_coverage(c(\
+	'src/01_create_parameter_logistic_model_LAAL.R', \
+	'src/02_evaluate_better_models.R', \
+	'src/03_predict_sex.R', \
+	'src/calculator_ROC_class.R', \
+	'src/dimorphism_model_class.R', \
+	'src/regretion_to_data_frame_coefficients_function.R' \
+	),c(\
+	'tests/testthat/tests_regretion_to_data_frame_coefficients_function.R'))"
 
 # Elimina los residuos de LaTeX
 clean:

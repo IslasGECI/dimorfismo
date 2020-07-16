@@ -4,9 +4,11 @@ source("src/dimorphism_model_class.R")
 source("src/calculator_ROC_class.R")
 source("src/regretion_to_data_frame_coefficients_function.R")
 
+set.seed(28)
+
 tdp_path <- ("data/raw/")
 results_path <- ("data/processed/")
-csv_file <- file.path(tdp_path, "morfometria_albatros-laysan_guadalupe.csv")
+csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
 json_file <- file.path(tdp_path, "datapackage.json")
 
 metadata <- jsonlite::fromJSON(json_file)
@@ -17,8 +19,8 @@ trainning_proportion <- 0.80
 validation_proportion <- 1 - trainning_proportion
 
 variables_model <- c(
-  "Longitud_Craneo", "Longitud_Pico", "Ancho_Craneo", "Altura_Pico",
-  "Tarso", "Longitud_Ala_Cerrada", "Longitud_Ala_Abierta", "Envergadura"
+  "longitud_craneo", "longitud_pico", "ancho_craneo", "altura_pico",
+  "tarso", "longitud_ala_cerrada", "longitud_ala_abierta", "envergadura"
 )
 column_names <- c("(Intercept)", variables_model)
 num_repetitions <- 10
@@ -109,7 +111,7 @@ for (i in 1:num_repetitions) {
   # Se obtienen el nombre largo de las variables morfométricas
   large_names_morphometry <- metadata_fields[morphometric_measurement, nombre_largo]
   n_individuals <- length(unique(averaged_data$id_darvic))
-  normalized_data <- averaged_data[!is.na(averaged_data$Peso),
+  normalized_data <- averaged_data[!is.na(averaged_data$peso),
     variables_model,
     with = FALSE
   ]
@@ -120,7 +122,7 @@ for (i in 1:num_repetitions) {
   }
 
   normalized_data <- as.data.frame(apply(normalized_data, 2, normalize))
-  normalized_data$sexo <- averaged_data[!is.na(averaged_data$Peso), ]$sexo
+  normalized_data$sexo <- averaged_data[!is.na(averaged_data$peso), ]$sexo
 
   null_regression <- glm(
     formula = sexo ~ 1,
@@ -144,7 +146,7 @@ for (i in 1:num_repetitions) {
     trace = 0
   )
 
-  normalized_data$id_darvic <- averaged_data[!is.na(averaged_data$Peso), ]$id_darvic
+  normalized_data$id_darvic <- averaged_data[!is.na(averaged_data$peso), ]$id_darvic
   step_coefficients <- regretion_to_data_frame(step_regression)
 
   for (i_coeficiente in rownames(step_coefficients)) {
@@ -158,7 +160,7 @@ for (i in 1:num_repetitions) {
   model_varibles_names <- names(step_regression$coefficients)
   model_varibles_names <- model_varibles_names[model_varibles_names != "(Intercept)"]
 
-  model_used_data <- averaged_data[!is.na(averaged_data$Peso),
+  model_used_data <- averaged_data[!is.na(averaged_data$peso),
     model_varibles_names,
     with = FALSE
   ]
@@ -188,7 +190,7 @@ for (i in 1:num_repetitions) {
       max_normalized_data[i_pair_normalization]
   }
 
-  json_path <- "data/processed/parametros_modelo_logistico.json"
+  json_path <- "data/processed/logistic_model_parameters.json"
   readr::write_lines(
     jsonlite::toJSON(list_normalization_parameters, pretty = T),
     json_path
@@ -206,12 +208,12 @@ for (i in 1:num_repetitions) {
 close(progress_bar)
 
 final_variables <- c(
-  "(Intercept)", "Longitud_Craneo", "Altura_Pico",
-  "Longitud_Pico", "Tarso", "Ancho_Craneo"
+  "(Intercept)", "longitud_craneo", "altura_pico",
+  "longitud_pico", "tarso", "ancho_craneo"
 )
 no_intercept_variables <- c(
-  "Longitud_Craneo", "Altura_Pico", "Longitud_Pico",
-  "Tarso", "Ancho_Craneo"
+  "longitud_craneo", "altura_pico", "longitud_pico",
+  "tarso", "ancho_craneo"
 )
 
 model_table$model_coefficients <- model_table$model_coefficients[, final_variables]
@@ -270,5 +272,5 @@ best_model_table <- filtered_table[error == minimum_error]
 
 write_csv(
   best_model_table,
-  paste0(results_path, "tabla_modelos_logisticos.csv")
+  paste0(results_path, "logistic_model_table.csv")
 )
