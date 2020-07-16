@@ -64,7 +64,15 @@ tests:
 	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)"
 
 coverage:
-	R -e "covr::file_coverage('src/regretion_to_data_frame_coefficients_function.R', 'tests/testthat/tests_regretion_to_data_frame_coefficients_function.R')"
+	R -e "covr::file_coverage(c(\
+	'src/01_create_parameter_logistic_model_LAAL.R', \
+	'src/02_evaluate_better_models.R', \
+	'src/03_predict_sex.R', \
+	'src/calculator_ROC_class.R', \
+	'src/dimorphism_model_class.R', \
+	'src/regretion_to_data_frame_coefficients_function.R' \
+	),c(\
+	'tests/testthat/tests_regretion_to_data_frame_coefficients_function.R'))"
 
 # Elimina los residuos de LaTeX
 clean:
