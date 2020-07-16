@@ -18,7 +18,7 @@ import csv
 ##Declaro variables a utilizar 
 ##Primer archivo
 
-data_processed_1 = '../data/processed/parametros_mejor_modelo_logistico_laal_ig.json'
+data_processed_1 = '../data/processed/best_logistic_model_parameters_laal_ig.json'
 with open(data_processed_1, encoding='utf8') as results_1_file:
     parametros_mejor = json.load(results_1_file)
 
@@ -36,7 +36,7 @@ m_tarso = m_variables_modelo [4]
 
 #tercer archivo
 m_variables_modelo = []
-with open('../data/processed/tabla_mejores_modelos.csv') as results_3_file:
+with open('../data/processed/best_models_table.csv') as results_3_file:
     reader = csv.DictReader(results_3_file)
     for row in reader:
         m_variables_modelo.append(row)

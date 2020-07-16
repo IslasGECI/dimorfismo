@@ -2,15 +2,15 @@ source("src/dimorphism_model_class.R")
 source("src/calculator_ROC_class.R")
 
 tdp_path <- ("data/raw")
-json_path <- ("data/processed/parametros_modelo_logistico.json")
-csv_file <- file.path(tdp_path, "morfometria_albatros-laysan_guadalupe.csv")
+json_path <- ("data/processed/logistic_model_parameters.json")
+csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
 
 data <- data.table::data.table(read.csv(csv_file))
 
 results_path <- "data/processed/"
 imported_table <- data.table::data.table(
   readr::read_csv(
-    paste0(results_path, "tabla_modelos_logisticos.csv")
+    paste0(results_path, "logistic_model_table.csv")
   )
 )
 calculador_roc <- roc$new()
@@ -57,10 +57,10 @@ minimun_error <- bugs == min(bugs)
 
 write_csv(
   imported_table[minimun_error, ],
-  paste0(results_path, "tabla_mejores_modelos.csv")
+  paste0(results_path, "best_models_table.csv")
 )
 
 readr::write_lines(
   jsonlite::toJSON(list_normalization_parameters, pretty = T),
-  path = "data/processed/parametros_mejor_modelo_logistico_laal_ig.json"
+  path = "data/processed/best_logistic_model_parameters_laal_ig.json"
 )

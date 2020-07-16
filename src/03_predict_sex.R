@@ -2,11 +2,11 @@ source("src/dimorphism_model_class.R")
 source("src/calculator_ROC_class.R")
 
 tdp_path <- ("data/raw/")
-csv_file <- file.path(tdp_path, "morfometria_albatros-laysan_guadalupe.csv")
+csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
 data <- data.table::data.table(read.csv(csv_file))
 results_path <- "data/processed/"
 imported_table <- data.table::data.table(
-  readr::read_csv(paste0(results_path, "tabla_mejores_modelos.csv"))
+  readr::read_csv(paste0(results_path, "best_models_table.csv"))
 )
 
 calculador_roc <- roc$new()
@@ -39,11 +39,11 @@ for (i_albatross in 1:n_rows_data) {
 
     readr::write_lines(
       jsonlite::toJSON(list_normalization_parameters, pretty = T),
-      path = "data/processed/parametros_modelo_logistico.json"
+      path = "data/processed/logistic_model_parameters.json"
     )
 
     dimorphism_model_albatross <- dimorphism_model$new()
-    dimorphism_model_albatross$load_parameters("data/processed/parametros_modelo_logistico.json")
+    dimorphism_model_albatross$load_parameters("data/processed/logistic_model_parameters.json")
     prob <- dimorphism_model_albatross$predict(dato)
     males <- append(males, as.logical(prob > threshold))
   }

@@ -6,7 +6,7 @@ source("src/regretion_to_data_frame_coefficients_function.R")
 
 tdp_path <- ("data/raw/")
 results_path <- ("data/processed/")
-csv_file <- file.path(tdp_path, "morfometria_albatros-laysan_guadalupe.csv")
+csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
 json_file <- file.path(tdp_path, "datapackage.json")
 
 metadata <- jsonlite::fromJSON(json_file)
@@ -188,7 +188,7 @@ for (i in 1:num_repetitions) {
       max_normalized_data[i_pair_normalization]
   }
 
-  json_path <- "data/processed/parametros_modelo_logistico.json"
+  json_path <- "data/processed/logistic_model_parameters.json"
   readr::write_lines(
     jsonlite::toJSON(list_normalization_parameters, pretty = T),
     json_path
@@ -270,5 +270,5 @@ best_model_table <- filtered_table[error == minimum_error]
 
 write_csv(
   best_model_table,
-  paste0(results_path, "tabla_modelos_logisticos.csv")
+  paste0(results_path, "logistic_model_table.csv")
 )

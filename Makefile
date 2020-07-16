@@ -19,19 +19,19 @@ endef
 # ------------------------------------------------------------------------------------------------
 DatosCrudos = \
 	data/raw/datapackage.json \
-	data/raw/morfometria_albatros-laysan_guadalupe.csv 
+	data/raw/laysan_albatross_morphometry_guadalupe.csv 
 
 csvTablaModelosLogisticos = \
-	data/processed/tabla_modelos_logisticos.csv
+	data/processed/logistic_model_table.csv
 
 csvTablaMejoresModelos = \
-	data/processed/tabla_mejores_modelos.csv
+	data/processed/best_models_table.csv
 
 jsonParametrosMejorModeloLogistico = \
-	data/processed/parametros_mejor_modelo_logistico_laal_ig.json
+	data/processed/best_logistic_model_parameters_laal_ig.json
 
 jsonParametrosModeloLogistico = \
-	data/processed/parametros_modelo_logistico.json
+	data/processed/logistic_model_parameters.json
 
 # II. Sección de requisitos de objetivos principales:
 # ------------------------------------------------------------------------------------------------

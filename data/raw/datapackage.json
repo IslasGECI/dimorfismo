@@ -37,7 +37,7 @@
             "encoding": "utf-8",
             "format": "csv",
             "mediatype": "text/csv",
-            "path": "morfometria_albatros-laysan_guadalupe.csv",
+            "path": "laysan_albatross_morphometry_guadalupe.csv",
             "profile": "tabular-data-resource",
             "source": "Medidas in situ",
             "title": "Laysan Albatross morphometry from Guadalupe Island",
