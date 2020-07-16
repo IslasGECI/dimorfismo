@@ -4,6 +4,8 @@ source("src/dimorphism_model_class.R")
 source("src/calculator_ROC_class.R")
 source("src/regretion_to_data_frame_coefficients_function.R")
 
+set.seed(28)
+
 tdp_path <- ("data/raw/")
 results_path <- ("data/processed/")
 csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
