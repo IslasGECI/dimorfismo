@@ -17,25 +17,25 @@ endef
 
 # I. Sección de variables
 # ------------------------------------------------------------------------------------------------
-DatosCrudos = \
+RawData = \
 	data/raw/datapackage.json \
 	data/raw/laysan_albatross_morphometry_guadalupe.csv 
 
-csvTablaModelosLogisticos = \
+csvLogisticModelTable = \
 	data/processed/logistic_model_table.csv
 
-csvTablaMejoresModelos = \
+csvBestModelTable = \
 	data/processed/best_models_table.csv
 
-jsonParametrosMejorModeloLogistico = \
+jsonBestLogisticModelParameters = \
 	data/processed/best_logistic_model_parameters_laal_ig.json
 
-jsonParametrosModeloLogistico = \
+jsonLogisticModelParameters = \
 	data/processed/logistic_model_parameters.json
 
 # II. Sección de requisitos de objetivos principales:
 # ------------------------------------------------------------------------------------------------
-reports/funcion_logistica.pdf: reports/funcion_logistica.tex $(csvTablaModelosLogisticos) $(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico) $(jsonParametrosModeloLogistico)
+reports/funcion_logistica.pdf: reports/logistic_function.tex $(csvLogisticModelTable) $(csvBestModelTable) $(jsonBestLogisticModelParameters) $(jsonLogisticModelParameters)
 	cd $(<D) && pdflatex $(<F)
 	cd $(<D) && pythontex $(<F)
 	cd $(<D) && pdflatex $(<F)
@@ -43,13 +43,13 @@ reports/funcion_logistica.pdf: reports/funcion_logistica.tex $(csvTablaModelosLo
 
 # III. Sección de dependencias para los objetivos principales
 # ------------------------------------------------------------------------------------------------
-$(csvTablaModelosLogisticos): src/01_create_parameter_logistic_model_LAAL.R $(DatosCrudos) src/dimorphism_model_class.R src/calculator_ROC_class.R src/regretion_to_data_frame_coefficients_function.R
+$(csvLogisticModelTable): src/01_create_parameter_logistic_model_LAAL.R $(RawData) src/dimorphism_model_class.R src/calculator_ROC_class.R src/regretion_to_data_frame_coefficients_function.R
 	$(runScript)
 
-$(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico): src/02_evaluate_better_models.R $(DatosCrudos) $(csvTablaModelosLogisticos) src/dimorphism_model_class.R src/calculator_ROC_class.R
+$(csvBestModelTable) $(jsonBestLogisticModelParameters): src/02_evaluate_better_models.R $(RawData) $(csvLogisticModelTable) src/dimorphism_model_class.R src/calculator_ROC_class.R
 	$(runScript)
 
-$(jsonParametrosModeloLogistico): src/03_predict_sex.R $(DatosCrudos) $(csvTablaMejoresModelos) src/dimorphism_model_class.R src/calculator_ROC_class.R
+$(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTable) src/dimorphism_model_class.R src/calculator_ROC_class.R
 	$(runScript)
 
 # IV. Sección del resto de los phonies
