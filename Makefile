@@ -72,6 +72,7 @@ coverage: $(jsonLogisticModelParameters)
 	'src/dimorphism_model_class.R', \
 	'src/regretion_to_data_frame_coefficients_function.R' \
 	),c(\
+	'tests/testthat/tests_02_evaluate_better_models.R', \
 	'tests/testthat/tests_regretion_to_data_frame_coefficients_function.R'))"
 
 # Elimina los residuos de LaTeX
