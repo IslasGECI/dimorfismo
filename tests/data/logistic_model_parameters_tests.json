@@ -1,0 +1,43 @@
+{
+  "normalization_parameters": {
+    "minimum_value": {
+      "longitud_craneo": [165.58],
+      "altura_pico": [28.85],
+      "longitud_pico": [100.81],
+      "tarso": [83.18]
+    },
+    "maximum_value": {
+      "longitud_craneo": [193.22],
+      "altura_pico": [35.5],
+      "longitud_pico": [119.48],
+      "tarso": [99.69]
+    }
+  },
+  "model_parameters": [
+    {
+      "Variables": "(Intercept)",
+      "Estimate": -20.773,
+      "_row": "(Intercept)"
+    },
+    {
+      "Variables": "longitud_craneo",
+      "Estimate": 6.641,
+      "_row": "longitud_craneo"
+    },
+    {
+      "Variables": "altura_pico",
+      "Estimate": 11.194,
+      "_row": "altura_pico"
+    },
+    {
+      "Variables": "longitud_pico",
+      "Estimate": 8.777,
+      "_row": "longitud_pico"
+    },
+    {
+      "Variables": "tarso",
+      "Estimate": 5.497,
+      "_row": "tarso"
+    }
+  ]
+}

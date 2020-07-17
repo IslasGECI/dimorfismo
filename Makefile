@@ -60,7 +60,7 @@ lint:
 	$(runLint)
 	$(runLint) | grep -e "\^" && exit 1 || exit 0
 
-tests:
+tests: $(jsonLogisticModelParameters)
 	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)"
 
 coverage: $(jsonLogisticModelParameters)
