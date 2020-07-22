@@ -1,5 +1,6 @@
 library(R6)
 
+#' @export
 dimorphism_model <- R6Class("dimorphism_model",
   public = list(
     load_parameters = function(json_path) {

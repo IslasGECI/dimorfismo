@@ -1,5 +1,4 @@
-source("src/dimorphism_model_class.R")
-source("src/calculator_ROC_class.R")
+library(dimorfismo)
 
 tdp_path <- ("data/raw/")
 csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")

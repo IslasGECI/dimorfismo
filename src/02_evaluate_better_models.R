@@ -1,5 +1,4 @@
-source("src/dimorphism_model_class.R")
-source("src/calculator_ROC_class.R")
+library(dimorfismo)
 
 tdp_path <- ("data/raw")
 json_path <- ("data/processed/logistic_model_parameters.json")

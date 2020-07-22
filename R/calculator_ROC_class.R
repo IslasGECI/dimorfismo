@@ -1,6 +1,7 @@
 library(R6)
 library(tidyverse)
 
+#' @export
 roc <- R6Class("roc",
   public = list(
     roc_data = NULL,

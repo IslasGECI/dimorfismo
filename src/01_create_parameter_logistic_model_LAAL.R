@@ -1,8 +1,5 @@
 library(data.table)
-
-source("src/dimorphism_model_class.R")
-source("src/calculator_ROC_class.R")
-source("src/regretion_to_data_frame_coefficients_function.R")
+library(dimorfismo)
 
 set.seed(28)
 
