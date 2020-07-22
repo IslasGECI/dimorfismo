@@ -61,7 +61,8 @@ lint:
 	$(runLint) | grep -e "\^" && exit 1 || exit 0
 
 tests: $(jsonLogisticModelParameters)
-	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)"
+	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)" \
+	  -e "devtools::test()"
 
 coverage: $(jsonLogisticModelParameters)
 	R -e "covr::file_coverage(c(\
