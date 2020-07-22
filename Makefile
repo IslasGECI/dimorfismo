@@ -2,12 +2,12 @@ all: tests reports/funcion_logistica.pdf
 
 define runLint
 	R -e "library(lintr)" \
+      -e "lint('R/calculator_ROC_class.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('R/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('R/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))" \
       -e "lint('src/01_create_parameter_logistic_model_LAAL.R', linters = with_defaults(line_length_linter(100)))" \
       -e "lint('src/02_evaluate_better_models.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/calculator_ROC_class.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))"
+      -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))"
 endef
 
 define runScript
@@ -43,13 +43,13 @@ reports/funcion_logistica.pdf: reports/logistic_function.tex $(csvLogisticModelT
 
 # III. Sección de dependencias para los objetivos principales
 # ------------------------------------------------------------------------------------------------
-$(csvLogisticModelTable): src/01_create_parameter_logistic_model_LAAL.R $(RawData) src/dimorphism_model_class.R src/calculator_ROC_class.R src/regretion_to_data_frame_coefficients_function.R
+$(csvLogisticModelTable): src/01_create_parameter_logistic_model_LAAL.R $(RawData) R/dimorphism_model_class.R R/calculator_ROC_class.R R/regretion_to_data_frame_coefficients_function.R
 	$(runScript)
 
-$(csvBestModelTable) $(jsonBestLogisticModelParameters): src/02_evaluate_better_models.R $(RawData) $(csvLogisticModelTable) src/dimorphism_model_class.R src/calculator_ROC_class.R
+$(csvBestModelTable) $(jsonBestLogisticModelParameters): src/02_evaluate_better_models.R $(RawData) $(csvLogisticModelTable) R/dimorphism_model_class.R R/calculator_ROC_class.R
 	$(runScript)
 
-$(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTable) src/dimorphism_model_class.R src/calculator_ROC_class.R
+$(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTable) R/dimorphism_model_class.R R/calculator_ROC_class.R
 	$(runScript)
 
 # IV. Sección del resto de los phonies
@@ -65,15 +65,17 @@ tests: $(jsonLogisticModelParameters)
 
 coverage: $(jsonLogisticModelParameters)
 	R -e "covr::file_coverage(c(\
+	'R/calculator_ROC_class.R', \
+	'R/dimorphism_model_class.R', \
+	'R/regretion_to_data_frame_coefficients_function.R' \
 	'src/01_create_parameter_logistic_model_LAAL.R', \
 	'src/02_evaluate_better_models.R', \
 	'src/03_predict_sex.R', \
-	'src/calculator_ROC_class.R', \
-	'src/dimorphism_model_class.R', \
-	'src/regretion_to_data_frame_coefficients_function.R' \
 	),c(\
 	'tests/testthat/tests_03_predict_sex.R', \
-	'tests/testthat/tests_regretion_to_data_frame_coefficients_function.R'))"
+	'tests/testthat/tests_regretion_to_data_frame_coefficients_function.R'
+	))" \
+	  -e "covr::package_coverage()
 
 # Elimina los residuos de LaTeX
 clean:
