@@ -54,7 +54,13 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 
 # IV. Sección del resto de los phonies
 # ------------------------------------------------------------------------------------------------
-.PHONY: all lint clean tests coverage
+.PHONY: all lint clean tests coverage install
+
+install:
+	R -e "devtools::document()" && \
+    R CMD build . && \
+    R CMD check dimorfismo_0.1.0.tar.gz && \
+    R CMD INSTALL dimorfismo_0.1.0.tar.gz
 
 lint:
 	$(runLint)
@@ -86,3 +92,6 @@ clean:
 	rm --force reports/*.pytxcode
 	rm --force --recursive data/processed
 	rm --force --recursive reports/pythontex*
+	rm --force dimorfismo_0.1.0.tar.gz
+	rm --force --recursive dimorfismo.Rcheck
+	rm --force --recursive man
