@@ -1,4 +1,5 @@
 library(dimorfismo)
+library(tidyverse)
 
 tdp_path <- ("data/raw")
 json_path <- ("data/processed/logistic_model_parameters.json")

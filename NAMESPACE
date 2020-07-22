@@ -3,3 +3,4 @@
 export(dimorphism_model)
 export(regretion_to_data_frame)
 export(roc)
+import(tidyverse)

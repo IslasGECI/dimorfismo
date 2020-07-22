@@ -1,4 +1,5 @@
 library(dimorfismo)
+library(tidyverse)
 
 tdp_path <- ("data/raw/")
 csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")

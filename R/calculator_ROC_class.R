@@ -1,6 +1,5 @@
 library(R6)
-library(tidyverse)
-
+#' @import tidyverse
 #' @export
 roc <- R6Class("roc",
   public = list(
