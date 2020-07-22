@@ -1,7 +1,7 @@
 Package: dimorfismo
 Title: Dimorfismo Sexual de Albatros de Laysan en Isla Guadalupe
 Version: 0.1.0
-Authors@R: 
+Authors@R:
     person(given = "Andrea",
            family = "Sánchez",
            role = c("aut", "cre"),
