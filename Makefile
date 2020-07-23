@@ -92,6 +92,6 @@ clean:
 	rm --force reports/*.pytxcode
 	rm --force --recursive data/processed
 	rm --force --recursive reports/pythontex*
-	rm --force dimorfismo_0.1.0.tar.gz
+	rm --force *.tar.gz
 	rm --force --recursive dimorfismo.Rcheck
 	rm --force --recursive man
