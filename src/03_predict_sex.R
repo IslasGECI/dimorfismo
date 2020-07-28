@@ -3,7 +3,7 @@ library(tidyverse)
 
 tdp_path <- ("data/raw/")
 csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
-data <- data.table::data.table(read.csv(csv_file))
+csv_data <- data.table::data.table(read.csv(csv_file))
 results_path <- "data/processed/"
 imported_table <- data.table::data.table(
   readr::read_csv(paste0(results_path, "best_models_table.csv"))
@@ -11,10 +11,10 @@ imported_table <- data.table::data.table(
 
 calculador_roc <- roc$new()
 n_rows_table <- nrow(imported_table)
-n_rows_data <- nrow(data)
+n_rows_data <- nrow(csv_data)
 
 for (i_albatross in 1:n_rows_data) {
-  dato <- data[i_albatross, ]
+  data <- csv_data[i_albatross, ]
   males <- c()
   for (i_row in 1:n_rows_table) {
     auxiliar_coefficients_table <- imported_table[i_row, 1:5]
@@ -44,14 +44,14 @@ for (i_albatross in 1:n_rows_data) {
 
     dimorphism_model_albatross <- dimorphism_model$new()
     dimorphism_model_albatross$load_parameters("data/processed/logistic_model_parameters.json")
-    prob <- dimorphism_model_albatross$predict(dato)
+    prob <- dimorphism_model_albatross$predict(data)
     males <- append(males, as.logical(prob > threshold))
   }
 
   print(
     paste(
       i_albatross,
-      as.character(dato$sexo),
+      as.character(data$sexo),
       sum(males) / length(males) * 100
     )
   )
