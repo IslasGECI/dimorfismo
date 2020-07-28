@@ -25,7 +25,7 @@ dimorphism_model <- R6Class("dimorphism_model",
             return(normalize_return)
           }
 
-          normalized_column <- as.data.frame(lapply(column, normalize))
+          normalized_column <- as.data.frame(sapply(column, normalize))
           z <- z + normalized_column * private$get_value(variable$Variables)
           i_variable <- i_variable + 1
         }
