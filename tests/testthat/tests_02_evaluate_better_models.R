@@ -27,3 +27,9 @@ test_that("El valor umbral es correcto:",
         expect_equal(threshold, correct_threshold)
     }
 )
+
+test_that("Los resultados de predicción son correctos",
+    {
+        expect_equal(y_test, correct_y_test)
+    }
+)
