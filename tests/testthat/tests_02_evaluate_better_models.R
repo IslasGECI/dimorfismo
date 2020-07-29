@@ -3,6 +3,7 @@ library(testthat)
 
 setwd("/workdir/")
 source("src/02_evaluate_better_models.R")
+source("tests/data/02_evaluate_better_models_tests.R")
 
 json_correct_data_path <- ("tests/data/best_logistic_model_parameters_laal_ig_tests.json")
 json_correct_data <- rjson::fromJSON(file = json_correct_data_path)
@@ -18,5 +19,11 @@ test_that("Los resultados generados del código son correctos:",
     {
         expect_equal(json_data, json_correct_data)
         expect_equal(csv_data, csv_correct_data)
+    }
+)
+
+test_that("El valor umbral es correcto:",
+    {
+        expect_equal(threshold, correct_threshold)
     }
 )
