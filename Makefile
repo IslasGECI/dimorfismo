@@ -71,18 +71,7 @@ tests: $(jsonLogisticModelParameters)
 	  -e "devtools::test()"
 
 coverage: $(jsonLogisticModelParameters)
-	R -e "covr::file_coverage(c( \
-        'R/calculator_ROC_class.R', \
-        'R/dimorphism_model_class.R', \
-        'R/regretion_to_data_frame_coefficients_function.R', \
-        'src/01_create_parameter_logistic_model_LAAL.R', \
-        'src/02_evaluate_better_models.R', \
-        'src/03_predict_sex.R' \
-    ),c( \
-        'tests/testthat/tests_03_predict_sex.R', \
-        'tests/testthat/tests_regretion_to_data_frame_coefficients_function.R' \
-    ))" \
-      -e "covr::package_coverage()"
+    R -e "covr::package_coverage()"
 
 # Elimina los residuos de LaTeX
 clean:
