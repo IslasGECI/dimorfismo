@@ -1,5 +1,6 @@
 library(R6)
 
+#' @export
 dimorphism_model <- R6Class("dimorphism_model",
   public = list(
     load_parameters = function(json_path) {
@@ -24,7 +25,7 @@ dimorphism_model <- R6Class("dimorphism_model",
             return(normalize_return)
           }
 
-          normalized_column <- as.data.frame(apply(column, 2, normalize))
+          normalized_column <- as.data.frame(sapply(column, normalize))
           z <- z + normalized_column * private$get_value(variable$Variables)
           i_variable <- i_variable + 1
         }
