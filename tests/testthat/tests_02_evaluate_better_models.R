@@ -1,9 +1,8 @@
 library(data.table)
 library(testthat)
 
-setwd("/workdir/")
-source("src/02_evaluate_better_models.R")
-source("tests/data/02_evaluate_better_models_tests.R")
+source("../data/02_evaluate_better_models_tests.R")
+source("../../src/02_evaluate_better_models.R")
 
 json_correct_data_path <- ("tests/data/best_logistic_model_parameters_laal_ig_tests.json")
 json_correct_data <- rjson::fromJSON(file = json_correct_data_path)
