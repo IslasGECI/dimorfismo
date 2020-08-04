@@ -71,7 +71,7 @@ tests: $(jsonLogisticModelParameters)
 	  -e "devtools::test()"
 
 coverage: $(jsonLogisticModelParameters)
-    R -e "covr::package_coverage()"
+	R -e "covr::package_coverage()"
 
 # Elimina los residuos de LaTeX
 clean:
