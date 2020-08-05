@@ -1,8 +1,9 @@
 library(data.table)
 library(testthat)
 
-source("../data/02_evaluate_better_models_tests.R")
-source("../../src/02_evaluate_better_models.R")
+setwd("/workdir/")
+source("tests/data/02_evaluate_better_models_tests.R")
+source("src/02_evaluate_better_models.R")
 
 json_correct_data_path <- ("tests/data/best_logistic_model_parameters_laal_ig_tests.json")
 json_correct_data <- rjson::fromJSON(file = json_correct_data_path)
@@ -30,5 +31,11 @@ test_that("El valor umbral es correcto:",
 test_that("Los resultados de predicción son correctos",
     {
         expect_equal(y_test, correct_y_test)
+    }
+)
+
+test_that("Los resultados de error en curva ROC son correctos",
+    {
+        expect_equivalent(calculador_roc$calculate_error(roc_data, threshold), correct_error_roc)
     }
 )
