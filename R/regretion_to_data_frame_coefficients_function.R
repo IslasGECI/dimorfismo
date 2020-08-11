@@ -1,3 +1,4 @@
+#' @export
 regretion_to_data_frame <- function(regression) {
   regression_summary <- summary.glm(regression)
   regression_summary$coefficients <- round(regression_summary$coefficients, 3)

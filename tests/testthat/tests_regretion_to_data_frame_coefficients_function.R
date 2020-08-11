@@ -1,8 +1,8 @@
 library(data.table)
+library(dimorfismo)
 library(testthat)
 
 setwd("/workdir/")
-source("src/regretion_to_data_frame_coefficients_function.R")
 
 test_data <- data.frame(
   temp = c(11.9, 14.2, 15.2, 16.4, 17.2, 18.1,
