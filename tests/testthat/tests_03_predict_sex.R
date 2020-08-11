@@ -1,6 +1,6 @@
 library(testthat)
 
-setwd("/workspaces/dimorfismo/")
+setwd("/workdir/")
 source("tests/data/03_predict_sex_data_tests.R")
 source("src/03_predict_sex.R")
 
