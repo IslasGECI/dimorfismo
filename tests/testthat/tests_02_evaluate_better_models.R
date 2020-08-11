@@ -15,10 +15,12 @@ csv_data <- data.table(read.csv(csv_data_path))
 csv_correct_data_path <- file.path("tests/data/best_models_table_tests.csv")
 csv_correct_data <- data.table(read.csv(csv_correct_data_path))
 
-test_that("Los resultados generados del código son correctos:",
+test_that("Los resultados generados del código son correctos y siguen la guía de estilo:",
     {
         expect_equal(json_data, json_correct_data)
         expect_equal(csv_data, csv_correct_data)
+        expect_equal(length(readLines(json_data_path)), 43)
+        expect_equal(length(readLines("data/processed/logistic_model_parameters.json")), 43)
     }
 )
 
