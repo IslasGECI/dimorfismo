@@ -12,6 +12,7 @@ json_data <- rjson::fromJSON(file = json_data_path)
 test_that("Los resultados generados del código son correctos:",
     {
         expect_equal(json_data, json_correct_data)
+        expect_equal(length(readLines(json_data_path)), 43)
     }
 )
 
