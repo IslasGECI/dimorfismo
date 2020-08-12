@@ -21,3 +21,9 @@ test_that("El valor umbral es correcto:",
         expect_equal(threshold, correct_threshold)
     }
 )
+
+test_that("La probabilidad de error es correcta:",
+    {
+        expect_equivalent(prob, 0.6427869470)
+    }
+)
