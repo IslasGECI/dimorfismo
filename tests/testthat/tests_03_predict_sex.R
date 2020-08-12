@@ -24,6 +24,6 @@ test_that("El valor umbral es correcto:",
 
 test_that("La probabilidad de error es correcta:",
     {
-        expect_equivalent(prob, 0.6427869470)
+        expect_equivalent(prob, correct_prob)
     }
 )
