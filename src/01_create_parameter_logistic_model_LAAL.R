@@ -77,7 +77,6 @@ progress_bar <- txtProgressBar(
   style = 3
 )
 
-
 for (i in 1:num_repetitions) {
   trainning_index <- sample(1:n_data, round(trainning_proportion * n_data))
   validation_index <- -trainning_index
@@ -266,7 +265,6 @@ row_na <- apply(
 filtered_table <- completed_table[!row_na, ]
 minimum_error <- min(filtered_table$error)
 best_model_table <- filtered_table[error == minimum_error]
-
 
 write_csv(
   best_model_table,
