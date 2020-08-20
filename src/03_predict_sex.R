@@ -49,13 +49,14 @@ for (i_albatross in 1:n_rows_data) {
     males <- append(males, as.logical(prob > threshold))
   }
 
-  avrg <- c(avrg, ifelse(sum(males) / length(males) * 100 == "100", 1, 0))
+  final_prob <- ifelse(sum(males) / length(males) * 100 == "100", 1, 0)
+  avrg <- c(avrg, final_prob)
 
   print(
     paste(
       i_albatross,
       as.character(data$sexo),
-      sum(males) / length(males) * 100
+      final_prob
     )
   )
 }
