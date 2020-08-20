@@ -12,6 +12,7 @@ imported_table <- data.table::data.table(
 calculador_roc <- roc$new()
 n_rows_table <- nrow(imported_table)
 n_rows_data <- nrow(csv_data)
+avrg <- c()
 
 for (i_albatross in 1:n_rows_data) {
   data <- csv_data[i_albatross, ]
@@ -47,6 +48,8 @@ for (i_albatross in 1:n_rows_data) {
     prob <- dimorphism_model_albatross$predict(data)
     males <- append(males, as.logical(prob > threshold))
   }
+
+  avrg <- c(avrg, ifelse(sum(males) / length(males) * 100 == "100", 1, 0))
 
   print(
     paste(
