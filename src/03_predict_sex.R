@@ -12,7 +12,7 @@ imported_table <- data.table::data.table(
 calculador_roc <- roc$new()
 n_rows_table <- nrow(imported_table)
 n_rows_data <- nrow(csv_data)
-avrg <- c()
+v_final_prob <- c()
 
 for (i_albatross in 1:n_rows_data) {
   data <- csv_data[i_albatross, ]
@@ -50,7 +50,7 @@ for (i_albatross in 1:n_rows_data) {
   }
 
   final_prob <- ifelse(sum(males) / length(males) * 100 == "100", 1, 0)
-  avrg <- c(avrg, final_prob)
+  v_final_prob <- c(v_final_prob, final_prob)
 
   print(
     paste(

@@ -30,6 +30,6 @@ test_that("La probabilidad de error es correcta:",
 
 test_that("Los resultados finales son correctos:",
     {
-        expect_equivalent(avrg, correct_avrg)
+        expect_equivalent(v_final_prob, correct_final_prob)
     }
 )
