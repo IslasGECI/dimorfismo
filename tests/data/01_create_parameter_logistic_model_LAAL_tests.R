@@ -8,7 +8,9 @@ correct_step_coefficients <- data.frame(
     E = c(0, 0.031, 0.010, 0.059, 0.085)
 )
 
-colnames (correct_step_coefficients) <- c("Variables", "Estimate", "Std. Error", "z value", "Pr(>|z|)")
-rownames (correct_step_coefficients) <- c(
+colnames(correct_step_coefficients) <- c(
+    "Variables", "Estimate", "Std. Error", "z value", "Pr(>|z|)"
+)
+rownames(correct_step_coefficients) <- c(
     "(Intercept)", "longitud pico", "altura pico", "longitud craneo", "tarso"
 )
