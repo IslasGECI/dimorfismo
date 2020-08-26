@@ -14,3 +14,6 @@ colnames(correct_step_coefficients) <- c(
 rownames(correct_step_coefficients) <- c(
     "(Intercept)", "longitud pico", "altura pico", "longitud craneo", "tarso"
 )
+
+correct_min_normalized_data <- c(100.81, 28.85, 166.60, 83.18)
+correct_max_normalized_data <- c(119.48, 35.50, 193.22, 99.69)
