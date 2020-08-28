@@ -17,10 +17,8 @@ males <- c()
 
 for (i_albatross in 1:n_rows_data) {
   data <- csv_data[i_albatross, ]
-  for (i_row in 1:n_rows_table) {
-    dimorphism_model_albatross <- dimorphism_model$new()
-    dimorphism_model_albatross$load_parameters(json_file)
-    prob <- dimorphism_model_albatross$predict(data)
-    males <- append(males, as.logical(prob > threshold))
-  }
+  dimorphism_model_albatross <- dimorphism_model$new()
+  dimorphism_model_albatross$load_parameters(json_file)
+  prob <- dimorphism_model_albatross$predict(data)
+  males <- append(males, as.logical(prob > threshold))
 }
