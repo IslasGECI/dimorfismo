@@ -13,10 +13,11 @@ n_rows_table <- nrow(imported_table)
 n_rows_data <- nrow(csv_data)
 males <- c()
 
+threshold <- as.numeric(imported_table[1, 7])
+
 for (i_albatross in 1:n_rows_data) {
   data <- csv_data[i_albatross, ]
   for (i_row in 1:n_rows_table) {
-    threshold <- as.numeric(imported_table[i_row, 7])
     dimorphism_model_albatross <- dimorphism_model$new()
     dimorphism_model_albatross$load_parameters("data/processed/best_logistic_model_parameters_laal_ig.json")
     prob <- dimorphism_model_albatross$predict(data)
