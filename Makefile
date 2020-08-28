@@ -19,7 +19,7 @@ endef
 # ------------------------------------------------------------------------------------------------
 RawData = \
 	data/raw/datapackage.json \
-	data/raw/laysan_albatross_morphometry_guadalupe.csv 
+	data/raw/laysan_albatross_morphometry_guadalupe.csv
 
 csvLogisticModelTable = \
 	data/processed/logistic_model_table.csv
