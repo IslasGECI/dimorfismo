@@ -9,14 +9,12 @@ imported_table <- data.table::data.table(
   readr::read_csv(paste0(results_path, "best_models_table.csv"))
 )
 
-calculador_roc <- roc$new()
 n_rows_table <- nrow(imported_table)
 n_rows_data <- nrow(csv_data)
-v_final_prob <- c()
+males <- c()
 
 for (i_albatross in 1:n_rows_data) {
   data <- csv_data[i_albatross, ]
-  males <- c()
   for (i_row in 1:n_rows_table) {
     auxiliar_coefficients_table <- imported_table[i_row, 1:5]
     auxiliar_coefficients_table <- data.frame(
@@ -48,15 +46,4 @@ for (i_albatross in 1:n_rows_data) {
     prob <- dimorphism_model_albatross$predict(data)
     males <- append(males, as.logical(prob > threshold))
   }
-
-  final_prob <- ifelse(sum(males) / length(males) * 100 == "100", 1, 0)
-  v_final_prob <- c(v_final_prob, final_prob)
-
-  print(
-    paste(
-      i_albatross,
-      as.character(data$sexo),
-      final_prob
-    )
-  )
 }
