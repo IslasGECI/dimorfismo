@@ -2,8 +2,6 @@ library(data.table)
 library(dimorfismo)
 library(testthat)
 
-setwd("/workdir/")
-
 test_data <- data.frame(
   temp = c(11.9, 14.2, 15.2, 16.4, 17.2, 18.1,
          18.5, 19.4, 22.1, 22.6, 23.4, 25.1),
