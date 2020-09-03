@@ -4,6 +4,7 @@ library(tidyverse)
 
 set.seed(28)
 
+final_y_test <- c()
 tdp_path <- ("data/raw/")
 results_path <- ("data/processed/")
 csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
@@ -197,6 +198,7 @@ for (i in 1:num_repetitions) {
   dimorphism_model_albatross$load_parameters(json_path)
   prob <- dimorphism_model_albatross$predict(validation_data)
   y_test <- ifelse(validation_data$sexo == "M", 1, 0)
+  final_y_test <- append(final_y_test, y_test)
   roc_data <- data.frame(y_test, prob)
   error_criteria <- calculador_roc$best_threshold_error(roc_data)
   threshold_error_table <- rbind(threshold_error_table, error_criteria)
