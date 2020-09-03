@@ -17,3 +17,9 @@ test_that("Los valores normalizados son correctos:",
         expect_equivalent(max_normalized_data, correct_max_normalized_data)
     }
 )
+
+test_that("El valor de prueba es correcto:",
+    {
+        expect_equivalent(final_y_test, correct_y_test)
+    }
+)
