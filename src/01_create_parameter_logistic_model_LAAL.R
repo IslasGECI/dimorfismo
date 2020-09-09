@@ -4,6 +4,9 @@ library(tidyverse)
 
 set.seed(28)
 
+setwd("/workdir/")
+source("src/normalize_function.R")
+
 final_y_test <- c()
 tdp_path <- ("data/raw/")
 results_path <- ("data/processed/")
@@ -113,11 +116,6 @@ for (i in 1:num_repetitions) {
     variables_model,
     with = FALSE
   ]
-
-  normalize <- function(column) {
-    normalize_return <- (column - min(column)) / (max(column) - min(column))
-    return(normalize_return)
-  }
 
   normalized_data <- as.data.frame(apply(normalized_data, 2, normalize))
   normalized_data$sexo <- averaged_data[!is.na(averaged_data$peso), ]$sexo
