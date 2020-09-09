@@ -98,7 +98,7 @@ for (i in 1:num_repetitions) {
   ]
 
   numerical_data <- trainning_data[,
-    lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean, na.rm = T),
+    lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean),
     by = id_darvic
   ]
   averaged_data <- numerical_data[no_numerical_data[!duplicated(id_darvic)]]
