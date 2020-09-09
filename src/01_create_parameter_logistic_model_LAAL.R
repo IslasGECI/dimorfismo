@@ -160,8 +160,8 @@ for (i in 1:num_repetitions) {
     model_varibles_names,
     with = FALSE
   ]
-  min_normalized_data <- apply(model_used_data, 2, min)
-  max_normalized_data <- apply(model_used_data, 2, max)
+  min_normalized_data <- sapply(model_used_data, min)
+  max_normalized_data <- sapply(model_used_data, max)
 
   normalization_parameters <- list(
     minimum_value = split(
