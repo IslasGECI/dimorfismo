@@ -117,7 +117,7 @@ for (i in 1:num_repetitions) {
     with = FALSE
   ]
 
-  normalized_data <- as.data.frame(apply(normalized_data, 2, normalize))
+  normalized_data <- as.data.frame(sapply(normalized_data, normalize))
   normalized_data$sexo <- averaged_data[!is.na(averaged_data$peso), ]$sexo
 
   null_regression <- glm(
