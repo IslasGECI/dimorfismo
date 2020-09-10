@@ -29,43 +29,20 @@ num_repetitions <- 10
 threshold_error_table <- data.frame(threshold <- c(), error <- c())
 calculador_roc <- roc$new()
 
-model_table <- list(
-  model_coefficients = data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
-  ),
-  standard_error = data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
-  ),
-  z_value = data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
-  ),
-  pr_value = data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
-  ),
-  min_normalization_parameters = data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
-  ),
-  max_normalization_parameters = data.frame(
+null_frame = data.frame(
     matrix(
       ncol = length(column_names),
       nrow = num_repetitions
     )
   )
+
+model_table <- list(
+  model_coefficients = null_frame,
+  standard_error = null_frame,
+  z_value = null_frame,
+  pr_value = null_frame,
+  min_normalization_parameters = null_frame,
+  max_normalization_parameters = null_frame
 )
 
 colnames(model_table$model_coefficients) <- column_names
@@ -132,6 +109,7 @@ for (i in 1:num_repetitions) {
     data = normalized_data,
     family = "binomial"
   )
+
   # Aplicamos el método _stepwise_.
   step_regression <- step(null_regression,
     scope = list(
