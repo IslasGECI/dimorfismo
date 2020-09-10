@@ -18,7 +18,6 @@ data <- data.table(read.csv(csv_file))
 n_data <- nrow(data)
 
 trainning_proportion <- 0.80
-validation_proportion <- 1 - trainning_proportion
 
 variables_model <- c(
   "longitud_craneo", "longitud_pico", "ancho_craneo", "altura_pico",
