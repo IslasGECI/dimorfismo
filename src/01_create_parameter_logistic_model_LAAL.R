@@ -29,7 +29,7 @@ num_repetitions <- 10
 threshold_error_table <- data.frame(threshold <- c(), error <- c())
 calculador_roc <- roc$new()
 
-null_frame = data.frame(
+null_frame <- data.frame(
     matrix(
       ncol = length(column_names),
       nrow = num_repetitions
