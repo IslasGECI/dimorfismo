@@ -188,7 +188,7 @@ for (i in 1:num_repetitions) {
 
   json_path <- "data/processed/logistic_model_parameters.json"
   readr::write_lines(
-    jsonlite::toJSON(list_normalization_parameters, pretty = T),
+    jsonlite::toJSON(list_normalization_parameters),
     json_path
   )
 
