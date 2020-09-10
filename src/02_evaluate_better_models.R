@@ -1,5 +1,5 @@
-source("src/dimorphism_model_class.R")
-source("src/calculator_ROC_class.R")
+library(dimorfismo)
+library(tidyverse)
 
 tdp_path <- ("data/raw")
 json_path <- ("data/processed/logistic_model_parameters.json")
@@ -25,10 +25,10 @@ for (i_row in 1:n_rows_table) {
   row.names = colnames(auxiliar_coefficients_table)
   )
   colnames(auxiliar_coefficients_table) <- c("Variables", "Estimate")
-  threshold <- as.numeric(imported_table[i_row, 6])
-  max_auxiliar_normalized_table <- imported_table[i_row, 12:15]
+  threshold <- as.numeric(imported_table[i_row, 7])
+  max_auxiliar_normalized_table <- imported_table[i_row, 14:17]
   colnames(max_auxiliar_normalized_table) <- rownames(auxiliar_coefficients_table[2:5, ])
-  min_auxiliar_normalized_table <- imported_table[i_row, 8:11]
+  min_auxiliar_normalized_table <- imported_table[i_row, 9:12]
   colnames(min_auxiliar_normalized_table) <- rownames(auxiliar_coefficients_table[2:5, ])
   normalization_parameters <- list(
     minimum_value = as.list(min_auxiliar_normalized_table),
