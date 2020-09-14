@@ -66,7 +66,6 @@ for (i in 1:num_repetitions) {
   validation_data <- data[validation_index]
 
   setkey(trainning_data, id_darvic)
-  repeated_individuals <- data.table(id_darvic = trainning_data[duplicated(id_darvic)]$id_darvic)
 
   no_numerical_data <- trainning_data[unique(trainning_data),
     .SD[, !sapply(.SD, is.numeric), with = FALSE],
