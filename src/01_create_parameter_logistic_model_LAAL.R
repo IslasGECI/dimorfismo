@@ -180,13 +180,13 @@ for (i in 1:num_repetitions) {
 }
 close(progress_bar)
 
-final_variables <- c(
-  "(Intercept)", "longitud_craneo", "altura_pico",
-  "longitud_pico", "tarso", "ancho_craneo"
-)
 no_intercept_variables <- c(
   "longitud_craneo", "altura_pico", "longitud_pico",
   "tarso", "ancho_craneo"
+)
+
+final_variables <- c(
+  "(Intercept)", no_intercept_variables
 )
 
 model_table$model_coefficients <- model_table$model_coefficients[, final_variables]
