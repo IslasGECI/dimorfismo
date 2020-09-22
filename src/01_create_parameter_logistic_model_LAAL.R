@@ -80,12 +80,6 @@ for (i in 1:num_repetitions) {
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
   metadata_fields <- data.table(metadata$resources$schema$fields[[1]])
-  # Se identifican los `fields` en los metadata (son las variables de los Datos)
-  # con unidades definidas ya que estos (campos) describen a las variables morfométricas.
-  morphometric_measurement <- metadata_fields$units != ""
-  n_morphometric_variables <- sum(morphometric_measurement)
-  # Se obtienen el nombre largo de las variables morfométricas
-  large_names_morphometry <- metadata_fields[morphometric_measurement, nombre_largo]
   n_individuals <- length(unique(averaged_data$id_darvic))
   normalized_data <- averaged_data[!is.na(averaged_data$peso),
     variables_model,
