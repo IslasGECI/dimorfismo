@@ -2,7 +2,7 @@ all: tests reports/funcion_logistica.pdf
 
 define runLint
 	R -e "library(lintr)" \
-      -e "lint('R/calculator_ROC_class.R', linters = with_defaults(line_length_linter(100)))" \
+      -e "lint('R/calculator_roc_class.R', linters = with_defaults(line_length_linter(100)))" \
       -e "lint('R/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
       -e "lint('R/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))" \
       -e "lint('src/01_create_parameter_logistic_model_LAAL.R', linters = with_defaults(line_length_linter(100)))" \
@@ -43,13 +43,13 @@ reports/funcion_logistica.pdf: reports/logistic_function.tex $(csvLogisticModelT
 
 # III. Sección de dependencias para los objetivos principales
 # ------------------------------------------------------------------------------------------------
-$(csvLogisticModelTable): src/01_create_parameter_logistic_model_LAAL.R $(RawData) R/dimorphism_model_class.R R/calculator_ROC_class.R R/regretion_to_data_frame_coefficients_function.R
+$(csvLogisticModelTable): src/01_create_parameter_logistic_model_LAAL.R $(RawData) R/dimorphism_model_class.R R/calculator_roc_class.R R/regretion_to_data_frame_coefficients_function.R
 	$(runScript)
 
-$(csvBestModelTable) $(jsonBestLogisticModelParameters): src/02_evaluate_better_models.R $(RawData) $(csvLogisticModelTable) R/dimorphism_model_class.R R/calculator_ROC_class.R
+$(csvBestModelTable) $(jsonBestLogisticModelParameters): src/02_evaluate_better_models.R $(RawData) $(csvLogisticModelTable) R/dimorphism_model_class.R R/calculator_roc_class.R
 	$(runScript)
 
-$(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTable) R/dimorphism_model_class.R R/calculator_ROC_class.R
+$(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTable) R/dimorphism_model_class.R R/calculator_roc_class.R
 	$(runScript)
 
 # IV. Sección del resto de los phonies
