@@ -10,6 +10,12 @@ define runLint
       -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))"
 endef
 
+define runStyler
+	R -e "library(styler)" \
+	  -e "style_dir('src')" \
+	  -e "style_dir('tests')"
+endef
+
 define runScript
 	mkdir --parents $(@D)
 	R --file=$<
@@ -54,7 +60,10 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 
 # IV. Sección del resto de los phonies
 # ------------------------------------------------------------------------------------------------
-.PHONY: all lint clean tests coverage install
+.PHONY: all clean coverage install lint styler tests
+
+coverage: $(jsonLogisticModelParameters)
+	R -e "covr::package_coverage()"
 
 install:
 	R -e "devtools::document()" && \
@@ -66,12 +75,12 @@ lint:
 	$(runLint)
 	$(runLint) | grep -e "\^" && exit 1 || exit 0
 
+styler:
+	$(runStyler)
+
 tests: $(jsonLogisticModelParameters)
 	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)" \
 	  -e "devtools::test()"
-
-coverage: $(jsonLogisticModelParameters)
-	R -e "covr::package_coverage()"
 
 # Elimina los residuos de LaTeX
 clean:
