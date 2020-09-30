@@ -10,15 +10,16 @@ define runLint
       -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))"
 endef
 
-define runStyler
-	R -e "library(styler)" \
-	  -e "style_dir('src')" \
-	  -e "style_dir('tests')"
-endef
-
 define runScript
 	mkdir --parents $(@D)
 	R --file=$<
+endef
+
+define runStyler
+	R -e "library(styler)" \
+	  -e "style_dir('src')" \
+	  -e "style_dir('tests')" \
+	  -e "style_dir('R')"
 endef
 
 # I. Sección de variables
