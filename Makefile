@@ -15,13 +15,6 @@ define runScript
 	R --file=$<
 endef
 
-define runStyler
-	R -e "library(styler)" \
-	  -e "style_dir('src')" \
-	  -e "style_dir('tests')" \
-	  -e "style_dir('R')"
-endef
-
 # I. Sección de variables
 # ------------------------------------------------------------------------------------------------
 RawData = \
@@ -61,18 +54,18 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 
 # IV. Sección del resto de los phonies
 # ------------------------------------------------------------------------------------------------
-.PHONY: all clean coverage install lint styler tests
+.PHONY: all clean coverage format install lint tests
 
 clean:
+	rm --force --recursive data/processed
+	rm --force --recursive dimorfismo.Rcheck
+	rm --force --recursive man
+	rm --force --recursive reports/pythontex*
+	rm --force *.tar.gz
 	rm --force reports/*.aux
 	rm --force reports/*.log
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
-	rm --force --recursive data/processed
-	rm --force --recursive reports/pythontex*
-	rm --force *.tar.gz
-	rm --force --recursive dimorfismo.Rcheck
-	rm --force --recursive man
 
 coverage: $(jsonLogisticModelParameters)
 	R -e "covr::package_coverage()"
@@ -87,8 +80,11 @@ lint:
 	$(runLint)
 	$(runLint) | grep -e "\^" && exit 1 || exit 0
 
-styler:
-	$(runStyler)
+format:
+	R -e "library(styler)" \
+	  -e "style_dir('src')" \
+	  -e "style_dir('R')" \
+	  -e "style_dir('tests')"
 
 tests: $(jsonLogisticModelParameters)
 	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)" \
