@@ -12,11 +12,11 @@ fake_data_to_test <- data.frame(
   )
 )
 
-test_that("El método best_threshold_error funciona", {
+test_that("El método best_threshold_error funciona bien", {
   expect_equal(calculator_roc$best_threshold_error(fake_data_to_test)$"threshold"[1], 0.505)
   expect_equal(calculator_roc$best_threshold_error(fake_data_to_test)$"error"[1], 40)
 })
 
-test_that("El método calculate_error funciona", {
+test_that("El método calculate_error funciona bien", {
   expect_equal(calculator_roc$calculate_error(fake_data_to_test, threshold_fake), 40)
 })
