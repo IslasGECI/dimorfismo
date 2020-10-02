@@ -12,12 +12,12 @@ test_data <- data.frame(
     406L, 412L, 522L, 445L, 544L, 614L
   )
 )
-pois.mod <- glm(units ~ temp,
+pois_mod <- glm(units ~ temp,
   data = test_data,
   family = poisson(link = "log")
 )
 
-regresion_step <- step(pois.mod)
+regresion_step <- step(pois_mod)
 coeficientes_step <- regretion_to_data_frame(regresion_step)
 
 test_that("La función regresa un data.frame", {
