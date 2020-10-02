@@ -15,29 +15,21 @@ csv_data <- data.table(read.csv(csv_data_path))
 csv_correct_data_path <- file.path("tests/data/best_models_table_tests.csv")
 csv_correct_data <- data.table(read.csv(csv_correct_data_path))
 
-test_that("Los resultados generados del código son correctos y siguen la guía de estilo:",
-    {
-        expect_equal(json_data, json_correct_data)
-        expect_equal(csv_data, csv_correct_data)
-        expect_equal(length(readLines(json_data_path)), 43)
-        expect_equal(length(readLines("data/processed/logistic_model_parameters.json")), 43)
-    }
-)
+test_that("Los resultados generados del código son correctos y siguen la guía de estilo:", {
+  expect_equal(json_data, json_correct_data)
+  expect_equal(csv_data, csv_correct_data)
+  expect_equal(length(readLines(json_data_path)), 43)
+  expect_equal(length(readLines("data/processed/logistic_model_parameters.json")), 43)
+})
 
-test_that("El valor umbral es correcto:",
-    {
-        expect_equal(threshold, correct_threshold)
-    }
-)
+test_that("El valor umbral es correcto:", {
+  expect_equal(threshold, correct_threshold)
+})
 
-test_that("Los resultados de predicción son correctos",
-    {
-        expect_equal(y_test, correct_y_test)
-    }
-)
+test_that("Los resultados de predicción son correctos", {
+  expect_equal(y_test, correct_y_test)
+})
 
-test_that("Los resultados de error en curva ROC son correctos",
-    {
-        expect_equivalent(calculador_roc$calculate_error(roc_data, threshold), correct_error_roc)
-    }
-)
+test_that("Los resultados de error en curva ROC son correctos", {
+  expect_equivalent(calculador_roc$calculate_error(roc_data, threshold), correct_error_roc)
+})

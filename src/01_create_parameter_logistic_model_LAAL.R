@@ -29,11 +29,11 @@ threshold_error_table <- data.frame(threshold <- c(), error <- c())
 calculador_roc <- roc$new()
 
 null_frame <- data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
+  matrix(
+    ncol = length(column_names),
+    nrow = num_repetitions
   )
+)
 
 model_table <- list(
   model_coefficients = null_frame,
