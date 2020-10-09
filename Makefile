@@ -7,12 +7,12 @@ define runLint
 	  -e "lint('tests/testthat/tests_03_predict_sex.R', linters = with_defaults(line_length_linter(100)))" \
 	  -e "lint('tests/testthat/tests_calculator_roc_class.R', linters = with_defaults(line_length_linter(100)))" \
 	  -e "lint('tests/testthat/tests_regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('R/calculator_roc_class.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('R/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('R/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/01_create_parameter_logistic_model_LAAL.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/02_evaluate_better_models.R', linters = with_defaults(line_length_linter(100)))" \
-      -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))"
+	  -e "lint('R/calculator_roc_class.R', linters = with_defaults(line_length_linter(100)))" \
+	  -e "lint('R/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
+	  -e "lint('R/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))" \
+	  -e "lint('src/01_create_parameter_logistic_model_LAAL.R', linters = with_defaults(line_length_linter(100)))" \
+	  -e "lint('src/02_evaluate_better_models.R', linters = with_defaults(line_length_linter(100)))" \
+	  -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))"
 endef
 
 define runScript
@@ -22,21 +22,22 @@ endef
 
 # I. Sección de variables
 # ------------------------------------------------------------------------------------------------
-RawData = \
-	data/raw/datapackage.json \
-	data/raw/laysan_albatross_morphometry_guadalupe.csv
-
-csvLogisticModelTable = \
-	data/processed/logistic_model_table.csv
 
 csvBestModelTable = \
 	data/processed/best_models_table.csv
+
+csvLogisticModelTable = \
+	data/processed/logistic_model_table.csv
 
 jsonBestLogisticModelParameters = \
 	data/processed/best_logistic_model_parameters_laal_ig.json
 
 jsonLogisticModelParameters = \
 	data/processed/logistic_model_parameters.json
+
+RawData = \
+	data/raw/datapackage.json \
+	data/raw/laysan_albatross_morphometry_guadalupe.csv
 
 # II. Sección de requisitos de objetivos principales:
 # ------------------------------------------------------------------------------------------------
