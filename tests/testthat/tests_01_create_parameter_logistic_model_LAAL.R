@@ -24,6 +24,8 @@ test_that("El valor de prueba es correcto:", {
 })
 
 test_that("Los resultados generados del código son correctos:", {
+  obtained_length <- length(readLines(json_data_path))
+  correct_lenght <- 58
   expect_equal(json_data, json_correct_data)
-  expect_equal(length(readLines(json_data_path)), 58)
+  expect_equal(obtained_length, correct_lenght)
 })

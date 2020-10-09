@@ -21,5 +21,7 @@ regresion_step <- step(pois_mod)
 coeficientes_step <- regretion_to_data_frame(regresion_step)
 
 test_that("La función regresa un data.frame", {
-  expect_equal(class(coeficientes_step), "data.frame")
+  obtained_class <- class(coeficientes_step)
+  correct_class <- "data.frame"
+  expect_equal(obtained_class, correct_class)
 })

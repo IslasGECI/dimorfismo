@@ -10,8 +10,10 @@ json_data_path <- ("data/processed/logistic_model_parameters.json")
 json_data <- rjson::fromJSON(file = json_data_path)
 
 test_that("Los resultados generados del código son correctos:", {
+  obtained_length <- length(readLines(json_data_path))
+  correct_length <- 43
   expect_equal(json_data, json_correct_data)
-  expect_equal(length(readLines(json_data_path)), 43)
+  expect_equal(correct_length, correct_length)
 })
 
 test_that("El valor umbral es correcto:", {

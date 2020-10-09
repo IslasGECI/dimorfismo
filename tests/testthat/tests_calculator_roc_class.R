@@ -11,12 +11,13 @@ fake_data_to_test <- data.frame(
     9.996934, 1.176383, 9.548987, 2.338850, 6.769900
   )
 )
+outcome_threshold_error <- calculator_roc$best_threshold_error(fake_data_to_test)
+outcome_threshols <- outcome_threshold_error$"threshold"[1]
+outcome_error <- outcome_threshold_error$"error"[1]
 
-test_that("El método best_threshold_error funciona bien", {
-  expect_equal(calculator_roc$best_threshold_error(fake_data_to_test)$"threshold"[1], 0.505)
-  expect_equal(calculator_roc$best_threshold_error(fake_data_to_test)$"error"[1], 40)
-})
-
-test_that("El método calculate_error funciona bien", {
-  expect_equal(calculator_roc$calculate_error(fake_data_to_test, threshold_fake), 40)
+test_that("El método best_threshold_error funciona correctamente: ", {
+  expected_threshold <- 0.505
+  expected_error <- 40
+  expect_equal(outcome_threshols, expected_threshold)
+  expect_equal(outcome_error, expected_error)
 })
