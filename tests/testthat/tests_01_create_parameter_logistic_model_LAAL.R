@@ -15,8 +15,8 @@ test_that("El valor mínimo de error es correcto:", {
 })
 
 test_that("Los valores normalizados son correctos:", {
-  expect_equivalent(min_normalized_data, correct_min_normalized_data)
   expect_equivalent(max_normalized_data, correct_max_normalized_data)
+  expect_equivalent(min_normalized_data, correct_min_normalized_data)
 })
 
 test_that("El valor de prueba es correcto:", {
@@ -24,8 +24,8 @@ test_that("El valor de prueba es correcto:", {
 })
 
 test_that("Los resultados generados del código son correctos:", {
-  obtained_length <- length(readLines(json_data_path))
   correct_lenght <- 58
+  obtained_length <- length(readLines(json_data_path))
   expect_equal(json_data, json_correct_data)
   expect_equal(obtained_length, correct_lenght)
 })
