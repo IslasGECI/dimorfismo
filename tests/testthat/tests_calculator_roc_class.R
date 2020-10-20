@@ -17,7 +17,7 @@ outcome_threshols <- outcome_threshold_error$"threshold"[1]
 
 test_that("El método best_threshold_error funciona correctamente: ", {
   expected_error <- 40
-  expected_threshold <- 0.505
   expect_equal(outcome_error, expected_error)
+  expected_threshold <- 0.505
   expect_equal(outcome_threshols, expected_threshold)
 })

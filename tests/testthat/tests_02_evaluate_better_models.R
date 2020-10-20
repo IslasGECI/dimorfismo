@@ -7,22 +7,22 @@ source("src/02_evaluate_better_models.R")
 
 csv_correct_data_path <- file.path("tests/data/best_models_table_tests.csv")
 csv_data_path <- file.path("data/processed/best_models_table.csv")
-json_correct_data_path <- ("tests/data/best_logistic_model_parameters_laal_ig_tests.json")
-json_data_dir <- ("data/processed/logistic_model_parameters.json")
-json_data_path <- ("data/processed/best_logistic_model_parameters_laal_ig.json")
+json_correct_data_path <- "tests/data/best_logistic_model_parameters_laal_ig_tests.json"
+json_data_dir <- "data/processed/logistic_model_parameters.json"
+json_data_path <- "data/processed/best_logistic_model_parameters_laal_ig.json"
 
 
 test_that("Los resultados generados del código son correctos y siguen la guía de estilo:", {
   csv_correct_data <- data.table(read.csv(csv_correct_data_path))
   csv_data <- data.table(read.csv(csv_data_path))
-  expected_length <- 43
+  expect_equal(csv_data, csv_correct_data)
   json_correct_data <- rjson::fromJSON(file = json_correct_data_path)
   json_data <- rjson::fromJSON(file = json_data_path)
-  obtained_length <- length(readLines(json_data_path))
-  outcome_length_json <- length(readLines(json_data_dir))
-  expect_equal(csv_data, csv_correct_data)
   expect_equal(json_data, json_correct_data)
+  expected_length <- 43
+  obtained_length <- length(readLines(json_data_path))
   expect_equal(obtained_length, expected_length)
+  outcome_length_json <- length(readLines(json_data_dir))
   expect_equal(outcome_length_json, expected_length)
 })
 

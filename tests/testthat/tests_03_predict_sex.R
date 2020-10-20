@@ -4,15 +4,15 @@ setwd("/workdir/")
 source("tests/data/03_predict_sex_data_tests.R")
 source("src/03_predict_sex.R")
 
-json_correct_data_path <- ("tests/data/best_logistic_model_parameters_laal_ig_tests.json")
+json_correct_data_path <- "tests/data/best_logistic_model_parameters_laal_ig_tests.json"
 json_correct_data <- rjson::fromJSON(file = json_correct_data_path)
-json_data_path <- ("data/processed/logistic_model_parameters.json")
+json_data_path <- "data/processed/logistic_model_parameters.json"
 json_data <- rjson::fromJSON(file = json_data_path)
 
 test_that("Los resultados generados del código son correctos:", {
   correct_length <- 43
   obtained_length <- length(readLines(json_data_path))
-  expect_equal(correct_length, correct_length)
+  expect_equal(correct_length, obtained_length)
   expect_equal(json_data, json_correct_data)
 })
 

@@ -12,6 +12,7 @@ test_data <- data.frame(
     406L, 412L, 522L, 445L, 544L, 614L
   )
 )
+
 pois_mod <- glm(units ~ temp,
   data = test_data,
   family = poisson(link = "log")

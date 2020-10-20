@@ -8,8 +8,8 @@ setwd("/workdir/")
 source("src/normalize_function.R")
 
 final_y_test <- c()
-tdp_path <- ("data/raw/")
-results_path <- ("data/processed/")
+tdp_path <- "data/raw/"
+results_path <- "data/processed/"
 csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
 json_file <- file.path(tdp_path, "datapackage.json")
 

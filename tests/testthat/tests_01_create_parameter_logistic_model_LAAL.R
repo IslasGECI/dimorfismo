@@ -5,9 +5,9 @@ setwd("/workdir/")
 source("src/01_create_parameter_logistic_model_LAAL.R")
 source("tests/data/01_create_parameter_logistic_model_LAAL_tests.R")
 
-json_data_path <- ("data/processed/logistic_model_parameters.json")
+json_data_path <- "data/processed/logistic_model_parameters.json"
 json_data <- rjson::fromJSON(file = json_data_path)
-json_correct_data_path <- ("tests/data/logistic_model_parameters_tests.json")
+json_correct_data_path <- "tests/data/logistic_model_parameters_tests.json"
 json_correct_data <- rjson::fromJSON(file = json_correct_data_path)
 
 test_that("El valor mínimo de error es correcto:", {
@@ -24,8 +24,8 @@ test_that("El valor de prueba es correcto:", {
 })
 
 test_that("Los resultados generados del código son correctos:", {
+  expect_equal(json_data, json_correct_data)
   correct_lenght <- 58
   obtained_length <- length(readLines(json_data_path))
-  expect_equal(json_data, json_correct_data)
   expect_equal(obtained_length, correct_lenght)
 })
