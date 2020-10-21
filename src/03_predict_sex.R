@@ -10,7 +10,6 @@ imported_table <- data.table::data.table(
   readr::read_csv(paste0(results_path, "best_models_table.csv"))
 )
 
-n_rows_table <- nrow(imported_table)
 n_rows_data <- nrow(csv_data)
 threshold <- as.numeric(imported_table[1, 7])
 males <- c()

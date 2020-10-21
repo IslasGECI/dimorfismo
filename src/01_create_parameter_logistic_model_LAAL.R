@@ -11,9 +11,7 @@ final_y_test <- c()
 tdp_path <- "data/raw/"
 results_path <- "data/processed/"
 csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
-json_file <- file.path(tdp_path, "datapackage.json")
 
-metadata <- jsonlite::fromJSON(json_file)
 data <- data.table(read.csv(csv_file))
 n_data <- nrow(data)
 
@@ -79,7 +77,6 @@ for (i in 1:num_repetitions) {
   averaged_data <- numerical_data[no_numerical_data[!duplicated(id_darvic)]]
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
-  metadata_fields <- data.table(metadata$resources$schema$fields[[1]])
   n_individuals <- length(unique(averaged_data$id_darvic))
   normalized_data <- averaged_data[!is.na(averaged_data$peso),
     variables_model,
