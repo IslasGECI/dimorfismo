@@ -33,15 +33,6 @@ dimorphism_model <- R6Class("dimorphism_model",
       probability <- 1 / (1 + exp(-z))
       colnames(probability) <- "probability"
       return(probability)
-    },
-    get_variables_names = function() {
-      model_variables <- c()
-      for (variable in private$model_parameters) {
-        if (variable$Variables != "(Intercept)") {
-          model_variables <- c(model_variables, variable$Variables)
-        }
-      }
-      return(model_variables)
     }
   ),
 
