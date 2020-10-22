@@ -4,17 +4,18 @@ library(tidyverse)
 
 set.seed(28)
 
-tdp_path <- ("data/raw/")
-results_path <- ("data/processed/")
-csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
-json_file <- file.path(tdp_path, "datapackage.json")
+setwd("/workdir/")
+source("src/normalize_function.R")
 
-metadata <- jsonlite::fromJSON(json_file)
+final_y_test <- c()
+tdp_path <- "data/raw/"
+results_path <- "data/processed/"
+csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
+
 data <- data.table(read.csv(csv_file))
 n_data <- nrow(data)
 
 trainning_proportion <- 0.80
-validation_proportion <- 1 - trainning_proportion
 
 variables_model <- c(
   "longitud_craneo", "longitud_pico", "ancho_craneo", "altura_pico",
@@ -25,43 +26,20 @@ num_repetitions <- 10
 threshold_error_table <- data.frame(threshold <- c(), error <- c())
 calculador_roc <- roc$new()
 
-model_table <- list(
-  model_coefficients = data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
-  ),
-  standard_error = data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
-  ),
-  z_value = data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
-  ),
-  pr_value = data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
-  ),
-  min_normalization_parameters = data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
-  ),
-  max_normalization_parameters = data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
+null_frame <- data.frame(
+  matrix(
+    ncol = length(column_names),
+    nrow = num_repetitions
   )
+)
+
+model_table <- list(
+  model_coefficients = null_frame,
+  standard_error = null_frame,
+  z_value = null_frame,
+  pr_value = null_frame,
+  min_normalization_parameters = null_frame,
+  max_normalization_parameters = null_frame
 )
 
 colnames(model_table$model_coefficients) <- column_names
@@ -77,7 +55,6 @@ progress_bar <- txtProgressBar(
   style = 3
 )
 
-
 for (i in 1:num_repetitions) {
   trainning_index <- sample(1:n_data, round(trainning_proportion * n_data))
   validation_index <- -trainning_index
@@ -87,7 +64,6 @@ for (i in 1:num_repetitions) {
   validation_data <- data[validation_index]
 
   setkey(trainning_data, id_darvic)
-  repeated_individuals <- data.table(id_darvic = trainning_data[duplicated(id_darvic)]$id_darvic)
 
   no_numerical_data <- trainning_data[unique(trainning_data),
     .SD[, !sapply(.SD, is.numeric), with = FALSE],
@@ -95,31 +71,19 @@ for (i in 1:num_repetitions) {
   ]
 
   numerical_data <- trainning_data[,
-    lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean, na.rm = T),
+    lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean),
     by = id_darvic
   ]
   averaged_data <- numerical_data[no_numerical_data[!duplicated(id_darvic)]]
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
-  metadata_fields <- data.table(metadata$resources$schema$fields[[1]])
-  # Se identifican los `fields` en los metadata (son las variables de los Datos)
-  # con unidades definidas ya que estos (campos) describen a las variables morfométricas.
-  morphometric_measurement <- metadata_fields$units != ""
-  n_morphometric_variables <- sum(morphometric_measurement)
-  # Se obtienen el nombre largo de las variables morfométricas
-  large_names_morphometry <- metadata_fields[morphometric_measurement, nombre_largo]
   n_individuals <- length(unique(averaged_data$id_darvic))
   normalized_data <- averaged_data[!is.na(averaged_data$peso),
     variables_model,
     with = FALSE
   ]
 
-  normalize <- function(column) {
-    normalize_return <- (column - min(column)) / (max(column) - min(column))
-    return(normalize_return)
-  }
-
-  normalized_data <- as.data.frame(apply(normalized_data, 2, normalize))
+  normalized_data <- as.data.frame(sapply(normalized_data, normalize))
   normalized_data$sexo <- averaged_data[!is.na(averaged_data$peso), ]$sexo
 
   null_regression <- glm(
@@ -134,6 +98,7 @@ for (i in 1:num_repetitions) {
     data = normalized_data,
     family = "binomial"
   )
+
   # Aplicamos el método _stepwise_.
   step_regression <- step(null_regression,
     scope = list(
@@ -162,8 +127,8 @@ for (i in 1:num_repetitions) {
     model_varibles_names,
     with = FALSE
   ]
-  min_normalized_data <- apply(model_used_data, 2, min)
-  max_normalized_data <- apply(model_used_data, 2, max)
+  min_normalized_data <- sapply(model_used_data, min)
+  max_normalized_data <- sapply(model_used_data, max)
 
   normalization_parameters <- list(
     minimum_value = split(
@@ -198,6 +163,7 @@ for (i in 1:num_repetitions) {
   dimorphism_model_albatross$load_parameters(json_path)
   prob <- dimorphism_model_albatross$predict(validation_data)
   y_test <- ifelse(validation_data$sexo == "M", 1, 0)
+  final_y_test <- append(final_y_test, y_test)
   roc_data <- data.frame(y_test, prob)
   error_criteria <- calculador_roc$best_threshold_error(roc_data)
   threshold_error_table <- rbind(threshold_error_table, error_criteria)
@@ -205,13 +171,13 @@ for (i in 1:num_repetitions) {
 }
 close(progress_bar)
 
-final_variables <- c(
-  "(Intercept)", "longitud_craneo", "altura_pico",
-  "longitud_pico", "tarso", "ancho_craneo"
-)
 no_intercept_variables <- c(
   "longitud_craneo", "altura_pico", "longitud_pico",
   "tarso", "ancho_craneo"
+)
+
+final_variables <- c(
+  "(Intercept)", no_intercept_variables
 )
 
 model_table$model_coefficients <- model_table$model_coefficients[, final_variables]
@@ -266,7 +232,6 @@ row_na <- apply(
 filtered_table <- completed_table[!row_na, ]
 minimum_error <- min(filtered_table$error)
 best_model_table <- filtered_table[error == minimum_error]
-
 
 write_csv(
   best_model_table,
