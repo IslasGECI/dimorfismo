@@ -9,7 +9,6 @@ dimorphism_model <- R6Class("dimorphism_model",
       private$model_parameters <- json_parameters$model_parameters
     },
     predict = function(morphometric_data_table) {
-      # escribir codigo para predecir Sexo
       z <- private$get_value("(Intercept)")
       i_variable <- 1
       for (variable in private$model_parameters) {
