@@ -1,8 +1,8 @@
 library(dimorfismo)
 library(tidyverse)
 
-tdp_path <- ("data/raw")
-json_path <- ("data/processed/logistic_model_parameters.json")
+tdp_path <- "data/raw"
+json_path <- "data/processed/logistic_model_parameters.json"
 csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
 
 data <- data.table::data.table(read.csv(csv_file))
