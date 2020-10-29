@@ -3,7 +3,7 @@ library(dimorfismo)
 library(testthat)
 
 get_private <- function(object) {
-  object[['.__enclos_env__']]$private
+  object[[".__enclos_env__"]]$private
 }
 
 setwd("/workdir/")

@@ -2,17 +2,9 @@ all: tests reports/funcion_logistica.pdf
 
 define runLint
 	R -e "library(lintr)" \
-	  -e "lint('tests/testthat/tests_01_create_parameter_logistic_model_LAAL.R', linters = with_defaults(line_length_linter(100)))" \
-	  -e "lint('tests/testthat/tests_02_evaluate_better_models.R', linters = with_defaults(line_length_linter(100)))" \
-	  -e "lint('tests/testthat/tests_03_predict_sex.R', linters = with_defaults(line_length_linter(100)))" \
-	  -e "lint('tests/testthat/tests_calculator_roc_class.R', linters = with_defaults(line_length_linter(100)))" \
-	  -e "lint('tests/testthat/tests_regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))" \
-	  -e "lint('R/calculator_roc_class.R', linters = with_defaults(line_length_linter(100)))" \
-	  -e "lint('R/dimorphism_model_class.R', linters = with_defaults(line_length_linter(100)))" \
-	  -e "lint('R/regretion_to_data_frame_coefficients_function.R', linters = with_defaults(line_length_linter(100)))" \
-	  -e "lint('src/01_create_parameter_logistic_model_LAAL.R', linters = with_defaults(line_length_linter(100)))" \
-	  -e "lint('src/02_evaluate_better_models.R', linters = with_defaults(line_length_linter(100)))" \
-	  -e "lint('src/03_predict_sex.R', linters = with_defaults(line_length_linter(100)))"
+	  -e "lint_dir('R', linters = with_defaults(line_length_linter(100)))" \
+	  -e "lint_dir('src', linters = with_defaults(line_length_linter(100)))" \
+	  -e "lint_dir('tests/testthat', linters = with_defaults(line_length_linter(100)))"
 endef
 
 define runScript
