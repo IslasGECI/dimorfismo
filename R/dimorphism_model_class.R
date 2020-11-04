@@ -1,5 +1,5 @@
 library(R6)
-
+#' @source "R/normalize_function.R"
 #' @export
 dimorphism_model <- R6Class("dimorphism_model",
   public = list(
@@ -16,18 +16,7 @@ dimorphism_model <- R6Class("dimorphism_model",
           column <- morphometric_data_table[, variable$Variables, with = FALSE]
           minimum <- as.numeric(private$normalization_parameters$minimum_value[variable$Variables])
           maximum <- as.numeric(private$normalization_parameters$maximum_value[variable$Variables])
-
-          normalize <- function(column) {
-            normalize_return <- (column - minimum) / (maximum - minimum)
-            return(normalize_return)
-          }
-
-          normalize_prueba <- function(column, minimum = min(column), maximum = max(column)) {
-            normalize_return <- (column - minimum) / (maximum - minimum)
-            return(normalize_return)
-          }
-
-          normalized_column <- as.data.frame(normalize_prueba(column, minimum, maximum))
+          normalized_column <- as.data.frame(normalize(column, minimum, maximum))
           z <- z + normalized_column * private$get_value(variable$Variables)
           i_variable <- i_variable + 1
         }
