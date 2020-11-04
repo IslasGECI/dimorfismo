@@ -81,7 +81,12 @@ for (i in 1:num_repetitions) {
     with = FALSE
   ]
 
-  normalized_data <- as.data.frame(sapply(normalized_data, normalize))
+  normalize_prueba <- function(column, minimum = min(column), maximum = max(column)) {
+    normalize_return <- (column - minimum) / (maximum - minimum)
+    return(normalize_return)
+  }
+
+  normalized_data <- as.data.frame(sapply(normalized_data, normalize_prueba))
   normalized_data$sexo <- averaged_data[!is.na(averaged_data$peso), ]$sexo
 
   null_regression <- glm(
