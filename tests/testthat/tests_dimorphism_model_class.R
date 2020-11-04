@@ -19,3 +19,11 @@ test_that("El método load_parameters funciona: ", {
   correct_model_parameters <- get_private(dimorphism_class_tester)$model_parameters
   expect_equal(model_parameters, correct_model_parameters)
 })
+
+dimorphism_class_tester_2 <- dimorphism_model$new()
+dimorphism_class_tester_2$load_parameters("tests/data/logistic_model_parameters_tests.json")
+
+csv_file <- file.path("data/raw/laysan_albatross_morphometry_guadalupe.csv")
+data <- data.table::data.table(read.csv(csv_file))
+data_training <- data[1:10, ]
+dimorphism_class_tester_2$predict(data_training)
