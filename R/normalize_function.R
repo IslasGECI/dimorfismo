@@ -1,5 +1,5 @@
 #' @export
-
-normalize <- function(column) {
-  (column - min(column)) / (max(column) - min(column))
+normalize <- function(column, minimum = min(column), maximum = max(column)) {
+  normalize_return <- (column - minimum) / (maximum - minimum)
+  return(normalize_return)
 }
