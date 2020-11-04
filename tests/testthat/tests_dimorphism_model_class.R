@@ -27,7 +27,9 @@ csv_file <- file.path("data/raw/laysan_albatross_morphometry_guadalupe.csv")
 data <- data.table::data.table(read.csv(csv_file))
 data_training <- data[1:5, ]
 prediction <- dimorphism_class_tester$predict(data_training)
-expected_prediction <- data.frame("probability" = c(0.9916232780, 0.0005606211, 0.9904448866, 0.2978475227, 0.9617133474))
+expected_prediction <- data.frame(
+  "probability" = c(0.9916232780, 0.0005606211, 0.9904448866, 0.2978475227, 0.9617133474)
+)
 
 test_that("El método predict funciona: ", {
   expect_equivalent(prediction, expected_prediction)
