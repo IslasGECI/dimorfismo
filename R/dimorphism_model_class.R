@@ -22,7 +22,12 @@ dimorphism_model <- R6Class("dimorphism_model",
             return(normalize_return)
           }
 
-          normalized_column <- as.data.frame(sapply(column, normalize))
+          normalize_prueba <- function(column, minimum = min(column), maximum = max(column)) {
+            normalize_return <- (column - minimum) / (maximum - minimum)
+            return(normalize_return)
+          }
+
+          normalized_column <- as.data.frame(normalize_prueba(column, minimum, maximum))
           z <- z + normalized_column * private$get_value(variable$Variables)
           i_variable <- i_variable + 1
         }
