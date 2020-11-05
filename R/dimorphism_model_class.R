@@ -13,7 +13,7 @@ dimorphism_model <- R6Class("dimorphism_model",
       i_variable <- 1
       for (variable in private$model_parameters) {
         if (variable$Variables != "(Intercept)") {
-          column <- morphometric_data_table[, variable$Variables, with = FALSE]
+          column <- morphometric_data_table[, variable$Variables]
           minimum <- as.numeric(private$normalization_parameters$minimum_value[variable$Variables])
           maximum <- as.numeric(private$normalization_parameters$maximum_value[variable$Variables])
           normalized_column <- as.data.frame(normalize(column, minimum, maximum))
