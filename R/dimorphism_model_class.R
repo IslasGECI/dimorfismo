@@ -9,16 +9,7 @@ dimorphism_model <- R6Class("dimorphism_model",
       private$model_parameters <- json_parameters$model_parameters
     },
     predict = function(morphometric_data_table) {
-      z <- private$get_value("(Intercept)")
-      for (variable in private$model_parameters) {
-        if (variable$Variables != "(Intercept)") {
-          column <- morphometric_data_table[, variable$Variables]
-          minimum <- as.numeric(private$normalization_parameters$minimum_value[variable$Variables])
-          maximum <- as.numeric(private$normalization_parameters$maximum_value[variable$Variables])
-          normalized_column <- as.data.frame(normalize(column, minimum, maximum))
-          z <- z + normalized_column * private$get_value(variable$Variables)
-        }
-      }
+      z <- private$get_z_value(morphometric_data_table)
       probability <- 1 / (1 + exp(-z))
       colnames(probability) <- "probability"
       return(probability)
@@ -35,6 +26,20 @@ dimorphism_model <- R6Class("dimorphism_model",
           return(variable$Estimate)
         }
       }
+    },
+
+    get_z_value = function(morphometric_data_table){
+      z <- private$get_value("(Intercept)")
+      for (variable in private$model_parameters) {
+        if (variable$Variables != "(Intercept)") {
+          column <- morphometric_data_table[, variable$Variables]
+          minimum <- as.numeric(private$normalization_parameters$minimum_value[variable$Variables])
+          maximum <- as.numeric(private$normalization_parameters$maximum_value[variable$Variables])
+          normalized_column <- as.data.frame(normalize(column, minimum, maximum))
+          z <- z + normalized_column * private$get_value(variable$Variables)
+        }
+      }
+      return(z)
     }
   )
 )
