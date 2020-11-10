@@ -28,7 +28,7 @@ dimorphism_model <- R6Class("dimorphism_model",
       }
     },
 
-    get_z_value = function(data_table){
+    get_z_value = function(data_table) {
       z <- private$get_value("(Intercept)")
       parameters <- private$model_parameters
       n_parameters <- length(parameters)
