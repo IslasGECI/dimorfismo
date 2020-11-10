@@ -28,16 +28,16 @@ dimorphism_model <- R6Class("dimorphism_model",
       }
     },
 
-    get_z_value = function(morphometric_data_table){
+    get_z_value = function(data_table){
       z <- private$get_value("(Intercept)")
-      for (variable in private$model_parameters) {
-        if (variable$Variables != "(Intercept)") {
-          column <- morphometric_data_table[, variable$Variables]
-          minimum <- as.numeric(private$normalization_parameters$minimum_value[variable$Variables])
-          maximum <- as.numeric(private$normalization_parameters$maximum_value[variable$Variables])
-          normalized_column <- as.data.frame(normalize(column, minimum, maximum))
-          z <- z + normalized_column * private$get_value(variable$Variables)
-        }
+      parameters <- private$model_parameters
+      n_parameters <- length(parameters)
+      for (variable in parameters[2:n_parameters]) {
+        column <- data_table[, variable$Variables]
+        minimum <- as.numeric(private$normalization_parameters$minimum_value[variable$Variables])
+        maximum <- as.numeric(private$normalization_parameters$maximum_value[variable$Variables])
+        normalized_column <- as.data.frame(normalize(column, minimum, maximum))
+        z <- z + normalized_column * private$get_value(variable$Variables)
       }
       return(z)
     }
