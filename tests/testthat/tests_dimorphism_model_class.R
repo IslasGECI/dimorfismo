@@ -34,11 +34,11 @@ test_that("El método predict funciona: ", {
   expect_equivalent(prediction, correct_prediction)
 })
 
-test_that("La función privada get_value funciona: ", {
+test_that("La función privada get_estimate_value funciona: ", {
   correct_estimate_peak <- 6.648
   correct_intercept <- -12.87
-  estimate_intercept <- get_private(dimorphism_class_tester)$get_value("(Intercept)")
-  estimate_peak <- get_private(dimorphism_class_tester)$get_value("longitud_pico")
+  estimate_intercept <- get_private(dimorphism_class_tester)$get_estimate_value("(Intercept)")
+  estimate_peak <- get_private(dimorphism_class_tester)$get_estimate_value("longitud_pico")
   expect_equal(estimate_intercept, correct_intercept)
   expect_equal(estimate_peak, correct_estimate_peak)
 })

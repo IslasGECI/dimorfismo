@@ -21,6 +21,14 @@ dimorphism_model <- R6Class("dimorphism_model",
     model_parameters = NULL,
     normalization_parameters = NULL,
 
+    get_estimate_value = function(variable_name) {
+      for (variable in private$model_parameters) {
+        if (variable$Variables == variable_name) {
+          return(variable$Estimate)
+        }
+      }
+    },
+
     get_maximum = function(variable) {
       maximum <- as.numeric(private$normalization_parameters$maximum_value[variable$Variables])
       return(maximum)
@@ -31,22 +39,14 @@ dimorphism_model <- R6Class("dimorphism_model",
       return(minimum)
     },
 
-    get_value = function(variable_name) {
-      for (variable in private$model_parameters) {
-        if (variable$Variables == variable_name) {
-          return(variable$Estimate)
-        }
-      }
-    },
-
     get_z_value = function(data_table) {
-      z <- private$get_value("(Intercept)")
+      z <- private$get_estimate_value("(Intercept)")
       parameters <- private$model_parameters
       n_parameters <- length(parameters)
       for (variable in parameters[2:n_parameters]) {
         column <- data_table[, variable$Variables]
         normalized_column <- private$normalize_column(column, variable)
-        z <- z + normalized_column * private$get_value(variable$Variables)
+        z <- z + normalized_column * private$get_estimate_value(variable$Variables)
       }
       return(z)
     },
