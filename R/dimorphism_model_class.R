@@ -8,6 +8,7 @@ dimorphism_model <- R6Class("dimorphism_model",
       private$normalization_parameters <- json_parameters$normalization_parameters
       private$model_parameters <- json_parameters$model_parameters
     },
+
     predict = function(morphometric_data_table) {
       z <- private$get_z_value(morphometric_data_table)
       probability <- 1 / (1 + exp(-z))
@@ -19,6 +20,16 @@ dimorphism_model <- R6Class("dimorphism_model",
   private = list(
     model_parameters = NULL,
     normalization_parameters = NULL,
+
+    get_maximum = function(variable) {
+      maximum <- as.numeric(private$normalization_parameters$maximum_value[variable$Variables])
+      return(maximum)
+    },
+
+    get_minimum = function(variable) {
+      minimum <- as.numeric(private$normalization_parameters$minimum_value[variable$Variables])
+      return(minimum)
+    },
 
     get_value = function(variable_name) {
       for (variable in private$model_parameters) {
@@ -38,16 +49,6 @@ dimorphism_model <- R6Class("dimorphism_model",
         z <- z + normalized_column * private$get_value(variable$Variables)
       }
       return(z)
-    },
-
-    get_minimum = function(variable) {
-      minimum <- as.numeric(private$normalization_parameters$minimum_value[variable$Variables])
-      return(minimum)
-    },
-
-    get_maximum = function(variable) {
-      maximum <- as.numeric(private$normalization_parameters$maximum_value[variable$Variables])
-      return(maximum)
     },
 
     normalize_column = function(column, variable) {
