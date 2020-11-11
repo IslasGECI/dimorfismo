@@ -34,9 +34,7 @@ dimorphism_model <- R6Class("dimorphism_model",
       n_parameters <- length(parameters)
       for (variable in parameters[2:n_parameters]) {
         column <- data_table[, variable$Variables]
-        minimum <- private$get_minimum(variable)
-        maximum <- private$get_maximum(variable)
-        normalized_column <- as.data.frame(normalize(column, minimum, maximum))
+        normalized_column <- private$normalize_column(column, variable)
         z <- z + normalized_column * private$get_value(variable$Variables)
       }
       return(z)
@@ -50,6 +48,13 @@ dimorphism_model <- R6Class("dimorphism_model",
     get_maximum = function(variable) {
       maximum <- as.numeric(private$normalization_parameters$maximum_value[variable$Variables])
       return(maximum)
+    },
+
+    normalize_column = function(column, variable) {
+      minimum <- private$get_minimum(variable)
+      maximum <- private$get_maximum(variable)
+      normalized_column <- as.data.frame(normalize(column, minimum, maximum))
+      return(normalized_column)
     }
   )
 )
