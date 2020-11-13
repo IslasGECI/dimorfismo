@@ -21,6 +21,13 @@ dimorphism_model <- R6Class("dimorphism_model",
     model_parameters = NULL,
     normalization_parameters = NULL,
 
+    calculate_z = function(data_table, variable, z) {
+      column <- data_table[, variable$Variables]
+      normalized_column <- private$normalize_column(column, variable)
+      z <- z + normalized_column * private$get_estimate_value(variable$Variables)
+      return(z)
+    },
+
     get_estimate_value = function(variable_name) {
       for (variable in private$model_parameters) {
         if (variable$Variables == variable_name) {
@@ -44,9 +51,7 @@ dimorphism_model <- R6Class("dimorphism_model",
       parameters <- private$model_parameters
       n_parameters <- length(parameters)
       for (variable in parameters[2:n_parameters]) {
-        column <- data_table[, variable$Variables]
-        normalized_column <- private$normalize_column(column, variable)
-        z <- z + normalized_column * private$get_estimate_value(variable$Variables)
+        z <- private$calculate_z(data_table, variable, z)
       }
       return(z)
     },
