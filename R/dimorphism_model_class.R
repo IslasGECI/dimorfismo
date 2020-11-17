@@ -48,9 +48,8 @@ dimorphism_model <- R6Class("dimorphism_model",
 
     get_z_value = function(data_table) {
       z <- private$get_estimate_value("(Intercept)")
-      parameters <- private$model_parameters
-      n_parameters <- length(parameters)
-      for (variable in parameters[2:n_parameters]) {
+      morphometric_parameters <- private$remove_intercept()
+      for (variable in morphometric_parameters) {
         z <- private$calculate_z(data_table, variable, z)
       }
       return(z)
@@ -61,6 +60,12 @@ dimorphism_model <- R6Class("dimorphism_model",
       maximum <- private$get_maximum(variable)
       normalized_column <- as.data.frame(normalize(column, minimum, maximum))
       return(normalized_column)
+    },
+
+    remove_intercept = function() {
+      n_parameters <- length(private$model_parameters)
+      morphometric_parameters <- private$model_parameters[2:n_parameters]
+      return(morphometric_parameters)
     }
   )
 )
