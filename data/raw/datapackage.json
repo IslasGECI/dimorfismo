@@ -105,7 +105,7 @@
                     },
                     {
                         "name": "longitud_craneo",
-                        "long_name": "Skull length",
+                        "long_name": "Cranial length",
                         "nombre_largo": "Longitud del cráneo",
                         "type": "number",
                         "units": "mm",
@@ -116,7 +116,7 @@
                     },
                     {
                         "name": "longitud_pico",
-                        "long_name": "Beak length",
+                        "long_name": "Bill length",
                         "nombre_largo": "Longitud del pico",
                         "type": "number",
                         "units": "mm",
@@ -138,7 +138,7 @@
                     },
                     {
                         "name": "ancho_craneo",
-                        "long_name": "Skull width",
+                        "long_name": "Craneal width",
                         "nombre_largo": "Ancho del cráneo",
                         "type": "number",
                         "units": "mm",
@@ -149,7 +149,7 @@
                     },
                     {
                         "name": "altura_pico",
-                        "long_name": "Beak height",
+                        "long_name": "Bill height",
                         "nombre_largo": "Alto del pico",
                         "type": "number",
                         "units": "mm",
@@ -160,7 +160,7 @@
                     },
                     {
                         "name": "ancho_pico",
-                        "long_name": "Beak width",
+                        "long_name": "Bill width",
                         "nombre_largo": "Ancho del pico",
                         "type": "number",
                         "units": "mm",
