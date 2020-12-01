@@ -22,7 +22,7 @@
             "role": "maintainer"
         }
     ],
-    "description": "Morfometría de albatros de Laysan en Isla Guadalupe (2015-2016) para determinar el dimorfismo sexual de esta especie mediante regresión logística.",
+    "description": "Morfometría de albatros de Laysan en Isla Guadalupe (2015-2018) para determinar el dimorfismo sexual de esta especie mediante regresión logística.",
     "institution": "Grupo de Ecología y Conservación de Islas",
     "sources": [
         {
@@ -33,15 +33,15 @@
     "resources": [
         {
             "name": "morfometria_albatros-laysan_guadalupe",
-            "description": "Morfometría de albatros de Laysan en Isla Guadalupe (2015-2018)",
             "encoding": "utf-8",
             "format": "csv",
             "mediatype": "text/csv",
             "path": "laysan_albatross_morphometry_guadalupe.csv",
             "profile": "tabular-data-resource",
-            "source": "Medidas in situ",
-            "title": "Laysan Albatross morphometry from Guadalupe Island",
-            "titulo": "Morfometría de Albatros de Laysan en Isla Guadalupe",
+            "source": "Albatros de Laysan anidados en Isla Guadalupe durante las temporadas de 2015 a 2018",
+            "title": "Laysan albatross morphometry from Guadalupe Island",
+            "titulo": "Morfometría de albatros de Laysan en Isla Guadalupe",
+            "description": "Base de datos con 11 variables morfométricas de 135 albatros de Laysan en Isla Guadalupe durante las temporadas de 2015 a 2018.",
             "schema": {
                 "fields": [
                     {
