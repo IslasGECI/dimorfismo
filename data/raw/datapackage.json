@@ -1,27 +1,8 @@
 {
     "name": "morfometria-albatros-laysan-guadalupe",
-    "homepage": "https://bitbucket.org/IslasGECI/datos-texto/src/default/datapackage/morfometria-albatros-laysan-guadalupe/",
+    "schema": "tabular-data-package",
     "profile": "tabular-data-package",
-    "contributors": [
-        {
-            "title": "Mariana Salinas",
-            "email": "mariana.salinas@islas.org.mx",
-            "organization": "GECI",
-            "role": "author"
-        },
-        {
-            "title": "Yutzil Lora",
-            "email": "yutzil.lora@islas.org.mx",
-            "organization": "GECI",
-            "role": "contributor"
-        },
-        {
-            "title": "Haran Peiro-Nuño",
-            "email": "hpeiro@uabc.edu.mx",
-            "organization": "GECI",
-            "role": "maintainer"
-        }
-    ],
+    "homepage": "https://bitbucket.org/IslasGECI/datos-texto/src/default/datapackage/morfometria-albatros-laysan-guadalupe/",
     "description": "Morfometría de albatros de Laysan en Isla Guadalupe (2015-2018) para determinar el dimorfismo sexual de esta especie mediante regresión logística.",
     "institution": "Grupo de Ecología y Conservación de Islas",
     "sources": [
