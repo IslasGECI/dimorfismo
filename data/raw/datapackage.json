@@ -223,7 +223,7 @@
                         "nombre_largo": "Masa",
                         "type": "number",
                         "units": "kg",
-                        "description": "Masa del ave.",
+                        "description": "Masa corporal del ave en medición.",
                         "constraints": {
                             "minimum": 2.02,
                             "maximum": 3.69
@@ -234,7 +234,10 @@
                         "long_name": "Notes",
                         "nombre_largo": "Notas",
                         "type": "string",
-                        "description": "Información revelante y adional proporcionada."
+                        "description": "Información revelante y adional proporcionada.",
+                        "constraints": {
+                            "pattern": ".+"
+                        }
                     }
                 ],
                 "missingValues": [
