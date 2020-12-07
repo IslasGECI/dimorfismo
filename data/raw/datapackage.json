@@ -26,13 +26,13 @@
             "schema": {
                 "fields": [
                     {
-                        "name": "Temporada",
+                        "name": "temporada",
                         "axis": "T",
-                        "long_name": "Year",
+                        "long_name": "Season",
                         "nombre_largo": "Temporada",
                         "standard_name": "season",
                         "type": "integer",
-                        "description": "Año de periodo de monitoreo durante temporada de reproducción de albatros de Laysan.",
+                        "description": "Año en el que se realizó el monitoreo durante la temporada de reproducción de albatros de Laysan.",
                         "constraints": {
                             "minumum": 2015,
                             "maximum": 2018
@@ -54,8 +54,8 @@
                     },
                     {
                         "name": "id_nido",
-                        "long_name": "Nest",
-                        "nombre_largo": "Nido",
+                        "long_name": "Nest id",
+                        "nombre_largo": "Id del nido",
                         "type": "integer",
                         "description": "Código de identificación de refugios de albatros de Laysan.",
                         "constraints": {
@@ -65,8 +65,8 @@
                     },
                     {
                         "name": "id_darvic",
-                        "long_name": "Darvic",
-                        "nombre_largo": "Darvic",
+                        "long_name": "Darvic id",
+                        "nombre_largo": "Id del Darvic",
                         "type": "string",
                         "description": "Código de identificación representado en el anillo visible de cada albatros de Laysan",
                         "constraints": {
@@ -78,7 +78,7 @@
                         "long_name": "Sex",
                         "nombre_largo": "Sexo",
                         "type": "string",
-                        "description": "Sexo del albatros de Laysan extraído por medio sanguineo donde H representa a hembras y M a machos.",
+                        "description": "Sexo del albatros de Laysan determinado por medio sanguineo. Nomenclatura: H-Hembras y M-Machos.",
                         "constraints": {
                             "enum": [
                                 "H",
