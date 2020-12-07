@@ -22,15 +22,15 @@
             "source": "Albatros de Laysan anidados en Isla Guadalupe durante las temporadas de 2015 a 2018",
             "title": "Laysan albatross morphometry from Guadalupe Island",
             "titulo": "Morfometría de albatros de Laysan en Isla Guadalupe",
-            "description": "Base de datos con 11 variables morfométricas de 135 albatros de Laysan en Isla Guadalupe durante las temporadas de 2015 a 2018.",
+            "description": "Esta base de datos contiene registros de 11 variables morfométricas de 135 individuos de albatros de Laysan en Isla Guadalupe. Los muestreos se realizaron durante las temporadas de 2015 a 2018.",
             "schema": {
                 "fields": [
                     {
                         "name": "Temporada",
                         "axis": "T",
                         "long_name": "Year",
-                        "nombre_largo": "Año",
-                        "standard_name": "date",
+                        "nombre_largo": "Temporada",
+                        "standard_name": "season",
                         "type": "integer",
                         "description": "Año de periodo de monitoreo durante temporada de reproducción de albatros de Laysan.",
                         "constraints": {
