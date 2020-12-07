@@ -30,7 +30,6 @@
                         "axis": "T",
                         "long_name": "Season",
                         "nombre_largo": "Temporada",
-                        "standard_name": "season",
                         "type": "integer",
                         "description": "Año en el que se realizó el monitoreo durante la temporada de reproducción de albatros de Laysan.",
                         "constraints": {
@@ -219,12 +218,12 @@
                         }
                     },
                     {
-                        "name": "peso",
-                        "long_name": "Weight",
-                        "nombre_largo": "Peso",
+                        "name": "masa",
+                        "long_name": "Mass",
+                        "nombre_largo": "Masa",
                         "type": "number",
                         "units": "kg",
-                        "description": "Peso individual del ave.",
+                        "description": "Masa del ave.",
                         "constraints": {
                             "minimum": 2.02,
                             "maximum": 3.69
