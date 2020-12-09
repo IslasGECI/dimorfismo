@@ -3,7 +3,7 @@
     "schema": "tabular-data-package",
     "profile": "tabular-data-package",
     "homepage": "https://bitbucket.org/IslasGECI/datos-texto/src/default/datapackage/morfometria-albatros-laysan-guadalupe/",
-    "description": "Morfometría de albatros de Laysan en isla Guadalupe (2015-2018) para determinar el dimorfismo sexual de esta especie mediante regresión logística.",
+    "description": "Morfometría de albatros de Laysan en Isla Guadalupe (2015-2018) para determinar el dimorfismo sexual de esta especie mediante regresión logística.",
     "institution": "Grupo de Ecología y Conservación de Islas",
     "sources": [
         {
@@ -19,10 +19,10 @@
             "mediatype": "text/csv",
             "path": "laysan_albatross_morphometry_guadalupe.csv",
             "profile": "tabular-data-resource",
-            "source": "Albatros de Laysan anidados en isla Guadalupe durante las temporadas de 2015 a 2018",
+            "source": "Albatros de Laysan anidados en Isla Guadalupe durante las temporadas de 2015 a 2018",
             "title": "Laysan albatross morphometry from Guadalupe Island",
-            "titulo": "Morfometría de albatros de Laysan en isla Guadalupe",
-            "description": "Esta base de datos contiene registros de 11 variables morfométricas de 135 individuos de albatros de Laysan en isla Guadalupe. Los muestreos se realizaron durante las temporadas de 2015 a 2018.",
+            "titulo": "Morfometría de albatros de Laysan en Isla Guadalupe",
+            "description": "Esta base de datos contiene registros de 11 variables morfométricas de 135 individuos de albatros de Laysan en Isla Guadalupe. Los muestreos se realizaron durante las temporadas de 2015 a 2018.",
             "schema": {
                 "fields": [
                     {
@@ -42,7 +42,7 @@
                         "long_name": "Subcolony",
                         "nombre_largo": "Subcolonia",
                         "type": "string",
-                        "description": "Colonia de distrubución interna de isla Guadalupe.",
+                        "description": "Colonia de distrubución interna de Isla Guadalupe.",
                         "constraints": {
                             "enum": [
                                 "Punta Sur",
