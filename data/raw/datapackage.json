@@ -45,9 +45,9 @@
                         "description": "Colonia de distrubución interna de Isla Guadalupe.",
                         "constraints": {
                             "enum": [
+                                "Morro Prieto",
                                 "Punta Sur",
-                                "Zapato",
-                                "Morro Prieto"
+                                "Zapato"
                             ]
                         }
                     },
