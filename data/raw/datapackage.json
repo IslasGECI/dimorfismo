@@ -2,7 +2,6 @@
     "name": "morfometria-albatros-laysan-guadalupe",
     "schema": "tabular-data-package",
     "profile": "tabular-data-package",
-    "homepage": "https://bitbucket.org/IslasGECI/datos-texto/src/default/datapackage/morfometria-albatros-laysan-guadalupe/",
     "description": "Morfometría de albatros de Laysan en Isla Guadalupe (2015-2018) para determinar el dimorfismo sexual de esta especie mediante regresión logística.",
     "institution": "Grupo de Ecología y Conservación de Islas",
     "sources": [
@@ -13,11 +12,11 @@
     ],
     "resources": [
         {
-            "name": "morfometria_albatros-laysan_guadalupe",
+            "name": "laysan_albatross_morphometry_guadalupe",
             "encoding": "utf-8",
             "format": "csv",
             "mediatype": "text/csv",
-            "path": "laysan_albatross_morphometry_guadalupe.csv",
+            "path": "data/raw/",
             "profile": "tabular-data-resource",
             "source": "Albatros de Laysan anidados en Isla Guadalupe durante las temporadas de 2015 a 2018",
             "title": "Laysan albatross morphometry from Guadalupe Island",
@@ -67,7 +66,7 @@
                         "long_name": "Darvic id",
                         "nombre_largo": "Id del Darvic",
                         "type": "string",
-                        "description": "Código de identificación representado en el anillo visible del individuo de albatros de Laysan",
+                        "description": "Código de identificación representado en el anillo visible del individuo de albatros de Laysan.",
                         "constraints": {
                             "pattern": "[0-9|A-Z]{3}|\\d+"
                         }
