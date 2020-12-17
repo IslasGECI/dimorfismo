@@ -1,28 +1,8 @@
 {
     "name": "morfometria-albatros-laysan-guadalupe",
-    "homepage": "https://bitbucket.org/IslasGECI/datos-texto/src/default/datapackage/morfometria-albatros-laysan-guadalupe/",
+    "schema": "tabular-data-package",
     "profile": "tabular-data-package",
-    "contributors": [
-        {
-            "title": "Mariana Salinas",
-            "email": "mariana.salinas@islas.org.mx",
-            "organization": "GECI",
-            "role": "author"
-        },
-        {
-            "title": "Yutzil Lora",
-            "email": "yutzil.lora@islas.org.mx",
-            "organization": "GECI",
-            "role": "contributor"
-        },
-        {
-            "title": "Haran Peiro-Nuño",
-            "email": "hpeiro@uabc.edu.mx",
-            "organization": "GECI",
-            "role": "maintainer"
-        }
-    ],
-    "description": "Morfometría de albatros de Laysan en Isla Guadalupe (2015-2016) para determinar el dimorfismo sexual de esta especie mediante regresión logística.",
+    "description": "Morfometría de albatros de Laysan en Isla Guadalupe (2015-2018) para determinar el dimorfismo sexual de esta especie mediante regresión logística.",
     "institution": "Grupo de Ecología y Conservación de Islas",
     "sources": [
         {
@@ -32,28 +12,28 @@
     ],
     "resources": [
         {
-            "name": "morfometria_albatros-laysan_guadalupe",
-            "description": "Morfometría de albatros de Laysan en Isla Guadalupe (2015-2016)",
+            "name": "laysan_albatross_morphometry_guadalupe",
             "encoding": "utf-8",
             "format": "csv",
             "mediatype": "text/csv",
-            "path": "laysan_albatross_morphometry_guadalupe.csv",
+            "path": "data/raw/",
             "profile": "tabular-data-resource",
-            "source": "Medidas in situ",
-            "title": "Laysan Albatross morphometry from Guadalupe Island",
-            "titulo": "Morfometría de Albatros de Laysan en Isla Guadalupe",
+            "source": "Albatros de Laysan anidados en Isla Guadalupe durante las temporadas de 2015 a 2018",
+            "title": "Laysan albatross morphometry from Guadalupe Island",
+            "titulo": "Morfometría de albatros de Laysan en Isla Guadalupe",
+            "description": "Esta base de datos contiene registros de 11 variables morfométricas de 135 individuos de albatros de Laysan en Isla Guadalupe. Los muestreos se realizaron durante las temporadas de 2015 a 2018.",
             "schema": {
                 "fields": [
                     {
-                        "name": "Temporada",
+                        "name": "temporada",
                         "axis": "T",
-                        "long_name": "Year",
-                        "nombre_largo": "Año",
-                        "standard_name": "date",
+                        "long_name": "Season",
+                        "nombre_largo": "Temporada",
                         "type": "integer",
-                        "description": "Año de periodo de monitoreo durante temporada de reproducción de Albatros Laysan",
+                        "description": "Año en el que se realizó el monitoreo durante la temporada de reproducción de albatros de Laysan.",
                         "constraints": {
-                            "minumum": 2015, "maximum": 2018
+                            "minumum": 2015,
+                            "maximum": 2018
                         }
                     },
                     {
@@ -61,31 +41,32 @@
                         "long_name": "Subcolony",
                         "nombre_largo": "Subcolonia",
                         "type": "string",
-                        "description": "Colonia de distrubución interna de Isla Guadalupe",
+                        "description": "Colonia de distrubución interna de Isla Guadalupe.",
                         "constraints": {
                             "enum": [
+                                "Morro Prieto",
                                 "Punta Sur",
-                                "Zapato",
-                                "Morro Prieto"
+                                "Zapato"
                             ]
                         }
                     },
                     {
                         "name": "id_nido",
-                        "long_name": "Nest",
-                        "nombre_largo": "Nido",
+                        "long_name": "Nest id",
+                        "nombre_largo": "Id del nido",
                         "type": "integer",
-                        "description": "Código de identificación de refugios de Aves Laysan",
+                        "description": "Código de identificación del refugio de albatros de Laysan medido.",
                         "constraints": {
-                            "minumum": 1 ,"maximum": 355
+                            "minumum": 1,
+                            "maximum": 355
                         }
                     },
                     {
                         "name": "id_darvic",
-                        "long_name": "Darvic",
-                        "nombre_largo": "Darvic",
+                        "long_name": "Darvic id",
+                        "nombre_largo": "Id del Darvic",
                         "type": "string",
-                        "description": "Código de identificación representado en el anillo visible de cada Ave Laysan",
+                        "description": "Código de identificación representado en el anillo visible del individuo de albatros de Laysan.",
                         "constraints": {
                             "pattern": "[0-9|A-Z]{3}|\\d+"
                         }
@@ -95,7 +76,7 @@
                         "long_name": "Sex",
                         "nombre_largo": "Sexo",
                         "type": "string",
-                        "description": "Sexo del Ave Laysan extraído por medio sanguineo donde H representa a hembras y M a machos",
+                        "description": "Sexo del albatros de Laysan determinado por método sanguineo. Nomenclatura: H-Hembras y M-Machos.",
                         "constraints": {
                             "enum": [
                                 "H",
@@ -105,24 +86,26 @@
                     },
                     {
                         "name": "longitud_craneo",
-                        "long_name": "Skull length",
+                        "long_name": "Cranial length",
                         "nombre_largo": "Longitud del cráneo",
                         "type": "number",
                         "units": "mm",
-                        "description": "Distancia en milímetros entre la punta del pico hasta el curvatura craneal respecto al plano Sagital del Ave",
+                        "description": "Distancia en milímetros entre la punta del pico hasta el curvatura craneal respecto al plano sagital del albatros.",
                         "constraints": {
-                            "minimum": 165.57 ,"maximum": 193.23
+                            "minimum": 165.57,
+                            "maximum": 193.23
                         }
                     },
                     {
                         "name": "longitud_pico",
-                        "long_name": "Beak length",
+                        "long_name": "Bill length",
                         "nombre_largo": "Longitud del pico",
                         "type": "number",
                         "units": "mm",
-                        "description": "Distancia en milímetros de longitud de extremo a extremo del pico respecto al plano Sagital del Ave",
+                        "description": "Distancia en milímetros de longitud de extremo a extremo del pico respecto al plano sagital del ave.",
                         "constraints": {
-                            "minimum": 100.8 ,"maximum": 119.49
+                            "minimum": 100.8,
+                            "maximum": 119.49
                         }
                     },
                     {
@@ -131,42 +114,46 @@
                         "nombre_largo": "Longitud de la narina",
                         "type": "number",
                         "units": "mm",
-                        "description": "Distancia en milímetros del pico hasta los orificios de las fosas nasales respecto al plano Sagital del Ave",
+                        "description": "Distancia en milímetros del pico hasta los orificios de las fosas nasales respecto al plano sagital del ave.",
                         "constraints": {
-                            "minimum": 74.81 ,"maximum": 90.7
+                            "minimum": 74.81,
+                            "maximum": 90.7
                         }
                     },
                     {
                         "name": "ancho_craneo",
-                        "long_name": "Skull width",
+                        "long_name": "Craneal width",
                         "nombre_largo": "Ancho del cráneo",
                         "type": "number",
                         "units": "mm",
-                        "description": "Distancia mayor en milímetros entre extremos del craneo respecto al plano Coronal del Ave",
+                        "description": "Distancia mayor en milímetros entre extremos del craneo respecto al plano coronal del ave.",
                         "constraints": {
-                            "minimum": 46.4, "maximum": 58.7
+                            "minimum": 46.4,
+                            "maximum": 58.7
                         }
                     },
                     {
                         "name": "altura_pico",
-                        "long_name": "Beak height",
+                        "long_name": "Bill height",
                         "nombre_largo": "Alto del pico",
                         "type": "number",
                         "units": "mm",
-                        "description": "Distancia del extremo inferior izquierdo al superior del pico pasando por las narinas respecto al plano Sagital del Ave",
+                        "description": "Distancia del extremo inferior izquierdo al superior del pico pasando por las narinas respecto al plano sagital del ave.",
                         "constraints": {
-                            "minimum": 28.84, "maximum": 35.51
+                            "minimum": 28.84,
+                            "maximum": 35.51
                         }
                     },
                     {
                         "name": "ancho_pico",
-                        "long_name": "Beak width",
+                        "long_name": "Bill width",
                         "nombre_largo": "Ancho del pico",
                         "type": "number",
                         "units": "mm",
-                        "description": "Distancia en milímetros de una fosa nasal hacia la otra respecto al plano Coronal del Ave",
+                        "description": "Distancia en milímetros de una fosa nasal hacia la otra respecto al plano coronal del ave.",
                         "constraints": {
-                            "minimum": 21.47, "maximum": 28.82
+                            "minimum": 21.47,
+                            "maximum": 28.82
                         }
                     },
                     {
@@ -175,9 +162,10 @@
                         "nombre_largo": "Tarso",
                         "type": "number",
                         "units": "mm",
-                        "description": "Distancia en milímetros de extremo a extremo del tarsus respecto al plano Coronal del Ave",
+                        "description": "Distancia en milímetros de extremo a extremo del tarsus respecto al plano coronal del ave",
                         "constraints": {
-                            "minimum": 83.17, "maximum": 99.7
+                            "minimum": 83.17,
+                            "maximum": 99.7
                         }
                     },
                     {
@@ -186,9 +174,10 @@
                         "nombre_largo": "Longitud del ala cerrada",
                         "type": "number",
                         "units": "cm",
-                        "description": "Longitud en centímetros de las remerias primarias respecto al plano Coronal del Ave ",
+                        "description": "Longitud en centímetros de las remerias primarias respecto al plano coronal del ave.",
                         "constraints": {
-                            "minimum": 48.6, "maximum": 54.8
+                            "minimum": 48.6,
+                            "maximum": 54.8
                         }
                     },
                     {
@@ -197,9 +186,10 @@
                         "nombre_largo": "Longitud del ala abierta",
                         "type": "number",
                         "units": "cm",
-                        "description":"Longitud en centímetros de extremo a extremo del Ala completamente extendida respecto al plano Coronal del Ave",
+                        "description":"Longitud en centímetros de extremo a extremo del ala completamente extendida respecto al plano coronal del ave.",
                         "constraints": {
-                            "minimum": 88.8, "maximum": 102.1
+                            "minimum": 88.8,
+                            "maximum": 102.1
                         }
                     },
                     {
@@ -208,9 +198,10 @@
                         "nombre_largo": "Media envergadura",
                         "type": "number",
                         "units": "cm",
-                        "description": "Distancia en centímetros entre un extremo del ala hasta el centro del pecho respecto al plano Coronal del Ave",
+                        "description": "Distancia en centímetros entre un extremo del ala hasta el centro del pecho respecto al plano coronal del ave.",
                         "constraints": {
-                            "minimum": 99.2, "maximum": 112.3
+                            "minimum": 99.2,
+                            "maximum": 112.3
                         }
                     },
                     {
@@ -219,20 +210,22 @@
                         "nombre_largo": "Envergadura",
                         "type": "number",
                         "units": "cm",
-                        "description": "Distancia en centímetros entre las dos puntas de las alas cuando están completamente extendidas respecto al plano Coronal del Ave",
+                        "description": "Distancia en centímetros entre las dos puntas de las alas cuando están completamente extendidas respecto al plano coronal del ave.",
                         "constraints": {
-                            "minimum": 198.5, "maximum": 224.5
+                            "minimum": 198.5,
+                            "maximum": 224.5
                         }
                     },
                     {
-                        "name": "peso",
-                        "long_name": "Weight",
-                        "nombre_largo": "Peso",
+                        "name": "masa",
+                        "long_name": "Mass",
+                        "nombre_largo": "Masa",
                         "type": "number",
                         "units": "kg",
-                        "description": "Peso individual del Ave",
+                        "description": "Masa corporal del individuo de albatros de Laysan.",
                         "constraints": {
-                            "minimum": 2.02, "maximum": 3.69
+                            "minimum": 2.02,
+                            "maximum": 3.69
                         }
                     },
                     {
@@ -240,7 +233,10 @@
                         "long_name": "Notes",
                         "nombre_largo": "Notas",
                         "type": "string",
-                        "description": "Información revelante y adional proporcionada "
+                        "description": "Información revelante y adicional proporcionada acerca de la medición.",
+                        "constraints": {
+                            "pattern": ".+"
+                        }
                     }
                 ],
                 "missingValues": [
