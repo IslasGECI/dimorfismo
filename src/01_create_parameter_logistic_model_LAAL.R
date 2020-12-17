@@ -76,13 +76,13 @@ for (i in 1:num_repetitions) {
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
   n_individuals <- length(unique(averaged_data$id_darvic))
-  normalized_data <- averaged_data[!is.na(averaged_data$peso),
+  normalized_data <- averaged_data[!is.na(averaged_data$masa),
     variables_model,
     with = FALSE
   ]
 
   normalized_data <- as.data.frame(sapply(normalized_data, normalize))
-  normalized_data$sexo <- averaged_data[!is.na(averaged_data$peso), ]$sexo
+  normalized_data$sexo <- averaged_data[!is.na(averaged_data$masa), ]$sexo
 
   null_regression <- glm(
     formula = sexo ~ 1,
@@ -107,7 +107,7 @@ for (i in 1:num_repetitions) {
     trace = 0
   )
 
-  normalized_data$id_darvic <- averaged_data[!is.na(averaged_data$peso), ]$id_darvic
+  normalized_data$id_darvic <- averaged_data[!is.na(averaged_data$masa), ]$id_darvic
   step_coefficients <- regretion_to_data_frame(step_regression)
 
   for (i_coeficiente in rownames(step_coefficients)) {
@@ -121,7 +121,7 @@ for (i in 1:num_repetitions) {
   model_varibles_names <- names(step_regression$coefficients)
   model_varibles_names <- model_varibles_names[model_varibles_names != "(Intercept)"]
 
-  model_used_data <- averaged_data[!is.na(averaged_data$peso),
+  model_used_data <- averaged_data[!is.na(averaged_data$masa),
     model_varibles_names,
     with = FALSE
   ]
