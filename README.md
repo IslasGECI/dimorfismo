@@ -30,7 +30,7 @@ docker run --rm --volume ${PWD}:/workdir ${REMOTE}/${REPO}:latest make
 
 - [ ] Cubrir el código con pruebas.
 - [ ] Refactorizar programas principales en R.
-- [ ] Publicar nota en [arXiv](https://arxiv.org/) o [JOSS](https://joss.theoj.org/).
+- [ ] Publicar nota en [bioRxiv](https://www.biorxiv.org/) o [JOSS](https://joss.theoj.org/).
 
 ### Terminado:
 

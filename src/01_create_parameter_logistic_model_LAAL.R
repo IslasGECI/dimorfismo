@@ -1,168 +1,237 @@
-library(data.table) 
+library(data.table)
+library(dimorfismo)
+library(tidyverse)
 
-source("src/dimorphism_model_class.R")
-source("src/calculator_ROC_class.R")
-source("src/evaluate_model_function.R")
-source("src/get_prediction_sex_plot_function.R")
-source("src/get_sex_probability_plot_function.R")
-source("src/regretion_to_data_frame_coefficients_function.R")
+set.seed(28)
+setwd("/workdir/")
 
-directorioTDP <- ("data/raw/")
-nombreArchivoCSV <- file.path(directorioTDP,"morfometria_albatros-laysan_guadalupe.csv")
-nombreArchivoJSON <- file.path(directorioTDP,"datapackage.json")
-rutaResultados = ('data/processed/')
+final_y_test <- c()
+tdp_path <- "data/raw/"
+results_path <- "data/processed/"
+csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
 
-Metadatos <- jsonlite::fromJSON(nombreArchivoJSON)
-Datos <- data.table(read.csv(nombreArchivoCSV))
-n_datos <- nrow(Datos)
+data <- data.table(read.csv(csv_file))
+n_data <- nrow(data)
 
-proporcion_entrenamiento <- 0.80
-proporcion_validacion <- 1 - proporcion_entrenamiento
+trainning_proportion <- 0.80
 
-variablesParaModelo <- c("Longitud_Craneo", "Longitud_Pico", "Ancho_Craneo", "Altura_Pico", "Tarso", "Longitud_Ala_Cerrada", "Longitud_Ala_Abierta", "Envergadura")
-nombre_columnas <- c("(Intercept)", variablesParaModelo)
-n_repeticiones <- 10
-#2000
+variables_model <- c(
+  "longitud_craneo", "longitud_pico", "ancho_craneo", "altura_pico",
+  "tarso", "longitud_ala_cerrada", "longitud_ala_abierta", "envergadura"
+)
+column_names <- c("(Intercept)", variables_model)
+num_repetitions <- 10
+threshold_error_table <- data.frame(threshold <- c(), error <- c())
+calculador_roc <- roc$new()
 
-tabla_umbral_error <- data.frame(umbral <- c(),error <- c())
-calculadorROC <- ROC$new()
+null_frame <- data.frame(
+  matrix(
+    ncol = length(column_names),
+    nrow = num_repetitions
+  )
+)
 
-tabla_modelo <- list(coeficientes_modelo = data.frame(matrix(ncol = length(nombre_columnas), nrow = n_repeticiones)), 
-                     error_estandar = data.frame(matrix(ncol = length(nombre_columnas), nrow = n_repeticiones)), 
-                     valor_z = data.frame(matrix(ncol = length(nombre_columnas), nrow = n_repeticiones)), 
-                     Pr = data.frame(matrix(ncol = length(nombre_columnas), nrow = n_repeticiones)), 
-                     parametros_normalizacion_minimos = data.frame(matrix(ncol = length(nombre_columnas), nrow = n_repeticiones)), 
-                     parametros_normalizacion_maximos = data.frame(matrix(ncol = length(nombre_columnas), nrow = n_repeticiones)))
+model_table <- list(
+  model_coefficients = null_frame,
+  standard_error = null_frame,
+  z_value = null_frame,
+  pr_value = null_frame,
+  min_normalization_parameters = null_frame,
+  max_normalization_parameters = null_frame
+)
 
-colnames(tabla_modelo$coeficientes_modelo) <- nombre_columnas
-colnames(tabla_modelo$error_estandar) <- nombre_columnas
-colnames(tabla_modelo$valor_z) <- nombre_columnas
-colnames(tabla_modelo$Pr) <- nombre_columnas
-colnames(tabla_modelo$parametros_normalizacion_minimos) <- nombre_columnas
-colnames(tabla_modelo$parametros_normalizacion_maximos) <- nombre_columnas
+colnames(model_table$model_coefficients) <- column_names
+colnames(model_table$standard_error) <- column_names
+colnames(model_table$z_value) <- column_names
+colnames(model_table$pr_value) <- column_names
+colnames(model_table$min_normalization_parameters) <- column_names
+colnames(model_table$max_normalization_parameters) <- column_names
 
-barra_progeso <- txtProgressBar(min = 0, max = n_repeticiones, style = 3)
-for(i in 1:n_repeticiones) {
-  indice_entrenamiento <- sample(1:n_datos, round(proporcion_entrenamiento*n_datos))
-  indice_validacion <- -indice_entrenamiento
-  
-  # Se extraen los datos de 2015, 2016, 2017 ya que solo estos se usaran para crear el modelo
-  datos_entrenamiento <- Datos[indice_entrenamiento]
-  datos_validacion <- Datos[indice_validacion]
-  
-  setkey(datos_entrenamiento, ID_Darvic)
-  individuosRepetidos <- data.table(ID_Darvic=datos_entrenamiento[duplicated(ID_Darvic)]$ID_Darvic)
-  
-  DatosNoNumericos <- datos_entrenamiento[unique(datos_entrenamiento), 
-                                      .SD[, !sapply(.SD, is.numeric),with=FALSE], 
-                                      mult="last"]
-  DatosNumericos <- datos_entrenamiento[, 
-                                    lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean, na.rm=T), 
-                                    by=ID_Darvic]
-  DatosPromediados <- DatosNumericos[DatosNoNumericos[!duplicated(ID_Darvic)]]
-  
+progress_bar <- txtProgressBar(
+  min = 0,
+  max = num_repetitions,
+  style = 3
+)
+
+for (i in 1:num_repetitions) {
+  trainning_index <- sample(1:n_data, round(trainning_proportion * n_data))
+  validation_index <- -trainning_index
+
+  # Se extraen los datos de 2015, 2016, 2017 ya que sólo estos se usaran para crear el modelo
+  trainning_data <- data[trainning_index]
+  validation_data <- data[validation_index]
+
+  setkey(trainning_data, id_darvic)
+
+  no_numerical_data <- trainning_data[unique(trainning_data),
+    .SD[, !sapply(.SD, is.numeric), with = FALSE],
+    mult = "last"
+  ]
+
+  numerical_data <- trainning_data[,
+    lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean),
+    by = id_darvic
+  ]
+  averaged_data <- numerical_data[no_numerical_data[!duplicated(id_darvic)]]
+
   # Se definen variables para utilizarse en el texto que decribe los Datos.
-  CamposMetaDatos <- data.table(Metadatos$resources$schema$fields[[1]])
-  # Se identifican los `fields` en los Metadatos (son las variables de los Datos) con unidades definidas ya que estos (campos) describen a las variables morfométricas.
-  esMedidaMorfometrica <- CamposMetaDatos$units!=""
-  nVariablesMorfometricas <- sum(esMedidaMorfometrica)
-  # Se obtienen el nombre largo de las variables morfométricas
-  nombresLargosMorfometria <- CamposMetaDatos[esMedidaMorfometrica,nombre_largo]
-  #listaVariablesMorfometricas <- tolower(paste0(nombresLargosMorfometria[1], paste(", ", nombresLargosMorfometria[2:(nVariablesMorfometricas-1)], collapse = ""), " y ", nombresLargosMorfometria[nVariablesMorfometricas]))
-  nIndividuos <- length(unique(DatosPromediados$ID_Darvic))
-  
-  DatosNormalizados <- DatosPromediados[!is.na(DatosPromediados$Peso), variablesParaModelo, with=FALSE]
-  normalize <- function(columna) (columna - min(columna))/(max(columna)-min(columna))
-  DatosNormalizados <- as.data.frame(apply(DatosNormalizados,2,normalize))
-  DatosNormalizados$Sexo <- DatosPromediados[!is.na(DatosPromediados$Peso),]$Sexo
-  
-  RegresionNula <- glm(formula = Sexo ~ 1, data = DatosNormalizados, family = "binomial")
+  n_individuals <- length(unique(averaged_data$id_darvic))
+  normalized_data <- averaged_data[!is.na(averaged_data$masa),
+    variables_model,
+    with = FALSE
+  ]
+
+  normalized_data <- as.data.frame(sapply(normalized_data, normalize))
+  normalized_data$sexo <- averaged_data[!is.na(averaged_data$masa), ]$sexo
+
+  null_regression <- glm(
+    formula = sexo ~ 1,
+    data = normalized_data,
+    family = "binomial"
+  )
+
   # Hacemos el modelos utilizando las 11 varibles
-  RegresionTodas <- glm(formula = Sexo ~ ., data = DatosNormalizados, family = "binomial")
-  # Aplicamos el método _stepwise_.  
-  RegresionStep <- step(RegresionNula, scope = list(lower = RegresionNula, upper = RegresionTodas), direction = "both", trace = 0)
-  DatosNormalizados$ID_Darvic <- DatosPromediados[!is.na(DatosPromediados$Peso),]$ID_Darvic
-  
-  CoeficientesStep  <- regretion2DataFrameCoefficients(RegresionStep)
-  
-  ##
-  for(i_coeficiente in rownames(CoeficientesStep)){
-    tabla_modelo$coeficientes_modelo[i, i_coeficiente] <- CoeficientesStep[i_coeficiente, "Estimate"]
-    tabla_modelo$error_estandar[i, i_coeficiente] <- CoeficientesStep[i_coeficiente, "Std. Error"]
-    tabla_modelo$valor_z[i, i_coeficiente] <- CoeficientesStep[i_coeficiente, "z value"]
-    tabla_modelo$Pr[i, i_coeficiente] <- CoeficientesStep[i_coeficiente, "Pr(>|z|)"]
-  }
-  ##
-
-
-  #Crea un JSON como una lista de los parametros anteriores
-  nombresVariablesModelo <- names(RegresionStep$coefficients)
-  nombresVariablesModelo <- nombresVariablesModelo[nombresVariablesModelo != "(Intercept)"]
-  
-
-  DatosUtilizadosModelo <- DatosPromediados[!is.na(DatosPromediados$Peso), nombresVariablesModelo, with=FALSE]
-  minimo_datos_normalizacion <- apply(DatosUtilizadosModelo,2,min)
-  maximo_datos_normalizacion <- apply(DatosUtilizadosModelo,2,max)
-  
-  parametrosNormalizacion <- list(
-    valorMinimo = split(unname(minimo_datos_normalizacion),names(minimo_datos_normalizacion)), 
-    valorMaximo = split(unname(maximo_datos_normalizacion),names(maximo_datos_normalizacion))
-  )
-  listaParametrosModeloNormalizacion <- list(
-    parametrosNormalizacion = parametrosNormalizacion,
-    parametrosModelo = CoeficientesStep
+  all_regression <- glm(
+    formula = sexo ~ .,
+    data = normalized_data,
+    family = "binomial"
   )
 
-  ##
-  for(i_par_normalizacion in colnames(DatosUtilizadosModelo)){
-    tabla_modelo$parametros_normalizacion_minimos[i, i_par_normalizacion] <- minimo_datos_normalizacion[i_par_normalizacion]
-    tabla_modelo$parametros_normalizacion_maximos[i, i_par_normalizacion] <- maximo_datos_normalizacion[i_par_normalizacion]
-  }
-  ##
-  
-  
-  readr::write_lines(jsonlite::toJSON(listaParametrosModeloNormalizacion, pretty = T), path =  "data/processed/parametros_modelo_logistico_laal_ig.json")
-  ModeloDimorfismoAlbatros <- ModeloDimorfismo$new()
-  ModeloDimorfismoAlbatros$loadParameters("data/processed/parametros_modelo_logistico_laal_ig.json")
+  # Aplicamos el método _stepwise_.
+  step_regression <- step(null_regression,
+    scope = list(
+      lower = null_regression,
+      upper = all_regression
+    ),
+    direction = "both",
+    trace = 0
+  )
 
-  prob <- ModeloDimorfismoAlbatros$predict(datos_validacion)
-  y_test <- ifelse(datos_validacion$Sexo == 'M', 1, 0)
-  datos_roc <- data.frame(y_test, prob)
-  criterio_error <- calculadorROC$getBestThresholdAndError(datos_roc)
-  tabla_umbral_error <- rbind(tabla_umbral_error, criterio_error)
-  setTxtProgressBar(barra_progeso, i)
+  normalized_data$id_darvic <- averaged_data[!is.na(averaged_data$masa), ]$id_darvic
+  step_coefficients <- regretion_to_data_frame(step_regression)
+
+  for (i_coeficiente in rownames(step_coefficients)) {
+    model_table$model_coefficients[i, i_coeficiente] <- step_coefficients[i_coeficiente, "Estimate"]
+    model_table$standard_error[i, i_coeficiente] <- step_coefficients[i_coeficiente, "Std. Error"]
+    model_table$z_value[i, i_coeficiente] <- step_coefficients[i_coeficiente, "z value"]
+    model_table$pr_value[i, i_coeficiente] <- step_coefficients[i_coeficiente, "Pr(>|z|)"]
+  }
+
+  # Crea un JSON como una lista de los parametros anteriores
+  model_varibles_names <- names(step_regression$coefficients)
+  model_varibles_names <- model_varibles_names[model_varibles_names != "(Intercept)"]
+
+  model_used_data <- averaged_data[!is.na(averaged_data$masa),
+    model_varibles_names,
+    with = FALSE
+  ]
+  min_normalized_data <- sapply(model_used_data, min)
+  max_normalized_data <- sapply(model_used_data, max)
+
+  normalization_parameters <- list(
+    minimum_value = split(
+      unname(min_normalized_data),
+      names(min_normalized_data)
+    ),
+    maximum_value = split(
+      unname(max_normalized_data),
+      names(max_normalized_data)
+    )
+  )
+
+  list_normalization_parameters <- list(
+    normalization_parameters = normalization_parameters,
+    model_parameters = step_coefficients
+  )
+
+  for (i_pair_normalization in colnames(model_used_data)) {
+    model_table$min_normalization_parameters[i, i_pair_normalization] <-
+      min_normalized_data[i_pair_normalization]
+    model_table$max_normalization_parameters[i, i_pair_normalization] <-
+      max_normalized_data[i_pair_normalization]
+  }
+
+  json_path <- "data/processed/logistic_model_parameters.json"
+  readr::write_lines(
+    jsonlite::toJSON(list_normalization_parameters, pretty = T),
+    json_path
+  )
+
+  dimorphism_model_albatross <- dimorphism_model$new()
+  dimorphism_model_albatross$load_parameters(json_path)
+  prob <- dimorphism_model_albatross$predict(validation_data)
+  y_test <- ifelse(validation_data$sexo == "M", 1, 0)
+  final_y_test <- append(final_y_test, y_test)
+  roc_data <- data.frame(y_test, prob)
+  error_criteria <- calculador_roc$best_threshold_error(roc_data)
+  threshold_error_table <- rbind(threshold_error_table, error_criteria)
+  setTxtProgressBar(progress_bar, i)
 }
-close(barra_progeso)
+close(progress_bar)
 
-variables_finales <- c("(Intercept)", "Longitud_Craneo", "Altura_Pico", "Longitud_Pico", "Tarso", "Ancho_Craneo")
-variables_sin_intercepto <- c("Longitud_Craneo", "Altura_Pico", "Longitud_Pico", "Tarso", "Ancho_Craneo")
+no_intercept_variables <- c(
+  "longitud_craneo", "altura_pico", "longitud_pico",
+  "tarso", "ancho_craneo"
+)
 
-tabla_modelo$coeficientes_modelo <- tabla_modelo$coeficientes_modelo[, variables_finales]
+final_variables <- c(
+  "(Intercept)", no_intercept_variables
+)
 
-tabla_modelo$error_estandar <- tabla_modelo$error_estandar[, variables_finales]
-colnames(tabla_modelo$error_estandar) <- c("stdErrIntercept","stdErrlongitudCraneo","stdErrAltoPico", "stdErrLongitudPico", "stdErrTarso", "stdErrAnchoCraneo")
+model_table$model_coefficients <- model_table$model_coefficients[, final_variables]
 
-tabla_modelo$valor_z <- tabla_modelo$valor_z[, variables_finales]
-colnames(tabla_modelo$valor_z) <- c("zValueIntercept","zValuelongitudCraneo","zValueAltoPico", "zValueLongitudPico", "zValueTarso", "zValueAnchoCraneo")
+model_table$standard_error <- model_table$standard_error[, final_variables]
+colnames(model_table$standard_error) <- c(
+  "error_std_intercept", "error_std_longitud_craneo", "error_std_alto_pico",
+  "error_std_longitud_pico", "error_std_tarso", "error_std_ancho_craneo"
+)
 
-tabla_modelo$Pr <- tabla_modelo$Pr[, variables_finales]
-colnames(tabla_modelo$Pr) <- c("PrIntercept","PrlongitudCraneo","PrAltoPico", "PrLongitudPico", "PrTarso", "PrAnchoCraneo")
+model_table$z_value <- model_table$z_value[, final_variables]
+colnames(model_table$z_value) <- c(
+  "valor_z_intercept", "valor_z_longitud_craneo", "valor_z_altura_pico",
+  "valor_z_longitud_pico", "valor_z_tarso", "valor_z_ancho_craneo"
+)
 
-tabla_modelo$parametros_normalizacion_minimos <- tabla_modelo$parametros_normalizacion_minimos[, variables_sin_intercepto]
-colnames(tabla_modelo$parametros_normalizacion_minimos) <- c("minlongitudCraneo","minAltoPico", "minLongitudPico", "minTarso", "minAnchoCraneo")
+model_table$pr_value <- model_table$pr_value[, final_variables]
+colnames(model_table$pr_value) <- c(
+  "pr_intercept", "pr_longitud_craneo", "pr_alto_pico",
+  "pr_longitud_pico", "pr_tarso", "pr_ancho_craneo"
+)
 
-tabla_modelo$parametros_normalizacion_maximos <- tabla_modelo$parametros_normalizacion_maximos[, variables_sin_intercepto]
-colnames(tabla_modelo$parametros_normalizacion_maximos) <- c("maxlongitudCraneo","maxAltoPico", "maxLongitudPico", "maxTarso", "maxAnchoCraneo")
+model_table$min_normalization_parameters <-
+  model_table$min_normalization_parameters[, no_intercept_variables]
+colnames(model_table$min_normalization_parameters) <- c(
+  "min_longitud_craneo", "min_alto_pico", "min_longitud_pico", "min_tarso", "min_ancho_craneo"
+)
 
-tabla_completa <- data.table(cbind(tabla_modelo$coeficientes_modelo, tabla_umbral_error, tabla_modelo$parametros_normalizacion_minimos, 
-                        tabla_modelo$parametros_normalizacion_maximos, tabla_modelo$error_estandar, tabla_modelo$valor_z, 
-                        tabla_modelo$Pr))
+model_table$max_normalization_parameters <-
+  model_table$max_normalization_parameters[, no_intercept_variables]
+colnames(model_table$max_normalization_parameters) <- c(
+  "max_longitud_craneo", "max_altura_pico", "max_longitud_pico", "max_tarso", "max_ancho_craneo"
+)
 
+completed_table <- data.table(
+  cbind(
+    model_table$model_coefficients,
+    threshold_error_table,
+    model_table$min_normalization_parameters,
+    model_table$max_normalization_parameters,
+    model_table$standard_error,
+    model_table$z_value,
+    model_table$pr_value
+  )
+)
 
-es_renglon_na <- apply(is.na(tabla_completa), MARGIN = 1, FUN = any)
-tabla_filtrada <- tabla_completa[!es_renglon_na, ]
-error_minimo <- min(tabla_filtrada$error)
-tabla_mejores_modelos <- tabla_filtrada[error == error_minimo]
- 
+row_na <- apply(
+  is.na(completed_table),
+  MARGIN = 1,
+  FUN = any
+)
+filtered_table <- completed_table[!row_na, ]
+minimum_error <- min(filtered_table$error)
+best_model_table <- filtered_table[error == minimum_error]
 
-write_csv(tabla_mejores_modelos, paste0(rutaResultados,'tabla_modelos_logisticos.csv'))
+write_csv(
+  best_model_table,
+  paste0(results_path, "logistic_model_table.csv")
+)

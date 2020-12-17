@@ -18,27 +18,28 @@ import csv
 ##Declaro variables a utilizar 
 ##Primer archivo
 
-data_processed_1 = '../data/processed/parametros_mejor_modelo_logistico_laal_ig.json'
+data_processed_1 = '../data/processed/best_logistic_model_parameters_laal_ig.json'
 with open(data_processed_1, encoding='utf8') as results_1_file:
-    parametros_mejor = json.load(results_1_file)
+    best_parameters = json.load(results_1_file)
 
-m_variables_normalizacion = parametros_mejor ["parametrosNormalizacion"]
-m_valor_minimo = m_variables_normalizacion ["valorMinimo"]
-m_valor_maximo = m_variables_normalizacion ["valorMaximo"]
+b_normalization_variables = best_parameters ["normalization_parameters"]
+b_minimum_value = b_normalization_variables ["minimum_value"]
+b_maximum_value = b_normalization_variables ["maximum_value"]
 
-m_variables_modelo = parametros_mejor["parametrosModelo"]
-m_intercept = m_variables_modelo[0]
-m_longitud_craneo = m_variables_modelo[1]
-m_altura_pico = m_variables_modelo[2]
-m_longitud_pico = m_variables_modelo[3]
-m_tarso = m_variables_modelo [4]
+b_model_variables = best_parameters["model_parameters"]
+m_intercept = b_model_variables[0]
+b_skull_length = b_model_variables[1]
+b_peak_height = b_model_variables[2]
+b_peak_length = b_model_variables[3]
+b_tarsus = b_model_variables [4]
 
-#segundo archivo
-m_variables_modelo = []
-with open('../data/processed/tabla_mejores_modelos.csv') as results_3_file:
-    reader = csv.DictReader(results_3_file)
+
+#tercer archivo
+b_model_variables = []
+with open('../data/processed/best_models_table.csv') as results_2_file:
+    reader = csv.DictReader(results_2_file)
     for row in reader:
-        m_variables_modelo.append(row)
+        b_model_variables.append(row)
 
 \end{pycode}
 
@@ -106,7 +107,7 @@ Donde, a partir de los ecuación (\ref{maximos_A}) obtenemos los valores maximos
     \hline
     \textbf{Morfometría} & \textbf{Valor Mínimo} & \textbf{Valor Máximo} & \textbf{Valor Estimado} & \textbf{Error Estándar} & \textbf{Valor Z} & \textbf{Pr($>\left|z\right|$)} \\
     \hline
-    \input{funcion_logistica_resultados_csv.tex}
+    \input{logistic_function_results_csv.tex}
     \end{tabular}
     \end{adjustbox}
     \\[10pt]
@@ -125,7 +126,7 @@ Donde, a partir de los ecuación (\ref{maximos_A}) obtenemos los valores maximos
     \hline
     \textbf{Morfometría} & \textbf{Valor Mínimo} & \textbf{Valor Máximo} & \textbf{Valor Estimado}\\
     \hline
-    \input{funcion_logistica_resultados_json.tex}
+    \input{logistic_function_results_json.tex}
     \end{tabular}
     \label{mejorModeloLogistico}
     \\[10pt]
