@@ -1,4 +1,11 @@
-all: reports/funcion_logistica.pdf
+all: tests reports/funcion_logistica.pdf
+
+define runLint
+	R -e "library(lintr)" \
+	  -e "lint_dir('R', linters = with_defaults(line_length_linter(100)))" \
+	  -e "lint_dir('src', linters = with_defaults(line_length_linter(100)))" \
+	  -e "lint_dir('tests/testthat', linters = with_defaults(line_length_linter(100)))"
+endef
 
 define runScript
 	mkdir --parents $(@D)
@@ -7,25 +14,26 @@ endef
 
 # I. Sección de variables
 # ------------------------------------------------------------------------------------------------
-DatosCrudos = \
+
+csvBestModelTable = \
+	data/processed/best_models_table.csv
+
+csvLogisticModelTable = \
+	data/processed/logistic_model_table.csv
+
+jsonBestLogisticModelParameters = \
+	data/processed/best_logistic_model_parameters_laal_ig.json
+
+jsonLogisticModelParameters = \
+	data/processed/logistic_model_parameters.json
+
+RawData = \
 	data/raw/datapackage.json \
-	data/raw/morfometria_albatros-laysan_guadalupe.csv 
-
-csvTablaModelosLogisticos = \
-	data/processed/tabla_modelos_logisticos.csv
-
-csvTablaMejoresModelos = \
-	data/processed/tabla_mejores_modelos.csv
-
-jsonParametrosMejorModeloLogistico = \
-	data/processed/parametros_mejor_modelo_logistico_laal_ig.json
-
-jsonParametrosModeloLogistico = \
-	data/processed/parametros_modelo_logistico_laal_ig.json
+	data/raw/laysan_albatross_morphometry_guadalupe.csv
 
 # II. Sección de requisitos de objetivos principales:
 # ------------------------------------------------------------------------------------------------
-reports/funcion_logistica.pdf: reports/funcion_logistica.tex $(csvTablaModelosLogisticos) $(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico) $(jsonParametrosModeloLogistico)
+reports/funcion_logistica.pdf: reports/logistic_function.tex $(csvLogisticModelTable) $(csvBestModelTable) $(jsonBestLogisticModelParameters) $(jsonLogisticModelParameters)
 	cd $(<D) && pdflatex $(<F)
 	cd $(<D) && pythontex $(<F)
 	cd $(<D) && pdflatex $(<F)
@@ -33,24 +41,49 @@ reports/funcion_logistica.pdf: reports/funcion_logistica.tex $(csvTablaModelosLo
 
 # III. Sección de dependencias para los objetivos principales
 # ------------------------------------------------------------------------------------------------
-$(csvTablaModelosLogisticos): src/01_create_parameter_logistic_model_LAAL.R $(DatosCrudos) src/dimorphism_model_class.R src/calculator_ROC_class.R src/evaluate_model_function.R src/get_prediction_sex_plot_function.R src/get_sex_probability_plot_function.R src/regretion_to_data_frame_coefficients_function.R
+$(csvLogisticModelTable): src/01_create_parameter_logistic_model_LAAL.R $(RawData) R/dimorphism_model_class.R R/calculator_roc_class.R R/regretion_to_data_frame_coefficients_function.R
 	$(runScript)
 
-$(csvTablaMejoresModelos) $(jsonParametrosMejorModeloLogistico): src/02_evaluate_better_models.R $(DatosCrudos) $(csvTablaModelosLogisticos) src/dimorphism_model_class.R src/calculator_ROC_class.R
+$(csvBestModelTable) $(jsonBestLogisticModelParameters): src/02_evaluate_better_models.R $(RawData) $(csvLogisticModelTable) R/dimorphism_model_class.R R/calculator_roc_class.R
 	$(runScript)
 
-$(jsonParametrosModeloLogistico): src/03_predict_sex.R $(DatosCrudos) $(csvTablaMejoresModelos) src/dimorphism_model_class.R src/calculator_ROC_class.R
+$(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTable) R/dimorphism_model_class.R R/calculator_roc_class.R
 	$(runScript)
 
 # IV. Sección del resto de los phonies
 # ------------------------------------------------------------------------------------------------
-.PHONY: all clean
+.PHONY: all clean coverage format install lint tests
 
-# Elimina los residuos de LaTeX
 clean:
+	rm --force --recursive data/processed
+	rm --force --recursive dimorfismo.Rcheck
+	rm --force --recursive man
+	rm --force --recursive reports/pythontex*
+	rm --force *.tar.gz
 	rm --force reports/*.aux
 	rm --force reports/*.log
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
-	rm --force --recursive data/processed
-	rm --force --recursive reports/pythontex*
+
+coverage: $(jsonLogisticModelParameters)
+	R -e "covr::package_coverage()"
+
+install:
+	R -e "devtools::document()" && \
+    R CMD build . && \
+    R CMD check dimorfismo_0.1.0.tar.gz && \
+    R CMD INSTALL dimorfismo_0.1.0.tar.gz
+
+lint:
+	$(runLint)
+	$(runLint) | grep -e "\^" && exit 1 || exit 0
+
+format:
+	R -e "library(styler)" \
+	  -e "style_dir('src')" \
+	  -e "style_dir('R')" \
+	  -e "style_dir('tests')"
+
+tests: $(jsonLogisticModelParameters)
+	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)" \
+	  -e "devtools::test()"

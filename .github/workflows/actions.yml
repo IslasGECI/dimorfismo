@@ -8,6 +8,12 @@ jobs:
     - name: Copia repositorio
       uses: actions/checkout@v2
     - name: Construye imagen
-      run: docker build --tag islasgeci/dimorfismo .
+      run: docker build --tag islasgeci .
+    - name: Despeluza
+      run: docker run islasgeci make lint
+    - name: Corre pruebas
+      run: docker run islasgeci make tests
+    - name: Evalúa cobertura de código con pruebas
+      run: docker run islasgeci make coverage
     - name: Ejecuta objetivo principal del Makefile
-      run: docker run --volume ${PWD}:/workdir islasgeci/dimorfismo make
+      run: docker run islasgeci make
