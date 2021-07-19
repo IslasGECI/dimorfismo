@@ -1,6 +1,6 @@
 all: tests reports/funcion_logistica.pdf
 
-define runLint
+define lint
 	R -e "library(lintr)" \
 	  -e "lint_dir('R', linters = with_defaults(line_length_linter(100)))" \
 	  -e "lint_dir('src', linters = with_defaults(line_length_linter(100)))" \
@@ -52,7 +52,18 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 
 # IV. Sección del resto de los phonies
 # ------------------------------------------------------------------------------------------------
-.PHONY: all clean coverage format install lint tests
+.PHONY:
+	all \
+	check \
+	clean \
+	coverage \
+	format \
+	install \
+	install \
+	linter \
+	tests
+
+check: linter
 
 clean:
 	rm --force --recursive data/processed
@@ -68,21 +79,21 @@ clean:
 coverage: $(jsonLogisticModelParameters)
 	R -e "covr::package_coverage()"
 
+format:
+	R -e "library(styler)" \
+	  -e "style_dir('src')" \
+	  -e "style_dir('R')" \
+	  -e "style_dir('tests')"
+
 install:
 	R -e "devtools::document()" && \
     R CMD build . && \
     R CMD check dimorfismo_0.1.0.tar.gz && \
     R CMD INSTALL dimorfismo_0.1.0.tar.gz
 
-lint:
-	$(runLint)
-	$(runLint) | grep -e "\^" && exit 1 || exit 0
-
-format:
-	R -e "library(styler)" \
-	  -e "style_dir('src')" \
-	  -e "style_dir('R')" \
-	  -e "style_dir('tests')"
+linter:
+	$(lint)
+	$(lint) | grep -e "\^" && exit 1 || exit 0
 
 tests: $(jsonLogisticModelParameters)
 	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)" \
