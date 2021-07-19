@@ -54,6 +54,7 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 # ------------------------------------------------------------------------------------------------
 .PHONY:
 	all \
+	check \
 	clean \
 	coverage \
 	format \
@@ -61,6 +62,8 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 	install \
 	linter \
 	tests
+
+check: linter
 
 clean:
 	rm --force --recursive data/processed

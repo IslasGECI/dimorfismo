@@ -9,11 +9,9 @@ jobs:
       uses: actions/checkout@v2
     - name: Construye imagen
       run: docker build --tag islasgeci .
-    - name: Despeluza
-      run: docker run islasgeci make lint
-    - name: Corre pruebas
-      run: docker run islasgeci make tests
-    - name: Evalúa cobertura de código con pruebas
+    - name: Verifica el formato
+      run: docker run islasgeci make check
+    - name: Corre pruebas y evalúa cobertura
       run: docker run islasgeci make coverage
     - name: Ejecuta objetivo principal del Makefile
       run: docker run islasgeci make
