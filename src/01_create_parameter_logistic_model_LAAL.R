@@ -3,7 +3,7 @@ library(dimorfismo)
 library(tidyverse)
 
 set.seed(28)
-#setwd("/workdir/")
+setwd("/workdir/")
 
 final_y_test <- c()
 tdp_path <- "data/raw/"
