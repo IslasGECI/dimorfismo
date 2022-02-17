@@ -1,7 +1,7 @@
 library(data.table)
 library(testthat)
 
-setwd("/workdir/")
+setwd("/workdir")
 source("src/02_evaluate_better_models.R")
 
 csv_correct_data_path <- file.path("tests/data/best_models_table_tests.csv")

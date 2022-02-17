@@ -3,7 +3,7 @@ library(dimorfismo)
 library(tidyverse)
 
 set.seed(28)
-setwd("/workdir/")
+#setwd("/workdir/")
 
 final_y_test <- c()
 tdp_path <- "data/raw/"
@@ -83,6 +83,7 @@ for (i in 1:num_repetitions) {
 
   normalized_data <- as.data.frame(sapply(normalized_data, normalize))
   normalized_data$sexo <- averaged_data[!is.na(averaged_data$masa), ]$sexo
+  normalized_data$sexo <- factor(normalized_data$sexo)
 
   null_regression <- glm(
     formula = sexo ~ 1,
