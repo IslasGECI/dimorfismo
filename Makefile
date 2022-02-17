@@ -75,6 +75,7 @@ clean:
 	rm --force reports/*.log
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
+	rm --r data/raw/carpeta1
 
 coverage: $(jsonLogisticModelParameters)
 	R -e "covr::package_coverage()"
@@ -98,3 +99,4 @@ linter:
 tests: $(jsonLogisticModelParameters)
 	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)" \
 	  -e "devtools::test()"
+
