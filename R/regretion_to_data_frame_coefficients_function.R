@@ -7,3 +7,33 @@ regretion_to_data_frame <- function(regression) {
   colnames(data_frame)[1] <- "Variables"
   return(data_frame)
 }
+
+fit_null_model <- function(normalized_data){
+  null_regression <- glm(
+    formula = sexo ~ 1,
+    data = normalized_data,
+    family = "binomial"
+  )
+  return(null_regression)
+}
+
+fit_complete_model <- function(normalized_data){
+  all_regression <- glm(
+    formula = sexo ~ .,
+    data = normalized_data,
+    family = "binomial"
+  )
+  return(all_regression)
+}
+
+fit_stepwise <- function(null, all){
+  step_regression <- step(null,
+    scope = list(
+      lower = null,
+      upper = all
+    ),
+    direction = "both",
+    trace = 0
+  )
+  return(step_regression)
+}
