@@ -27,7 +27,7 @@ data_training <- csv_data[1:5, ]
 
 test_that("El método predict funciona: ", {
   correct_prediction <- data.frame(
-  "probability" = c(0.9916232780, 0.0005606211, 0.9904448866, 0.2978475227, 0.9617133474)
+    "probability" = c(0.9916232780, 0.0005606211, 0.9904448866, 0.2978475227, 0.9617133474)
   )
   prediction <- dimorphism_class_tester$predict(data_training)
   expect_equivalent(colnames(prediction), colnames(correct_prediction))
