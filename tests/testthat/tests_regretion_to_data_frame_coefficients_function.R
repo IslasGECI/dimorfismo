@@ -26,3 +26,14 @@ test_that("La función regresa un data.frame", {
   obtained_class <- class(coeficientes_step)
   expect_equal(obtained_class, correct_class)
 })
+
+sintetic_data <- tibble(sexo = c(rep(TRUE,13), rep(FALSE,7)), a=seq(0.05,1,0.05)) 
+
+test_that("Coefficent is 0.60",{
+  modelo_ajustado = fit_null_model(sintetic_data)
+  obtanided_coefficient = modelo_ajustado$coefficients
+  names(obtanided_coefficient) <- c()
+  expected_coefficient = 0.6
+  expect_equal(expected_coefficient, obtanided_coefficient)
+
+})
