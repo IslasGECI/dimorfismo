@@ -40,3 +40,12 @@ fit_stepwise <- function(null, all) {
   )
   return(step_regression)
 }
+
+#' @export
+ttt <- function(x) {
+  return(3+5*x)
+}
+
+logt <- function(x){
+  p=1/(1+exp(-ttt(x)))
+}

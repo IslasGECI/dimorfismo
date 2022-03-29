@@ -75,6 +75,7 @@ clean:
 	rm --force reports/*.log
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
+	rm --force NAMESPACE
 
 coverage: $(jsonLogisticModelParameters)
 	R -e "covr::package_coverage()"
@@ -96,5 +97,7 @@ linter:
 	$(lint) | grep -e "\^" && exit 1 || exit 0
 
 tests: $(jsonLogisticModelParameters)
-	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)" \
-	  -e "devtools::test()"
+	R -e "devtools::test()"
+
+test_models: 
+	R -e "testthat::test_file('tests/testthat/tests_regretion_to_data_frame_coefficients_function.R', report = 'summary', stop_on_failure = TRUE)" \
