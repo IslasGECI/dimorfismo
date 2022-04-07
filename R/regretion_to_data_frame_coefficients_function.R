@@ -47,5 +47,6 @@ line <- function(x) {
 }
 
 logt <- function(x) {
-  p <- 1 / (1 + exp(-line(x)))
+  probability <- 1 / (1 + exp(-line(x)))
+  return(probability)
 }
