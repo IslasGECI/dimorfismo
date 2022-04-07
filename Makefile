@@ -98,6 +98,3 @@ linter:
 
 tests: $(jsonLogisticModelParameters)
 	R -e "devtools::test()"
-
-test_models: 
-	R -e "testthat::test_file('tests/testthat/tests_regretion_to_data_frame_coefficients_function.R', report = 'summary', stop_on_failure = TRUE)" \
