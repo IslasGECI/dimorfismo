@@ -23,7 +23,7 @@ fit_complete_model <- function(normalized_data) {
   all_regression <- glm(
     formula = sexo ~ .,
     data = normalized_data,
-    family = "binomial"
+    family = binomial(link = "logit")
   )
   return(all_regression)
 }
@@ -39,4 +39,14 @@ fit_stepwise <- function(null, all) {
     trace = 0
   )
   return(step_regression)
+}
+
+#' @export
+line <- function(x) {
+  return((3) + (5) * x)
+}
+
+logt <- function(x) {
+  probability <- 1 / (1 + exp(-line(x)))
+  return(probability)
 }

@@ -63,7 +63,15 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 	linter \
 	tests
 
-check: linter
+check:
+	R -e "library(styler)" \
+	  -e "resumen <- style_dir('R')" \
+	  -e "resumen <- rbind(resumen, style_dir('src'))" \
+	  -e "resumen <- rbind(resumen, style_dir('tests'))" \
+	  -e "any(resumen[[2]])" \
+	  | grep FALSE
+
+
 
 clean:
 	rm --force --recursive data/processed
@@ -75,6 +83,7 @@ clean:
 	rm --force reports/*.log
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
+	rm --force NAMESPACE
 
 coverage: $(jsonLogisticModelParameters)
 	R -e "covr::package_coverage()"
@@ -96,5 +105,4 @@ linter:
 	$(lint) | grep -e "\^" && exit 1 || exit 0
 
 tests: $(jsonLogisticModelParameters)
-	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)" \
-	  -e "devtools::test()"
+	R -e "devtools::test()"
