@@ -59,7 +59,6 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 	coverage \
 	format \
 	install \
-	install \
 	linter \
 	tests
 
