@@ -82,7 +82,6 @@ clean:
 	rm --force reports/*.log
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
-	rm --force NAMESPACE
 
 coverage: $(jsonLogisticModelParameters)
 	R -e "covr::package_coverage()"
@@ -104,4 +103,4 @@ linter:
 	$(lint) | grep -e "\^" && exit 1 || exit 0
 
 tests: $(jsonLogisticModelParameters)
-	R -e "devtools::test()"
+	R -e "devtools::test(stop_on_failure = TRUE)"

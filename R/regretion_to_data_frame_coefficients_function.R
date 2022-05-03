@@ -1,3 +1,5 @@
+
+
 #' @export
 regretion_to_data_frame <- function(regression) {
   regression_summary <- summary.glm(regression)
@@ -23,14 +25,14 @@ fit_complete_model <- function(normalized_data) {
   all_regression <- glm(
     formula = sexo ~ .,
     data = normalized_data,
-    family = binomial(link = "logit")
+    family = "binomial"
   )
   return(all_regression)
 }
 
 #' @export
 fit_stepwise <- function(null, all) {
-  step_regression <- step(null,
+  step_regression <- stats::step(null,
     scope = list(
       lower = null,
       upper = all
@@ -46,6 +48,7 @@ line <- function(x) {
   return((3) + (5) * x)
 }
 
+#' @export
 logt <- function(x) {
   probability <- 1 / (1 + exp(-line(x)))
   return(probability)

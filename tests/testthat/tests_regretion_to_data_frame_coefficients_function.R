@@ -30,7 +30,7 @@ test_that("La función regresa un data.frame", {
 
 sintetic_data <- tibble(sexo = c(rep(TRUE, 13), rep(FALSE, 7)), a = seq(0.05, 1, 0.05))
 
-test_that("Coefficent is 0.60 for fit_null_model", {
+test_that("Coefficent is 0.619 for fit_null_model", {
   modelo_ajustado <- fit_null_model(sintetic_data)
   obtanided_coefficient <- modelo_ajustado$coefficients
   names(obtanided_coefficient) <- c()
