@@ -75,7 +75,6 @@ for (i in 1:num_repetitions) {
   averaged_data <- numerical_data[no_numerical_data[!duplicated(id_darvic)]]
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
-  n_individuals <- length(unique(averaged_data$id_darvic))
   normalized_data <- averaged_data[!is.na(averaged_data$masa),
     variables_model,
     with = FALSE
