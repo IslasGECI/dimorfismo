@@ -96,11 +96,9 @@ install:
 	R CMD build . && \
     R CMD INSTALL dimorfismo_0.1.0.tar.gz
 
-install_old:
+check_install: install
 	R -e "devtools::document()" && \
-    R CMD build . && \
-    R CMD check dimorfismo_0.1.0.tar.gz && \
-    R CMD INSTALL dimorfismo_0.1.0.tar.gz
+    R CMD check dimorfismo_0.1.0.tar.gz
 
 linter: $(jsonLogisticModelParameters)
 	$(lint)
