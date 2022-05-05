@@ -83,7 +83,7 @@ clean:
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
 
-coverage: $(jsonLogisticModelParameters) install
+coverage: install $(jsonLogisticModelParameters)
 	R -e "covr::package_coverage()"
 
 format:
