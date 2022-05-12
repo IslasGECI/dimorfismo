@@ -60,7 +60,8 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 	format \
 	install \
 	linter \
-	tests
+	setup \
+	tests 
 
 check:
 	R -e "library(styler)" \
@@ -78,12 +79,13 @@ clean:
 	rm --force --recursive man
 	rm --force --recursive reports/pythontex*
 	rm --force *.tar.gz
+	rm --force NAMESPACE
 	rm --force reports/*.aux
 	rm --force reports/*.log
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
 
-coverage: install $(jsonLogisticModelParameters)
+coverage: setup $(jsonLogisticModelParameters)
 	R -e "covr::package_coverage()"
 
 format:
@@ -92,17 +94,19 @@ format:
 	  -e "style_dir('R')" \
 	  -e "style_dir('tests')"
 
-install:
+install: clean
 	R CMD build . && \
     R CMD INSTALL dimorfismo_0.1.0.tar.gz
 
-check_install: install
+check_install:
 	R -e "devtools::document()" && \
     R CMD check dimorfismo_0.1.0.tar.gz
 
 linter: $(jsonLogisticModelParameters)
 	$(lint)
 	$(lint) | grep -e "\^" && exit 1 || exit 0
+
+setup: install check_install
 
 tests: $(jsonLogisticModelParameters)
 	R -e "devtools::test(stop_on_failure = TRUE)"
