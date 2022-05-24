@@ -56,6 +56,7 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 	all \
 	check \
 	clean \
+	check_install \
 	coverage \
 	format \
 	install \
