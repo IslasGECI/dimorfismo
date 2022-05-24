@@ -30,7 +30,7 @@ test_that("La función regresa un data.frame", {
 
 sintetic_data <- tibble(sexo = c(rep(TRUE, 13), rep(FALSE, 7)), a = seq(0.05, 1, 0.05))
 
-test_that("Coefficent is 0.60 for fit_null_model", {
+test_that("Coefficent is 0.619 for fit_null_model", {
   modelo_ajustado <- fit_null_model(sintetic_data)
   obtanided_coefficient <- modelo_ajustado$coefficients
   names(obtanided_coefficient) <- c()
@@ -48,16 +48,16 @@ test_that("Coefficent is 552, -818 for fit_complete_model", {
 
 test_that("Logistic regretion from scratch", {
   expected <- 3
-  obtained <- ttt(0)
+  obtained <- line(0)
   expect_equal(expected, obtained)
   expected <- 8
-  obtained <- ttt(1)
+  obtained <- line(1)
   expect_equal(expected, obtained)
   expected <- 13
-  obtained <- ttt(2)
+  obtained <- line(2)
   expect_equal(expected, obtained)
   expected <- c(3, 8, 13)
-  obtained <- ttt(c(0, 1, 2))
+  obtained <- line(c(0, 1, 2))
   expect_equal(expected, obtained)
 })
 

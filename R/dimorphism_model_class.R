@@ -34,6 +34,7 @@ dimorphism_model <- R6Class("dimorphism_model",
       }
     },
     calculate_z = function(data_table, variable) {
+      data_table <- tibble(data_table)
       column <- data_table[, variable$Variables]
       normalized_column <- private$normalize_column(column, variable)
       private$z <- private$z + normalized_column * private$get_estimate_value(variable$Variables)
