@@ -1,4 +1,4 @@
-all: tests reports/funcion_logistica.pdf
+all: init reports/funcion_logistica.pdf
 
 define lint
 	R -e "library(lintr)" \
@@ -58,6 +58,7 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 	clean \
 	check_install \
 	format \
+	init \
 	install \
 	linter \
 	setup \
@@ -90,6 +91,8 @@ format:
 	  -e "style_dir('src')" \
 	  -e "style_dir('R')" \
 	  -e "style_dir('tests')"
+
+init: setup tests
 
 install: clean
 	R CMD build . && \
