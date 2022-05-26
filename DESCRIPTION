@@ -13,7 +13,6 @@ Imports:
     R6,
     tidyverse
 Suggests:
-    covr,
     devtools,
     roxygen2,
     testthat (>= 3.0.0)

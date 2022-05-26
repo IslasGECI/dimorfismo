@@ -57,7 +57,6 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 	check \
 	clean \
 	check_install \
-	coverage \
 	format \
 	install \
 	linter \
@@ -85,9 +84,6 @@ clean:
 	rm --force reports/*.log
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
-
-coverage: setup $(jsonLogisticModelParameters)
-	R -e "covr::package_coverage()"
 
 format:
 	R -e "library(styler)" \
