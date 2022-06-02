@@ -1,4 +1,4 @@
-all: tests reports/funcion_logistica.pdf
+all: init reports/funcion_logistica.pdf
 
 define lint
 	R -e "library(lintr)" \
@@ -56,9 +56,10 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 	all \
 	check \
 	clean \
-	check_install \
 	coverage \
+	check_install \
 	format \
+	init \
 	install \
 	linter \
 	setup \
@@ -86,8 +87,9 @@ clean:
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
 
-coverage: setup $(jsonLogisticModelParameters)
-	R -e "covr::package_coverage()"
+coverage: setup
+	Rscript tests/testthat/coverage.R
+
 
 format:
 	R -e "library(styler)" \
@@ -95,11 +97,13 @@ format:
 	  -e "style_dir('R')" \
 	  -e "style_dir('tests')"
 
+init: setup tests
+
 install: clean
 	R CMD build . && \
     R CMD INSTALL dimorfismo_0.1.0.tar.gz
 
-check_install:
+check_install: $(jsonLogisticModelParameters)
 	R -e "devtools::document()" && \
     R CMD check dimorfismo_0.1.0.tar.gz
 
