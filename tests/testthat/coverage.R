@@ -1,0 +1,6 @@
+library(covr)
+cov <- package_coverage()
+print(cov)
+zero_coverage(cov)
+report(cov, file = file.path("/workdir/tests/coverage-report.html"), browse = FALSE)
+codecov(coverage = cov, token = "5a08b9df-9af6-4c7e-b938-e1b6f0f5df5d")
