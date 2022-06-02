@@ -1,4 +1,4 @@
-all: tests reports/funcion_logistica.pdf
+all: init reports/funcion_logistica.pdf
 
 define lint
 	R -e "library(lintr)" \
@@ -57,13 +57,23 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 	check \
 	clean \
 	coverage \
+	check_install \
 	format \
-	install \
+	init \
 	install \
 	linter \
-	tests
+	setup \
+	tests 
 
-check: linter
+check:
+	R -e "library(styler)" \
+	  -e "resumen <- style_dir('R')" \
+	  -e "resumen <- rbind(resumen, style_dir('src'))" \
+	  -e "resumen <- rbind(resumen, style_dir('tests'))" \
+	  -e "any(resumen[[2]])" \
+	  | grep FALSE
+
+
 
 clean:
 	rm --force --recursive data/processed
@@ -71,13 +81,15 @@ clean:
 	rm --force --recursive man
 	rm --force --recursive reports/pythontex*
 	rm --force *.tar.gz
+	rm --force NAMESPACE
 	rm --force reports/*.aux
 	rm --force reports/*.log
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
 
-coverage: $(jsonLogisticModelParameters)
-	R -e "covr::package_coverage()"
+coverage: setup
+	Rscript tests/testthat/coverage.R
+
 
 format:
 	R -e "library(styler)" \
@@ -85,16 +97,21 @@ format:
 	  -e "style_dir('R')" \
 	  -e "style_dir('tests')"
 
-install:
-	R -e "devtools::document()" && \
-    R CMD build . && \
-    R CMD check dimorfismo_0.1.0.tar.gz && \
+init: setup tests
+
+install: clean
+	R CMD build . && \
     R CMD INSTALL dimorfismo_0.1.0.tar.gz
 
-linter:
+check_install: $(jsonLogisticModelParameters)
+	R -e "devtools::document()" && \
+    R CMD check dimorfismo_0.1.0.tar.gz
+
+linter: $(jsonLogisticModelParameters)
 	$(lint)
 	$(lint) | grep -e "\^" && exit 1 || exit 0
 
+setup: install check_install
+
 tests: $(jsonLogisticModelParameters)
-	R -e "testthat::test_dir('tests/testthat/', report = 'summary', stop_on_failure = TRUE)" \
-	  -e "devtools::test()"
+	R -e "devtools::test(stop_on_failure = TRUE)"

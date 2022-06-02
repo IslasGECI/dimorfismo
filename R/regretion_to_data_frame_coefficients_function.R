@@ -1,3 +1,5 @@
+
+
 #' @export
 regretion_to_data_frame <- function(regression) {
   regression_summary <- summary.glm(regression)
@@ -6,4 +8,48 @@ regretion_to_data_frame <- function(regression) {
   data_frame <- cbind(rownames(data_frame), data_frame)
   colnames(data_frame)[1] <- "Variables"
   return(data_frame)
+}
+
+#' @export
+fit_null_model <- function(normalized_data) {
+  null_regression <- glm(
+    formula = sexo ~ 1,
+    data = normalized_data,
+    family = "binomial"
+  )
+  return(null_regression)
+}
+
+#' @export
+fit_complete_model <- function(normalized_data) {
+  all_regression <- glm(
+    formula = sexo ~ .,
+    data = normalized_data,
+    family = "binomial"
+  )
+  return(all_regression)
+}
+
+#' @export
+fit_stepwise <- function(null, all) {
+  step_regression <- stats::step(null,
+    scope = list(
+      lower = null,
+      upper = all
+    ),
+    direction = "both",
+    trace = 0
+  )
+  return(step_regression)
+}
+
+#' @export
+line <- function(x) {
+  return((3) + (5) * x)
+}
+
+#' @export
+logt <- function(x) {
+  probability <- 1 / (1 + exp(-line(x)))
+  return(probability)
 }

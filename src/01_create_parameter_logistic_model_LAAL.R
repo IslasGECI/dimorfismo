@@ -75,7 +75,6 @@ for (i in 1:num_repetitions) {
   averaged_data <- numerical_data[no_numerical_data[!duplicated(id_darvic)]]
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
-  n_individuals <- length(unique(averaged_data$id_darvic))
   normalized_data <- averaged_data[!is.na(averaged_data$masa),
     variables_model,
     with = FALSE
@@ -83,29 +82,15 @@ for (i in 1:num_repetitions) {
 
   normalized_data <- as.data.frame(sapply(normalized_data, normalize))
   normalized_data$sexo <- averaged_data[!is.na(averaged_data$masa), ]$sexo
+  normalized_data$sexo <- factor(normalized_data$sexo)
 
-  null_regression <- glm(
-    formula = sexo ~ 1,
-    data = normalized_data,
-    family = "binomial"
-  )
+  null_regression <- fit_null_model(normalized_data)
 
   # Hacemos el modelos utilizando las 11 varibles
-  all_regression <- glm(
-    formula = sexo ~ .,
-    data = normalized_data,
-    family = "binomial"
-  )
+  all_regression <- fit_complete_model(normalized_data)
 
   # Aplicamos el método _stepwise_.
-  step_regression <- step(null_regression,
-    scope = list(
-      lower = null_regression,
-      upper = all_regression
-    ),
-    direction = "both",
-    trace = 0
-  )
+  step_regression <- fit_stepwise(null_regression, all_regression)
 
   normalized_data$id_darvic <- averaged_data[!is.na(averaged_data$masa), ]$id_darvic
   step_coefficients <- regretion_to_data_frame(step_regression)
