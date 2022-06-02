@@ -56,6 +56,7 @@ $(jsonLogisticModelParameters): src/03_predict_sex.R $(RawData) $(csvBestModelTa
 	all \
 	check \
 	clean \
+	coverage \
 	check_install \
 	format \
 	init \
@@ -85,6 +86,10 @@ clean:
 	rm --force reports/*.log
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
+
+coverage: setup
+	Rscript tests/testthat/coverage.R
+
 
 format:
 	R -e "library(styler)" \

@@ -18,5 +18,7 @@ jobs:
       run: docker build --tag islasgeci .
     - name: Verifica el formato
       run: docker run islasgeci make check
+    - name: Verifica cobertura
+      run: docker run islasgeci make coverage
     - name: Ejecuta objetivo principal del Makefile
       run: docker run islasgeci make
