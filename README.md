@@ -1,3 +1,5 @@
+<a href="https://www.islas.org.mx/"><img src="https://www.islas.org.mx/img/logo.svg" align="right" width="256" /></a>
+
 # Dimorfismo Sexual de Albatros de Laysan en Isla Guadalupe
 
 Para reproducir lo que se encuentra en el repo oficial:
