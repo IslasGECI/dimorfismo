@@ -1,16 +1,16 @@
 {
   "normalization_parameters": {
     "minimum_value": {
-      "longitud_craneo": [165.58],
-      "altura_pico": [28.85],
-      "longitud_pico": [100.81],
-      "tarso": [83.18]
+      "skull_length": [165.58],
+      "beak_height": [28.85],
+      "beak_length": [100.81],
+      "tarsus": [83.18]
     },
     "maximum_value": {
-      "longitud_craneo": [193.22],
-      "altura_pico": [35.5],
-      "longitud_pico": [119.48],
-      "tarso": [99.69]
+      "skull_length": [193.22],
+      "beak_height": [35.5],
+      "beak_length": [119.48],
+      "tarsus": [99.69]
     }
   },
   "model_parameters": [
@@ -20,24 +20,24 @@
       "_row": "(Intercept)"
     },
     {
-      "Variables": "longitud_craneo",
+      "Variables": "skull_length",
       "Estimate": 6.641,
-      "_row": "longitud_craneo"
+      "_row": "skull_length"
     },
     {
-      "Variables": "altura_pico",
+      "Variables": "beak_height",
       "Estimate": 11.194,
-      "_row": "altura_pico"
+      "_row": "beak_height"
     },
     {
-      "Variables": "longitud_pico",
+      "Variables": "beak_length",
       "Estimate": 8.777,
-      "_row": "longitud_pico"
+      "_row": "beak_length"
     },
     {
-      "Variables": "tarso",
+      "Variables": "tarsus",
       "Estimate": 5.497,
-      "_row": "tarso"
+      "_row": "tarsus"
     }
   ]
 }

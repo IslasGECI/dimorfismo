@@ -85,7 +85,7 @@
                         }
                     },
                     {
-                        "name": "longitud_craneo",
+                        "name": "skull_length",
                         "long_name": "Cranial length",
                         "nombre_largo": "Longitud del cráneo",
                         "type": "number",
@@ -97,7 +97,7 @@
                         }
                     },
                     {
-                        "name": "longitud_pico",
+                        "name": "beak_length",
                         "long_name": "Bill length",
                         "nombre_largo": "Longitud del pico",
                         "type": "number",
@@ -121,7 +121,7 @@
                         }
                     },
                     {
-                        "name": "ancho_craneo",
+                        "name": "skull_width",
                         "long_name": "Craneal width",
                         "nombre_largo": "Ancho del cráneo",
                         "type": "number",
@@ -133,7 +133,7 @@
                         }
                     },
                     {
-                        "name": "altura_pico",
+                        "name": "beak_height",
                         "long_name": "Bill height",
                         "nombre_largo": "Alto del pico",
                         "type": "number",
@@ -157,9 +157,9 @@
                         }
                     },
                     {
-                        "name": "tarso",
+                        "name": "tarsus",
                         "long_name": "Tarsus",
-                        "nombre_largo": "Tarso",
+                        "nombre_largo": "tarsus",
                         "type": "number",
                         "units": "mm",
                         "description": "Distancia en milímetros de extremo a extremo del tarsus respecto al plano coronal del ave",
@@ -169,7 +169,7 @@
                         }
                     },
                     {
-                        "name": "longitud_ala_cerrada",
+                        "name": "close_brim_length",
                         "long_name": "Closed wing length",
                         "nombre_largo": "Longitud del ala cerrada",
                         "type": "number",
@@ -181,7 +181,7 @@
                         }
                     },
                     {
-                        "name": "longitud_ala_abierta",
+                        "name": "open_brim_length",
                         "long_name": "Opened wing length",
                         "nombre_largo": "Longitud del ala abierta",
                         "type": "number",
@@ -193,9 +193,9 @@
                         }
                     },
                     {
-                        "name": "media_envergadura",
+                        "name": "media_wingspan",
                         "long_name": "Half wingspan",
-                        "nombre_largo": "Media envergadura",
+                        "nombre_largo": "Media wingspan",
                         "type": "number",
                         "units": "cm",
                         "description": "Distancia en centímetros entre un extremo del ala hasta el centro del pecho respecto al plano coronal del ave.",
@@ -205,9 +205,9 @@
                         }
                     },
                     {
-                        "name": "envergadura",
+                        "name": "wingspan",
                         "long_name": "Wingspan",
-                        "nombre_largo": "Envergadura",
+                        "nombre_largo": "wingspan",
                         "type": "number",
                         "units": "cm",
                         "description": "Distancia en centímetros entre las dos puntas de las alas cuando están completamente extendidas respecto al plano coronal del ave.",
