@@ -55,11 +55,10 @@ logt <- function(x) {
 }
 
 #' @export
-obtained_json <- function(data_test,output_json_path){
+get_best_json_for_logistic_model <- function(data_path,output_json_path){
   final_y_test <- c()
-  tdp_path <- "data/raw/"
   results_path <- "data/processed/"
-  csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
+  csv_file <- file.path(data_path, "laysan_albatross_morphometry_guadalupe.csv")
 
   data <- data.table(read.csv(csv_file))
   n_data <- nrow(data)
@@ -192,4 +191,15 @@ obtained_json <- function(data_test,output_json_path){
       jsonlite::toJSON(list_normalization_parameters, pretty = T),
       json_path
     )
+
+    dimorphism_model_albatross <- dimorphism_model$new()
+    dimorphism_model_albatross$load_parameters(json_path)
+    prob <- dimorphism_model_albatross$predict(validation_data)
+    y_test <- ifelse(validation_data$sexo == "M", 1, 0)
+    final_y_test <- append(final_y_test, y_test)
+    roc_data <- data.frame(y_test, prob)
+    error_criteria <- calculador_roc$best_threshold_error(roc_data)
+    threshold_error_table <- rbind(threshold_error_table, error_criteria)
+    setTxtProgressBar(progress_bar, i)
+  }
 }
