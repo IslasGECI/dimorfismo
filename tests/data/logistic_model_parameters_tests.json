@@ -1,15 +1,15 @@
 {
   "normalization_parameters": {
     "minimum_value": {
-      "skull_length": [165.58],
       "beak_height": [28.85],
       "beak_length": [100.81],
+      "skull_length": [165.58],
       "tarsus": [83.18]
     },
     "maximum_value": {
-      "skull_length": [193.22],
       "beak_height": [35.5],
       "beak_length": [119.48],
+      "skull_length": [193.22],
       "tarsus": [99.69]
     }
   },
