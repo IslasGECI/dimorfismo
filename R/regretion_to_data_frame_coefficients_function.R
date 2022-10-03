@@ -55,7 +55,7 @@ logt <- function(x) {
 }
 
 #' @export
-get_best_json_for_logistic_model <- function(data_path,output_json_path){
+get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   final_y_test <- c()
   results_path <- "data/processed/"
   csv_file <- file.path(data_path, "laysan_albatross_morphometry_guadalupe.csv")
