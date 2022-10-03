@@ -1,16 +1,16 @@
 {
   "normalization_parameters": {
     "minimum_value": {
-      "skull_length": [165.58],
       "beak_height": [28.85],
       "beak_length": [100.81],
-      "tarsus": [83.18]
+      "skull_length": [165.58],
+      "skull_width": [46.5]
     },
     "maximum_value": {
-      "skull_length": [193.22],
       "beak_height": [35.5],
       "beak_length": [119.48],
-      "tarsus": [99.69]
+      "skull_length": [193.22],
+      "skull_width": [57.33]
     }
   },
   "model_parameters": [
@@ -18,11 +18,6 @@
       "Variables": "(Intercept)",
       "Estimate": -20.773,
       "_row": "(Intercept)"
-    },
-    {
-      "Variables": "skull_length",
-      "Estimate": 6.641,
-      "_row": "skull_length"
     },
     {
       "Variables": "beak_height",
@@ -35,9 +30,14 @@
       "_row": "beak_length"
     },
     {
-      "Variables": "tarsus",
-      "Estimate": 5.497,
-      "_row": "tarsus"
+      "Variables": "skull_length",
+      "Estimate": 6.641,
+      "_row": "skull_length"
+    },
+    {
+      "Variables": "skull_width",
+      "Estimate": 5.96,
+      "_row": "skull_width"
     }
   ]
 }
