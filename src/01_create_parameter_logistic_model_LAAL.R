@@ -4,10 +4,6 @@ library(tidyverse)
 
 set.seed(28)
 setwd("/workdir/")
-<<<<<<< Updated upstream
-data_path <- "data/raw/"
-get_best_json_for_logistic_model(data_path, output_json_path)
-=======
 
 final_y_test <- c()
 tdp_path <- "data/raw/"
@@ -156,7 +152,6 @@ for (i in 1:num_repetitions) {
   threshold_error_table <- rbind(threshold_error_table, error_criteria)
   setTxtProgressBar(progress_bar, i)
 }
->>>>>>> Stashed changes
 close(progress_bar)
 
 no_intercept_variables <- c(
