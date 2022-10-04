@@ -66,7 +66,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   trainning_proportion <- 0.80
 
   variables_model <- c(
-    "skull_length", "beak_length", "skull_width", "beak_height",
+    "beak_height", "beak_length", "skull_length", "skull_width",
     "tarsus", "close_brim_length", "open_brim_length", "wingspan"
   )
   column_names <- c("(Intercept)", variables_model)
