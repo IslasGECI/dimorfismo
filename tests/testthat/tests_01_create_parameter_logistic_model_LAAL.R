@@ -39,9 +39,10 @@ test_that("El valor de prueba es correcto:", {
 })
 
 test_that("Los resultados generados del código son correctos:", {
-  data_path <- "tests/data/"
-  obtained_json <- get_best_json_for_logistic_model(data_path,output_json_path)
-  expect_equal(obtained_json, json_correct_data)
+  data_path <- "tests/data/laysan_albatross_morphometry_guadalupe.csv"
+  output_json_path <- "tests/data/output_best_json_for_logistic_model.json"
+  get_best_json_for_logistic_model(data_path,output_json_path)
+  expect_equal(output_json_path, json_correct_data)
   correct_lenght <- 58
   obtained_length <- length(readLines(json_data_path))
   expect_equal(obtained_length, correct_lenght, tolerance = 1)

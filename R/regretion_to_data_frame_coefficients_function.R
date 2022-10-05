@@ -57,10 +57,8 @@ logt <- function(x) {
 #' @export
 get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   final_y_test <- c()
-  results_path <- "data/processed/"
-  csv_file <- file.path(data_path, "laysan_albatross_morphometry_guadalupe.csv")
-
-  data <- data.table(read.csv(csv_file))
+  print("antes csv")
+  data <- data.table(read_csv(data_path))
   n_data <- nrow(data)
 
   trainning_proportion <- 0.80
@@ -111,7 +109,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
     trainning_data <- data[trainning_index]
     validation_data <- data[validation_index]
 
-    setkey(trainning_data, id_darvic)
+    setkey(trainning_data, id_darvic, vectors=TRUE)
 
     no_numerical_data <- trainning_data[unique(trainning_data),
       .SD[, !sapply(.SD, is.numeric), with = FALSE],
@@ -186,20 +184,10 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
         max_normalized_data[i_pair_normalization]
     }
 
-    json_path <- "data/processed/logistic_model_parameters.json"
     readr::write_lines(
       jsonlite::toJSON(list_normalization_parameters, pretty = T),
-      json_path
+      output_json_path
     )
 
-    dimorphism_model_albatross <- dimorphism_model$new()
-    dimorphism_model_albatross$load_parameters(json_path)
-    prob <- dimorphism_model_albatross$predict(validation_data)
-    y_test <- ifelse(validation_data$sexo == "M", 1, 0)
-    final_y_test <- append(final_y_test, y_test)
-    roc_data <- data.frame(y_test, prob)
-    error_criteria <- calculador_roc$best_threshold_error(roc_data)
-    threshold_error_table <- rbind(threshold_error_table, error_criteria)
-    setTxtProgressBar(progress_bar, i)
   }
 }
