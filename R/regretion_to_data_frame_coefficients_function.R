@@ -102,6 +102,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   )
 
   for (i in 1:num_repetitions) {
+    print(i)
     trainning_index <- sample(1:n_data, round(trainning_proportion * n_data))
     validation_index <- -trainning_index
 
@@ -109,7 +110,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
     trainning_data <- data[trainning_index]
     validation_data <- data[validation_index]
 
-    setkey(trainning_data, id_darvic, vectors=TRUE)
+    setkey(trainning_data, id_darvic)
 
     no_numerical_data <- trainning_data[unique(trainning_data),
       .SD[, !sapply(.SD, is.numeric), with = FALSE],
@@ -188,6 +189,5 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
       jsonlite::toJSON(list_normalization_parameters, pretty = T),
       output_json_path
     )
-
   }
 }
