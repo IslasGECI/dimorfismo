@@ -108,7 +108,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   trainning_data <- data[trainning_index, ]
   validation_data <- data[validation_index, ]
   write_csv(trainning_data, "trainning_data.csv")
-  setkey(trainning_data, id_darvic)
+  setkey(trainning_data, `id_darvic`)
   no_numerical_data <- trainning_data %>%
     select(subcolonia, id_darvic, sexo) %>%
     unique()
