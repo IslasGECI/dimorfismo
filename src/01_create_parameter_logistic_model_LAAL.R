@@ -67,11 +67,14 @@ for (i in 1:num_repetitions) {
     .SD[, !sapply(.SD, is.numeric), with = FALSE],
     mult = "last"
   ]
+  write_csv(no_numerical_data, "no_numerical_data.csv")
 
   numerical_data <- trainning_data[,
     lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean),
     by = id_darvic
   ]
+
+  write_csv(numerical_data, "numerical_data.csv")
   averaged_data <- numerical_data[no_numerical_data[!duplicated(id_darvic)]]
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
