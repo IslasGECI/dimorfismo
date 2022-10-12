@@ -101,49 +101,44 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
     style = 3
   )
 
+  trainning_index <- sample(1:n_data, round(trainning_proportion * n_data))
+  validation_index <- -trainning_index
+
+  # Se extraen los datos de 2015, 2016, 2017 ya que sólo estos se usaran para crear el modelo
+  trainning_data <- data[trainning_index, ]
+  validation_data <- data[validation_index, ]
+  write_csv(trainning_data, "trainning_data.csv")
+  setkey(trainning_data, id_darvic)
+  no_numerical_data <- trainning_data %>%
+    select(subcolonia, id_darvic, sexo) %>%
+    unique()
+  numerical_data <- trainning_data %>%
+    select(id_darvic, temporada, id_nido, skull_length, beak_length, longitud_narina, skull_width, beak_height, ancho_pico, tarsus, close_brim_length, open_brim_length, media_wingspan, wingspan, masa) %>%
+    unique()
+  averaged_data <- numerical_data[no_numerical_data[!duplicated(id_darvic)]]
+
+  # Se definen variables para utilizarse en el texto que decribe los Datos.
+  normalized_data <- averaged_data[!is.na(averaged_data$masa),
+    variables_model,
+    with = FALSE
+  ]
+
+  normalized_data <- as.data.frame(sapply(normalized_data, normalize))
+  normalized_data$sexo <- averaged_data[!is.na(averaged_data$masa), ]$sexo
+  normalized_data$sexo <- factor(normalized_data$sexo)
+
+  null_regression <- fit_null_model(normalized_data)
+
+  # Hacemos el modelos utilizando las 11 varibles
+  all_regression <- fit_complete_model(normalized_data)
+
+  # Aplicamos el método _stepwise_.
+  step_regression <- fit_stepwise(null_regression, all_regression)
+
+  normalized_data$id_darvic <- averaged_data[!is.na(averaged_data$masa), ]$id_darvic
+  step_coefficients <- regretion_to_data_frame(step_regression)
+
   for (i in 1:num_repetitions) {
-    print(i)
-    trainning_index <- sample(1:n_data, round(trainning_proportion * n_data))
-    validation_index <- -trainning_index
-
-    # Se extraen los datos de 2015, 2016, 2017 ya que sólo estos se usaran para crear el modelo
-    trainning_data <- data[trainning_index]
-    validation_data <- data[validation_index]
-
-    setkey(trainning_data, id_darvic)
-
-    no_numerical_data <- trainning_data[unique(trainning_data),
-      .SD[, !sapply(.SD, is.numeric), with = FALSE],
-      mult = "last"
-    ]
-
-    numerical_data <- trainning_data[,
-      lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean),
-      by = id_darvic
-    ]
-    averaged_data <- numerical_data[no_numerical_data[!duplicated(id_darvic)]]
-
-    # Se definen variables para utilizarse en el texto que decribe los Datos.
-    normalized_data <- averaged_data[!is.na(averaged_data$masa),
-      variables_model,
-      with = FALSE
-    ]
-
-    normalized_data <- as.data.frame(sapply(normalized_data, normalize))
-    normalized_data$sexo <- averaged_data[!is.na(averaged_data$masa), ]$sexo
-    normalized_data$sexo <- factor(normalized_data$sexo)
-
-    null_regression <- fit_null_model(normalized_data)
-
-    # Hacemos el modelos utilizando las 11 varibles
-    all_regression <- fit_complete_model(normalized_data)
-
-    # Aplicamos el método _stepwise_.
-    step_regression <- fit_stepwise(null_regression, all_regression)
-
-    normalized_data$id_darvic <- averaged_data[!is.na(averaged_data$masa), ]$id_darvic
-    step_coefficients <- regretion_to_data_frame(step_regression)
-
     for (i_coeficiente in rownames(step_coefficients)) {
       model_table$model_coefficients[i, i_coeficiente] <- step_coefficients[i_coeficiente, "Estimate"]
       model_table$standard_error[i, i_coeficiente] <- step_coefficients[i_coeficiente, "Std. Error"]
