@@ -87,7 +87,7 @@ clean:
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
 
-coverage: tests
+coverage: install tests
 
 
 format:
