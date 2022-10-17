@@ -5,13 +5,13 @@ library(tidyverse)
 setwd("/workdir/")
 json_data_path <- "data/processed/logistic_model_parameters.json"
 json_data <- rjson::fromJSON(file = json_data_path)
-json_correct_data_path <- "tests/data/logistic_model_parameters_tests.json"
-json_correct_data <- rjson::fromJSON(file = json_correct_data_path)
 
 test_that("Los resultados generados del código son correctos:", {
   data_path <- "tests/data/laysan_albatross_morphometry_guadalupe.csv"
   output_json_path <- "tests/data/output_best_json_for_logistic_model.json"
   get_best_json_for_logistic_model(data_path, output_json)
+  json_correct_data_path <- "tests/data/logistic_model_parameters_tests.json"
+  json_correct_data <- rjson::fromJSON(file = json_correct_data_path)
   expect_equal(output_json_path, json_correct_data)
   correct_lenght <- 58
   obtained_length <- length(readLines(json_data_path))
