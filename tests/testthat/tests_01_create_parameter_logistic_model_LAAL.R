@@ -3,6 +3,10 @@ library(testthat)
 library(tidyverse)
 
 setwd("/workdir/")
+json_data_path <- "data/processed/logistic_model_parameters.json"
+json_data <- rjson::fromJSON(file = json_data_path)
+json_correct_data_path <- "tests/data/logistic_model_parameters_tests.json"
+json_correct_data <- rjson::fromJSON(file = json_correct_data_path)
 
 test_that("Los resultados generados del código son correctos:", {
   data_path <- "tests/data/laysan_albatross_morphometry_guadalupe.csv"
@@ -28,11 +32,6 @@ correct_y_test <- c(
   1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0,
   0, 0, 0, 0, 0, 1, 1
 )
-
-json_data_path <- "data/processed/logistic_model_parameters.json"
-json_data <- rjson::fromJSON(file = json_data_path)
-json_correct_data_path <- "tests/data/logistic_model_parameters_tests.json"
-json_correct_data <- rjson::fromJSON(file = json_correct_data_path)
 
 test_that("El valor mínimo de error es correcto:", {
   correct_minimum_error <- 7.40740740740740655212448473

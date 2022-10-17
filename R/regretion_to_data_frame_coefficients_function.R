@@ -108,14 +108,15 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   trainning_data <- data[trainning_index, ]
   validation_data <- data[validation_index, ]
   write_csv(trainning_data, "trainning_data.csv")
-  setkey(trainning_data, `id_darvic`)
+  setkey(trainning_data, id_darvic)
   no_numerical_data <- trainning_data %>%
     select(subcolonia, id_darvic, sexo) %>%
     unique()
   numerical_data <- trainning_data %>%
     select(id_darvic, temporada, id_nido, skull_length, beak_length, longitud_narina, skull_width, beak_height, ancho_pico, tarsus, close_brim_length, open_brim_length, media_wingspan, wingspan, masa) %>%
     unique()
-  averaged_data <- numerical_data[no_numerical_data[!duplicated(id_darvic)]]
+  numerical_data$sexo <- no_numerical_data[!duplicated(no_numerical_data$id_darvic), ]$sexo
+  averaged_data <- numerical_data
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
   normalized_data <- averaged_data[!is.na(averaged_data$masa),
