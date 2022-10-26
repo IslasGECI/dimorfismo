@@ -93,7 +93,7 @@ for (i in 1:num_repetitions) {
   all_regression <- fit_complete_model(normalized_data)
 
   # Aplicamos el método _stepwise_.
-  step_regression <- fit_stepwise(null_regression, all_regression)
+  step_regression <- fit_stepwise(normalized_data)
 
   normalized_data$id_darvic <- averaged_data[!is.na(averaged_data$masa), ]$id_darvic
   step_coefficients <- regretion_to_data_frame(step_regression)

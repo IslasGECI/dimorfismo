@@ -31,7 +31,17 @@ fit_complete_model <- function(normalized_data) {
 }
 
 #' @export
-fit_stepwise <- function(null, all) {
+fit_stepwise <- function(normalized_data) {
+  null <- glm(
+    formula = sexo ~ 1,
+    data = normalized_data,
+    family = "binomial"
+  )
+  all <- glm(
+    formula = sexo ~ .,
+    data = normalized_data,
+    family = "binomial"
+  )
   step_regression <- stats::step(null,
     scope = list(
       lower = null,
@@ -134,7 +144,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   all_regression <- fit_complete_model(normalized_data)
 
   # Aplicamos el método _stepwise_.
-  step_regression <- fit_stepwise(null_regression, all_regression)
+  step_regression <- fit_stepwise(normalized_data)
 
   normalized_data$id_darvic <- averaged_data[!is.na(averaged_data$masa), ]$id_darvic
   step_coefficients <- regretion_to_data_frame(step_regression)
