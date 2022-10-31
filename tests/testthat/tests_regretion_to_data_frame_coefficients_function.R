@@ -104,3 +104,12 @@ test_that("Column names ", {
   obtained_name <- names(model_table$model_coefficients)
   expect_equal(obtained_name, expected_name)
 })
+
+test_that("normalized data ",{
+  data_path <- "../data/laysan_albatross_morphometry_guadalupe.csv"
+  data <- data.table(read_csv(data_path))
+  trainning_index <- get_trainning_index(data)
+  trainning_data <- data[trainning_index, ]
+  write_csv(trainning_data, "../data/trainning_data.csv")
+  obtained <- get_normalized_data(trainning_data)
+})
