@@ -100,7 +100,7 @@ rename_model_table <- function(model_table) {
   return(model_table)
 }
 
-get_progress_bar <- function(num_repetitions){
+get_progress_bar <- function(num_repetitions) {
   progress_bar <- txtProgressBar(
     min = 0,
     max = num_repetitions,
@@ -109,30 +109,30 @@ get_progress_bar <- function(num_repetitions){
   return(progress_bar)
 }
 
-get_trainning_index <- function(data){
+get_trainning_index <- function(data) {
   n_data <- nrow(data)
   trainning_proportion <- 0.80
   trainning_index <- sample(1:n_data, round(trainning_proportion * n_data))
   return(trainning_index)
 }
 
-get_no_numerica_data <- function(trainning_data){
+get_no_numerical_data <- function(trainning_data) {
   no_numerica_data <- trainning_data %>%
     select(subcolonia, id_darvic, sexo) %>%
     unique()
   return(no_numerica_data)
 }
 
-get_numerical_data <- function(trainning_data){
+get_numerical_data <- function(trainning_data) {
   numerical_data <- trainning_data %>%
     select(id_darvic, temporada, id_nido, skull_length, beak_length, longitud_narina, skull_width, beak_height, ancho_pico, tarsus, close_brim_length, open_brim_length, media_wingspan, wingspan, masa) %>%
     unique()
   return(numerical_data)
 }
 
-get_normalized_data <- function(trainning_data){
+get_normalized_data <- function(trainning_data, variables_model) {
   numerical_data <- get_numerical_data(trainning_data)
-  no_numerica_data <- get_no_numerica_data(trainning_data)
+  no_numerical_data <- get_no_numerical_data(trainning_data)
   numerical_data$sexo <- no_numerical_data[!duplicated(no_numerical_data$id_darvic), ]$sexo
   averaged_data <- numerical_data
 
@@ -165,7 +165,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   model_table <- rename_model_table(model_table)
 
   progress_bar <- get_progress_bar(num_repetitions)
-  
+
   trainning_index <- get_trainning_index(data)
   validation_index <- -trainning_index
 
@@ -177,7 +177,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   setkey(trainning_data, id_darvic)
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
-  normalized_data <- get_normalized_data(trainning_data)
+  normalized_data <- get_normalized_data(trainning_data, variables_model)
 
   normalized_data <- as.data.frame(sapply(normalized_data, normalize))
   normalized_data$sexo <- averaged_data[!is.na(averaged_data$masa), ]$sexo

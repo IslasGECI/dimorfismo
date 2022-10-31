@@ -105,11 +105,14 @@ test_that("Column names ", {
   expect_equal(obtained_name, expected_name)
 })
 
-test_that("normalized data ",{
-  data_path <- "../data/laysan_albatross_morphometry_guadalupe.csv"
-  data <- data.table(read_csv(data_path))
-  trainning_index <- get_trainning_index(data)
-  trainning_data <- data[trainning_index, ]
-  write_csv(trainning_data, "../data/trainning_data.csv")
-  obtained <- get_normalized_data(trainning_data)
+test_that("normalized data ", {
+  variables_model <- c(
+    "beak_height", "beak_length", "skull_length", "skull_width",
+    "tarsus", "close_brim_length", "open_brim_length", "wingspan"
+  )
+  data_path <- "../data/trainning_data.csv"
+  trainning_data <- read_csv(data_path)
+  obtained <- get_normalized_data(trainning_data, variables_model)
+  print(obtained)
+  expect_true(FALSE)
 })
