@@ -74,3 +74,33 @@ test_that("Logistic function", {
   obtained <- logt(seq(-2, 1.8, 0.2))
   expect_equal(expected, obtained, tolerance = 1e-3)
 })
+
+test_that("Empty data frame", {
+  expected <- data.frame(
+    matrix(
+      ncol = 3,
+      nrow = 3
+    )
+  )
+  obtained <- make_empty_dataframe(3, 3)
+  expect_equal(expected, obtained)
+})
+
+test_that("Expected elements number ", {
+  empty <- make_empty_dataframe(3, 3)
+  expected <- 6
+  obtained <- length(make_null_modeltable(empty))
+  expect_equal(expected, obtained)
+})
+
+test_that("Column names ", {
+  expected_name <- c(
+    "(Intercept)", "beak_height", "beak_length", "skull_length", "skull_width",
+    "tarsus", "close_brim_length", "open_brim_length", "wingspan"
+  )
+  empty <- make_empty_dataframe(3, length(expected_name))
+  model_table <- make_null_modeltable(empty)
+  model_table <- rename_model_table(model_table)
+  obtained_name <- names(model_table$model_coefficients)
+  expect_equal(obtained_name, expected_name)
+})
