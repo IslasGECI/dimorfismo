@@ -100,13 +100,54 @@ rename_model_table <- function(model_table) {
   return(model_table)
 }
 
+get_progress_bar <- function(num_repetitions){
+  progress_bar <- txtProgressBar(
+    min = 0,
+    max = num_repetitions,
+    style = 3
+  )
+  return(progress_bar)
+}
+
+get_trainning_index <- function(data){
+  n_data <- nrow(data)
+  trainning_proportion <- 0.80
+  trainning_index <- sample(1:n_data, round(trainning_proportion * n_data))
+  return(trainning_index)
+}
+
+get_no_numerica_data <- function(trainning_data){
+  no_numerica_data <- trainning_data %>%
+    select(subcolonia, id_darvic, sexo) %>%
+    unique()
+  return(no_numerica_data)
+}
+
+get_numerical_data <- function(trainning_data){
+  numerical_data <- trainning_data %>%
+    select(id_darvic, temporada, id_nido, skull_length, beak_length, longitud_narina, skull_width, beak_height, ancho_pico, tarsus, close_brim_length, open_brim_length, media_wingspan, wingspan, masa) %>%
+    unique()
+  return(numerical_data)
+}
+
+get_normalized_data <- function(trainning_data){
+  numerical_data <- get_numerical_data(trainning_data)
+  no_numerica_data <- get_no_numerica_data(trainning_data)
+  numerical_data$sexo <- no_numerical_data[!duplicated(no_numerical_data$id_darvic), ]$sexo
+  averaged_data <- numerical_data
+
+  # Se definen variables para utilizarse en el texto que decribe los Datos.
+  normalized_data <- averaged_data[!is.na(averaged_data$masa),
+    variables_model,
+    with = FALSE
+  ]
+  return(normalized_data)
+}
+
 #' @export
 get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   final_y_test <- c()
   data <- data.table(read_csv(data_path))
-  n_data <- nrow(data)
-
-  trainning_proportion <- 0.80
 
   variables_model <- c(
     "beak_height", "beak_length", "skull_length", "skull_width",
@@ -121,41 +162,22 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
 
   model_table <- make_null_modeltable(null_frame)
 
-  colnames(model_table$model_coefficients) <- column_names
-  colnames(model_table$standard_error) <- column_names
-  colnames(model_table$z_value) <- column_names
-  colnames(model_table$pr_value) <- column_names
-  colnames(model_table$min_normalization_parameters) <- column_names
-  colnames(model_table$max_normalization_parameters) <- column_names
+  model_table <- rename_model_table(model_table)
 
-  progress_bar <- txtProgressBar(
-    min = 0,
-    max = num_repetitions,
-    style = 3
-  )
-
-  trainning_index <- sample(1:n_data, round(trainning_proportion * n_data))
+  progress_bar <- get_progress_bar(num_repetitions)
+  
+  trainning_index <- get_trainning_index(data)
   validation_index <- -trainning_index
 
   # Se extraen los datos de 2015, 2016, 2017 ya que sólo estos se usaran para crear el modelo
+
   trainning_data <- data[trainning_index, ]
   validation_data <- data[validation_index, ]
   write_csv(trainning_data, "trainning_data.csv")
   setkey(trainning_data, id_darvic)
-  no_numerical_data <- trainning_data %>%
-    select(subcolonia, id_darvic, sexo) %>%
-    unique()
-  numerical_data <- trainning_data %>%
-    select(id_darvic, temporada, id_nido, skull_length, beak_length, longitud_narina, skull_width, beak_height, ancho_pico, tarsus, close_brim_length, open_brim_length, media_wingspan, wingspan, masa) %>%
-    unique()
-  numerical_data$sexo <- no_numerical_data[!duplicated(no_numerical_data$id_darvic), ]$sexo
-  averaged_data <- numerical_data
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
-  normalized_data <- averaged_data[!is.na(averaged_data$masa),
-    variables_model,
-    with = FALSE
-  ]
+  normalized_data <- get_normalized_data(trainning_data)
 
   normalized_data <- as.data.frame(sapply(normalized_data, normalize))
   normalized_data$sexo <- averaged_data[!is.na(averaged_data$masa), ]$sexo
