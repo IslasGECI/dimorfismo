@@ -64,10 +64,45 @@ logt <- function(x) {
   return(probability)
 }
 
+make_empty_dataframe <- function(n_row, n_col) {
+  empty_dataframe <- data.frame(
+    matrix(
+      ncol = n_col,
+      nrow = n_row
+    )
+  )
+  return(empty_dataframe)
+}
+
+make_null_modeltable <- function(null_frame) {
+  empty_model_table <- list(
+    model_coefficients = null_frame,
+    standard_error = null_frame,
+    z_value = null_frame,
+    pr_value = null_frame,
+    min_normalization_parameters = null_frame,
+    max_normalization_parameters = null_frame
+  )
+  return(empty_model_table)
+}
+
+rename_model_table <- function(model_table) {
+  variable_names <- c(
+    "(Intercept)", "beak_height", "beak_length", "skull_length", "skull_width",
+    "tarsus", "close_brim_length", "open_brim_length", "wingspan"
+  )
+  colnames(model_table$model_coefficients) <- variable_names
+  colnames(model_table$standard_error) <- variable_names
+  colnames(model_table$z_value) <- variable_names
+  colnames(model_table$pr_value) <- variable_names
+  colnames(model_table$min_normalization_parameters) <- variable_names
+  colnames(model_table$max_normalization_parameters) <- variable_names
+  return(model_table)
+}
+
 #' @export
 get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   final_y_test <- c()
-  print("antes csv")
   data <- data.table(read_csv(data_path))
   n_data <- nrow(data)
 
@@ -82,21 +117,9 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   threshold_error_table <- data.frame(threshold <- c(), error <- c())
   calculador_roc <- roc$new()
 
-  null_frame <- data.frame(
-    matrix(
-      ncol = length(column_names),
-      nrow = num_repetitions
-    )
-  )
+  null_frame <- make_empty_dataframe(num_repetitions, length(column_names))
 
-  model_table <- list(
-    model_coefficients = null_frame,
-    standard_error = null_frame,
-    z_value = null_frame,
-    pr_value = null_frame,
-    min_normalization_parameters = null_frame,
-    max_normalization_parameters = null_frame
-  )
+  model_table <- make_null_modeltable(null_frame)
 
   colnames(model_table$model_coefficients) <- column_names
   colnames(model_table$standard_error) <- column_names
@@ -167,7 +190,6 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
     ]
     min_normalized_data <- sapply(model_used_data, min)
     max_normalized_data <- sapply(model_used_data, max)
-
     normalization_parameters <- list(
       minimum_value = split(
         unname(min_normalized_data),
