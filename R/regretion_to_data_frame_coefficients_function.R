@@ -130,17 +130,27 @@ get_numerical_data <- function(trainning_data) {
   return(numerical_data)
 }
 
-get_normalized_data <- function(trainning_data, variables_model) {
+add_sex_to_data <- function(trainning_data) {
   numerical_data <- get_numerical_data(trainning_data)
   no_numerical_data <- get_no_numerical_data(trainning_data)
-  numerical_data$sexo <- no_numerical_data[!duplicated(no_numerical_data$id_darvic), ]$sexo
-  averaged_data <- numerical_data
+  no_duplicate_sex <- no_numerical_data[!duplicated(no_numerical_data$id_darvic), ]$sexo
+  numerical_data_with_sex <- numerical_data %>% mutate(sexo = no_duplicate_sex)
+  return(numerical_data_with_sex)
+}
 
+add_column_without_NA <- function(numerical_data_with_sex, variables_model) {
   # Se definen variables para utilizarse en el texto que decribe los Datos.
-  normalized_data <- averaged_data[!is.na(averaged_data$masa),
+  without_NA_data <- numerical_data_with_sex[!is.na(numerical_data_with_sex$masa),
     variables_model,
     with = FALSE
   ]
+  return(without_NA_data)
+}
+
+normalize_data <- function(data_set_for_model, numerical_data_with_sex) {
+  normalized_data <- as.data.frame(sapply(data_set_for_model, normalize))
+  normalized_data$sexo <- averaged_data[!is.na(averaged_data$masa), ]$sexo
+  normalized_data$sexo <- factor(normalized_data$sexo)
   return(normalized_data)
 }
 
@@ -177,12 +187,12 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   setkey(trainning_data, id_darvic)
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
-  normalized_data <- get_normalized_data(trainning_data, variables_model)
+  data_set_for_model <- add_column_without_NA(trainning_data, variables_model)
 
-  normalized_data <- as.data.frame(sapply(normalized_data, normalize))
+  normalized_data <- as.data.frame(sapply(data_set_for_model, normalize))
+  write_csv(normalized_data, "normalized_data.csv")
   normalized_data$sexo <- averaged_data[!is.na(averaged_data$masa), ]$sexo
   normalized_data$sexo <- factor(normalized_data$sexo)
-
   null_regression <- fit_null_model(normalized_data)
 
   # Hacemos el modelos utilizando las 11 varibles
