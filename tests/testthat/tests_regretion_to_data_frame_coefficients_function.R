@@ -112,7 +112,17 @@ test_that("normalized data ", {
   )
   data_path <- "../data/trainning_data.csv"
   trainning_data <- read_csv(data_path)
-  obtained <- get_normalized_data(trainning_data, variables_model)
+  obtained <- add_column_without_NA(trainning_data, variables_model)
   expected <- read_csv("../data/output_get_normalized_data.csv")
   expect_equivalent(expected, obtained)
+})
+
+test_that("normalized data ", {
+  variables_model <- c(
+    "beak_height", "beak_length", "skull_length", "skull_width",
+    "tarsus", "close_brim_length", "open_brim_length", "wingspan"
+  )
+  data_path <- "../data/trainning_data.csv"
+  trainning_data <- read_csv(data_path)
+  data_set_for_model <- add_column_without_NA(trainning_data, variables_model)
 })
