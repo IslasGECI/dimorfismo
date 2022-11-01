@@ -113,6 +113,6 @@ test_that("normalized data ", {
   data_path <- "../data/trainning_data.csv"
   trainning_data <- read_csv(data_path)
   obtained <- get_normalized_data(trainning_data, variables_model)
-  print(obtained)
-  expect_true(FALSE)
+  expected <- read_csv("../data/output_get_normalized_data.csv")
+  expect_equivalent(expected, obtained)
 })
