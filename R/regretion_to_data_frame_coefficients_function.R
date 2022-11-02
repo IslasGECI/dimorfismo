@@ -135,7 +135,7 @@ add_sex_to_data <- function(trainning_data) {
   no_numerical_data <- get_no_numerical_data(trainning_data)
   no_duplicate_sex <- no_numerical_data[!duplicated(no_numerical_data$id_darvic), ]$sexo
   numerical_data_with_sex <- numerical_data %>% mutate(sexo = no_duplicate_sex)
-  return(numerical_data_with_sex) #average
+  return(numerical_data_with_sex) # average
 }
 
 delete_NA_from_column <- function(numerical_data_with_sex, variables_model) {
@@ -144,7 +144,7 @@ delete_NA_from_column <- function(numerical_data_with_sex, variables_model) {
     variables_model,
     with = FALSE
   ]
-  return(without_NA_data) #normalized
+  return(without_NA_data) # normalized
 }
 
 normalize_data <- function(data_set_for_model, numerical_data_with_sex) {
@@ -188,14 +188,14 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
   numerical_data_with_sex <- add_sex_to_data(trainning_data)
-  
+
   data_set_for_model <- delete_NA_from_column(variable_names)
 
   normalized_data <- as.data.frame(sapply(data_set_for_model, normalize))
   write_csv(normalized_data, "normalized_data.csv")
   normalized_data$sexo <- numerical_data_with_sex[!is.na(numerical_data_with_sex$masa), ]$sexo
   normalized_data$sexo <- factor(normalized_data$sexo)
-  
+
   null_regression <- fit_null_model(normalized_data)
 
   # Hacemos el modelos utilizando las 11 varibles
