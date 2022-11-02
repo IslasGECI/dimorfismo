@@ -105,16 +105,13 @@ test_that("Column names ", {
   expect_equal(obtained_name, expected_name)
 })
 
-test_that("normalized data ", {
-  variables_model <- c(
-    "beak_height", "beak_length", "skull_length", "skull_width",
-    "tarsus", "close_brim_length", "open_brim_length", "wingspan"
-  )
+test_that("Add sex to numerical data ", {
   data_path <- "../data/trainning_data.csv"
   trainning_data <- read_csv(data_path)
-  obtained <- add_column_without_NA(trainning_data, variables_model)
-  expected <- read_csv("../data/output_get_normalized_data.csv")
-  expect_equivalent(expected, obtained)
+  obtained <- add_sex_to_data(trainning_data)
+  obtained_num_columns <- ncol(obtained)
+  expected_num_columns <- 16
+  expect_equal(expected_num_columns, obtained_num_columns)
 })
 
 test_that("normalized data ", {
@@ -124,5 +121,9 @@ test_that("normalized data ", {
   )
   data_path <- "../data/trainning_data.csv"
   trainning_data <- read_csv(data_path)
-  data_set_for_model <- add_column_without_NA(trainning_data, variables_model)
+  obtained <- add_sex_to_data(trainning_data)
+  data_set_for_model <- delete_NA_from_column(obtained, variables_model)
+  expected_num_NA <- 0
+  obteined_num_NA <- sum(is.na(obtained$masa))
+  expect_equal(expected_num_NA, obteined_num_NA)
 })
