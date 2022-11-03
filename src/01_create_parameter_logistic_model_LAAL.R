@@ -17,7 +17,7 @@ trainning_proportion <- 0.80
 
 variables_model <- c(
   "beak_height", "beak_length", "skull_length", "skull_width",
-  "tarsus", "close_brim_length", "open_brim_length", "wingspan"
+  "tarsus", "close_wing_length", "open_wing_length", "wingspan"
 )
 column_names <- c("(Intercept)", variables_model)
 num_repetitions <- 10

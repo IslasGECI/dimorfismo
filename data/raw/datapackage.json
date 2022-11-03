@@ -169,7 +169,7 @@
                         }
                     },
                     {
-                        "name": "close_brim_length",
+                        "name": "close_wing_length",
                         "long_name": "Closed wing length",
                         "nombre_largo": "Longitud del ala cerrada",
                         "type": "number",
@@ -181,7 +181,7 @@
                         }
                     },
                     {
-                        "name": "open_brim_length",
+                        "name": "open_wing_length",
                         "long_name": "Opened wing length",
                         "nombre_largo": "Longitud del ala abierta",
                         "type": "number",

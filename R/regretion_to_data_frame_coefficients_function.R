@@ -89,7 +89,7 @@ make_null_modeltable <- function(null_frame) {
 rename_model_table <- function(model_table) {
   variable_names <- c(
     "(Intercept)", "beak_height", "beak_length", "skull_length", "skull_width",
-    "tarsus", "close_brim_length", "open_brim_length", "wingspan"
+    "tarsus", "close_wing_length", "open_wing_length", "wingspan"
   )
   colnames(model_table$model_coefficients) <- variable_names
   colnames(model_table$standard_error) <- variable_names
@@ -125,7 +125,7 @@ get_no_numerical_data <- function(trainning_data) {
 
 get_numerical_data <- function(trainning_data) {
   numerical_data <- trainning_data %>%
-    select(id_darvic, temporada, id_nido, skull_length, beak_length, longitud_narina, skull_width, beak_height, ancho_pico, tarsus, close_brim_length, open_brim_length, media_wingspan, wingspan, masa) %>%
+    select(id_darvic, temporada, id_nido, skull_length, beak_length, longitud_narina, skull_width, beak_height, ancho_pico, tarsus, close_wing_length, open_wing_length, media_wingspan, wingspan, masa) %>%
     unique()
   return(numerical_data)
 }
@@ -161,7 +161,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
 
   variables_model <- c(
     "beak_height", "beak_length", "skull_length", "skull_width",
-    "tarsus", "close_brim_length", "open_brim_length", "wingspan"
+    "tarsus", "close_wing_length", "open_wing_length", "wingspan"
   )
   column_names <- c("(Intercept)", variables_model)
   num_repetitions <- 10
