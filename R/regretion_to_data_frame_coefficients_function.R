@@ -147,9 +147,9 @@ delete_NA_from_column <- function(numerical_data_with_sex, variables_model) {
   return(without_NA_data) # normalized
 }
 
-normalize_data <- function(data_set_for_model, numerical_data_with_sex) {
+get_normalize_data <- function(data_set_for_model, numerical_data_with_sex) {
   normalized_data <- as.data.frame(sapply(data_set_for_model, normalize))
-  normalized_data$sexo <- averaged_data[!is.na(averaged_data$masa), ]$sexo
+  normalized_data$sexo <- numerical_data_with_sex[!is.na(numerical_data_with_sex$masa), ]$sexo
   normalized_data$sexo <- factor(normalized_data$sexo)
   return(normalized_data)
 }
@@ -191,10 +191,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
 
   data_set_for_model <- delete_NA_from_column(variable_names)
 
-  normalized_data <- as.data.frame(sapply(data_set_for_model, normalize))
-  write_csv(normalized_data, "normalized_data.csv")
-  normalized_data$sexo <- numerical_data_with_sex[!is.na(numerical_data_with_sex$masa), ]$sexo
-  normalized_data$sexo <- factor(normalized_data$sexo)
+  normalized_data <- get_normalize_data(data_set_for_model, numerical_data_with_sex)
 
   null_regression <- fit_null_model(normalized_data)
 
