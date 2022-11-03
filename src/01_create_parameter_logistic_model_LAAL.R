@@ -16,8 +16,8 @@ n_data <- nrow(data)
 trainning_proportion <- 0.80
 
 variables_model <- c(
-  "beak_height", "beak_length", "skull_length", "skull_width",
-  "tarsus", "close_wing_length", "open_wing_length", "wingspan"
+  "bill_depth", "bill_length", "head_length", "head_width",
+  "Tarsus", "closed_wing_length", "open_wing_length", "wingspan"
 )
 column_names <- c("(Intercept)", variables_model)
 num_repetitions <- 10
@@ -158,8 +158,8 @@ for (i in 1:num_repetitions) {
 close(progress_bar)
 
 no_intercept_variables <- c(
-  "beak_height", "beak_length", "skull_length",
-  "skull_width", "tarsus"
+  "bill_depth", "bill_length", "head_length",
+  "head_width", "Tarsus"
 )
 
 final_variables <- c(
@@ -170,32 +170,32 @@ model_table$model_coefficients <- model_table$model_coefficients[, final_variabl
 
 model_table$standard_error <- model_table$standard_error[, final_variables]
 colnames(model_table$standard_error) <- c(
-  "error_std_intercept", "error_std_skull_length", "error_std_alto_pico",
-  "error_std_beak_length", "error_std_tarsus", "error_std_skull_width"
+  "error_std_intercept", "error_std_head_length", "error_std_alto_pico",
+  "error_std_bill_length", "error_std_tarsus", "error_std_head_width"
 )
 
 model_table$z_value <- model_table$z_value[, final_variables]
 colnames(model_table$z_value) <- c(
-  "valor_z_intercept", "valor_z_skull_length", "valor_z_beak_height",
-  "valor_z_beak_length", "valor_z_tarsus", "valor_z_skull_width"
+  "valor_z_intercept", "valor_z_head_length", "valor_z_bill_height",
+  "valor_z_bill_length", "valor_z_tarsus", "valor_z_head_width"
 )
 
 model_table$pr_value <- model_table$pr_value[, final_variables]
 colnames(model_table$pr_value) <- c(
-  "pr_intercept", "pr_skull_length", "pr_alto_pico",
-  "pr_beak_length", "pr_tarsus", "pr_skull_width"
+  "pr_intercept", "pr_head_length", "pr_alto_pico",
+  "pr_bill_length", "pr_tarsus", "pr_head_width"
 )
 
 model_table$min_normalization_parameters <-
   model_table$min_normalization_parameters[, no_intercept_variables]
 colnames(model_table$min_normalization_parameters) <- c(
-  "min_skull_length", "min_alto_pico", "min_beak_length", "min_tarsus", "min_skull_width"
+  "min_head_length", "min_alto_pico", "min_bill_length", "min_tarsus", "min_head_width"
 )
 
 model_table$max_normalization_parameters <-
   model_table$max_normalization_parameters[, no_intercept_variables]
 colnames(model_table$max_normalization_parameters) <- c(
-  "max_skull_length", "max_beak_height", "max_beak_length", "max_tarsus", "max_skull_width"
+  "max_head_length", "max_bill_height", "max_bill_length", "max_tarsus", "max_head_width"
 )
 
 completed_table <- data.table(

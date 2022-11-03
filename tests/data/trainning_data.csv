@@ -1,4 +1,4 @@
-temporada,subcolonia,id_nido,id_darvic,sexo,skull_length,beak_length,longitud_narina,skull_width,beak_height,ancho_pico,tarsus,close_wing_length,open_wing_length,media_wingspan,wingspan,masa,notas
+temporada,subcolonia,id_nido,id_darvic,sexo,head_length,bill_length,longitud_narina,head_width,bill_depth,ancho_pico,Tarsus,closed_wing_length,open_wing_length,half_wingspan,wingspan,masa,notas
 2015,Zapato,143,K89,M,178.77,113.45,82.41,54.01,34.85,24.96,90.85,50.1,95.7,105.6,211.2,3.45,NA
 2015,Punta Sur,15,3A2,H,168.18,101.78,77.58,54.27,31.81,24.44,83.18,49.4,93.5,100.6,201.2,2.1,NA
 2015,Punta Sur,3,1J3,H,168.06,104.55,78.86,54.5,29.34,23.89,84.41,50.5,94.5,99.77,199.54,2.2,NA

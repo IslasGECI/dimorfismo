@@ -1,4 +1,4 @@
-temporada,subcolonia,id_nido,id_darvic,sexo,skull_length,beak_length,longitud_narina,skull_width,beak_height,ancho_pico,tarsus,close_wing_length,open_wing_length,media_wingspan,wingspan,masa,notas
+temporada,subcolonia,id_nido,id_darvic,sexo,head_length,bill_length,longitud_narina,head_width,bill_depth,ancho_pico,Tarsus,closed_wing_length,open_wing_length,half_wingspan,wingspan,masa,notas
 2018,Punta Sur,115,A70,M,183.57,117.18,87.9,53.6,33.1,26.5,95.7,52.5,98.6,104.4,208.8,3.35,
 2018,Punta Sur,1,5C9,H,166.6,105.05,80.63,51.64,31.31,26.1,88.82,50.7,93.4,101.4,202.8,2.43,
 2018,Punta Sur,2,5,M,181.75,115.73,85.88,55.12,33.54,27.32,97.38,53.8,98.8,108.7,217.4,2.9,

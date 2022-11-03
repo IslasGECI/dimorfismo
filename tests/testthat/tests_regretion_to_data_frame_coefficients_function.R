@@ -95,8 +95,8 @@ test_that("Expected elements number ", {
 
 test_that("Column names ", {
   expected_name <- c(
-    "(Intercept)", "beak_height", "beak_length", "skull_length", "skull_width",
-    "tarsus", "close_wing_length", "open_wing_length", "wingspan"
+    "(Intercept)", "bill_depth", "bill_length", "head_length", "head_width",
+    "Tarsus", "closed_wing_length", "open_wing_length", "wingspan"
   )
   empty <- make_empty_dataframe(3, length(expected_name))
   model_table <- make_null_modeltable(empty)
@@ -116,8 +116,8 @@ test_that("Add sex to numerical data ", {
 
 test_that("Remove NA rows ", {
   variables_model <- c(
-    "beak_height", "beak_length", "skull_length", "skull_width",
-    "tarsus", "close_wing_length", "open_wing_length", "wingspan"
+    "bill_depth", "bill_length", "head_length", "head_width",
+    "Tarsus", "closed_wing_length", "open_wing_length", "wingspan"
   )
   data_path <- "../data/trainning_sex_data.csv"
   data_with_sex <- read_csv(data_path)
