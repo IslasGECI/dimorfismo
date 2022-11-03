@@ -114,7 +114,7 @@ test_that("Add sex to numerical data ", {
   expect_equal(obtained_num_columns, expected_num_columns)
 })
 
-test_that("normalized data ", {
+test_that("Remove NA rows ", {
   variables_model <- c(
     "beak_height", "beak_length", "skull_length", "skull_width",
     "tarsus", "close_brim_length", "open_brim_length", "wingspan"
@@ -128,4 +128,18 @@ test_that("normalized data ", {
   expected_row <- nrow(data_with_sex) - 1
   obtained_row <- nrow(data_set_for_model)
   expect_equal(obtained_row, expected_row)
+})
+
+test_that("Normalize data ", {
+  data_path_NA <- "../data/No_NA_trainning_data.csv"
+  data_path_sex <- "../data/trainning_sex_data.csv"
+  data_with_sex <- read_csv(data_path_sex)
+  data_set_for_model <- read_csv(data_path_NA)
+  normalized_data <- get_normalize_data(data_set_for_model, data_with_sex)
+  expected_row <- nrow(data_with_sex) - 1
+  obtained_row <- nrow(normalized_data)
+  expect_equal(obtained_row, expected_row)
+  expected_sex_type <- "integer"
+  obtained_sex_type <- typeof(normalized_data$sexo)
+  expect_equal(obtained_sex_type, expected_sex_type)
 })
