@@ -130,7 +130,7 @@ test_that("Remove NA rows ", {
   expect_equal(obtained_row, expected_row)
 })
 
-test_that("Normalize data ", {
+test_that("get_normalize_data remove a row with NA and change from H and F to 0 and 1", {
   data_path_NA <- "../data/No_NA_trainning_data.csv"
   data_path_sex <- "../data/trainning_sex_data.csv"
   data_with_sex <- read_csv(data_path_sex)
