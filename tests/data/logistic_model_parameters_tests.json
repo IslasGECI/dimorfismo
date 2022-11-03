@@ -1,16 +1,16 @@
 {
   "normalization_parameters": {
     "minimum_value": {
-      "beak_height": [28.85],
-      "beak_length": [100.81],
-      "skull_length": [165.58],
-      "tarsus": [83.18]
+      "bill_depth": [28.85],
+      "bill_length": [100.81],
+      "head_length": [165.58],
+      "Tarsus": [83.18]
     },
     "maximum_value": {
-      "beak_height": [35.5],
-      "beak_length": [119.48],
-      "skull_length": [193.22],
-      "tarsus": [99.69]
+      "bill_depth": [35.5],
+      "bill_length": [119.48],
+      "head_length": [193.22],
+      "Tarsus": [99.69]
     }
   },
   "model_parameters": [
@@ -23,36 +23,36 @@
       "_row": "(Intercept)"
     },
     {
-      "Variables": "beak_length",
+      "Variables": "bill_length",
       "Estimate": 6.648,
       "Std. Error": 3.083,
       "z value": 2.156,
       "Pr(>|z|)": 0.031,
-      "_row": "beak_length"
+      "_row": "bill_length"
     },
     {
-      "Variables": "beak_height",
+      "Variables": "bill_depth",
       "Estimate": 6.7,
       "Std. Error": 2.616,
       "z value": 2.561,
       "Pr(>|z|)": 0.01,
-      "_row": "beak_height"
+      "_row": "bill_depth"
     },
     {
-      "Variables": "skull_length",
+      "Variables": "head_length",
       "Estimate": 6.956,
       "Std. Error": 3.687,
       "z value": 1.887,
       "Pr(>|z|)": 0.059,
-      "_row": "skull_length"
+      "_row": "head_length"
     },
     {
-      "Variables": "tarsus",
+      "Variables": "Tarsus",
       "Estimate": 4.086,
       "Std. Error": 2.369,
       "z value": 1.725,
       "Pr(>|z|)": 0.085,
-      "_row": "tarsus"
+      "_row": "Tarsus"
     }
   ]
 }
