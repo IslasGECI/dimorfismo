@@ -1,16 +1,16 @@
 {
   "normalization_parameters": {
     "minimum_value": {
-      "longitud_craneo": [165.58],
-      "altura_pico": [28.85],
-      "longitud_pico": [100.81],
-      "tarso": [83.18]
+      "bill_depth": [28.85],
+      "bill_length": [100.81],
+      "head_length": [165.58],
+      "head_width": [46.5]
     },
     "maximum_value": {
-      "longitud_craneo": [193.22],
-      "altura_pico": [35.5],
-      "longitud_pico": [119.48],
-      "tarso": [99.69]
+      "bill_depth": [35.5],
+      "bill_length": [119.48],
+      "head_length": [193.22],
+      "head_width": [57.33]
     }
   },
   "model_parameters": [
@@ -20,24 +20,24 @@
       "_row": "(Intercept)"
     },
     {
-      "Variables": "longitud_craneo",
-      "Estimate": 6.641,
-      "_row": "longitud_craneo"
-    },
-    {
-      "Variables": "altura_pico",
+      "Variables": "bill_depth",
       "Estimate": 11.194,
-      "_row": "altura_pico"
+      "_row": "bill_depth"
     },
     {
-      "Variables": "longitud_pico",
+      "Variables": "bill_length",
       "Estimate": 8.777,
-      "_row": "longitud_pico"
+      "_row": "bill_length"
     },
     {
-      "Variables": "tarso",
-      "Estimate": 5.497,
-      "_row": "tarso"
+      "Variables": "head_length",
+      "Estimate": 6.641,
+      "_row": "head_length"
+    },
+    {
+      "Variables": "head_width",
+      "Estimate": 5.96,
+      "_row": "head_width"
     }
   ]
 }

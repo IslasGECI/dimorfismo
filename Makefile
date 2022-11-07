@@ -87,8 +87,7 @@ clean:
 	rm --force reports/*.pdf
 	rm --force reports/*.pytxcode
 
-coverage: setup
-	Rscript tests/testthat/coverage.R
+coverage: install tests
 
 
 format:

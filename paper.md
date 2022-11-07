@@ -13,6 +13,8 @@ authors:
     affiliation: 1
   - name: Andrea Sánchez-Martínez
     affiliation: 1
+  - name: Francisco Alejandro Padilla-Gomez
+    affiliation: 1
 affiliations:
   - name: Grupo de Ecología y Conservación de Islas, A.C. 
     index: 1

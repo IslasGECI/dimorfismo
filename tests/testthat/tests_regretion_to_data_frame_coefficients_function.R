@@ -74,3 +74,72 @@ test_that("Logistic function", {
   obtained <- logt(seq(-2, 1.8, 0.2))
   expect_equal(expected, obtained, tolerance = 1e-3)
 })
+
+test_that("Empty data frame", {
+  expected <- data.frame(
+    matrix(
+      ncol = 3,
+      nrow = 3
+    )
+  )
+  obtained <- make_empty_dataframe(3, 3)
+  expect_equal(expected, obtained)
+})
+
+test_that("Expected elements number ", {
+  empty <- make_empty_dataframe(3, 3)
+  expected <- 6
+  obtained <- length(make_null_modeltable(empty))
+  expect_equal(expected, obtained)
+})
+
+test_that("Column names ", {
+  expected_name <- c(
+    "(Intercept)", "bill_depth", "bill_length", "head_length", "head_width",
+    "Tarsus", "closed_wing_length", "open_wing_length", "wingspan"
+  )
+  empty <- make_empty_dataframe(3, length(expected_name))
+  model_table <- make_null_modeltable(empty)
+  model_table <- rename_model_table(model_table)
+  obtained_name <- names(model_table$model_coefficients)
+  expect_equal(obtained_name, expected_name)
+})
+
+test_that("Add sex to numerical data ", {
+  data_path <- "../data/trainning_data.csv"
+  trainning_data <- read_csv(data_path)
+  obtained <- add_sex_to_data(trainning_data)
+  obtained_num_columns <- ncol(obtained)
+  expected_num_columns <- 16
+  expect_equal(obtained_num_columns, expected_num_columns)
+})
+
+test_that("Remove NA rows ", {
+  variables_model <- c(
+    "bill_depth", "bill_length", "head_length", "head_width",
+    "Tarsus", "closed_wing_length", "open_wing_length", "wingspan"
+  )
+  data_path <- "../data/trainning_sex_data.csv"
+  data_with_sex <- read_csv(data_path)
+  data_set_for_model <- delete_NA_from_column(data_with_sex, variables_model)
+  expected_num_NA <- 0
+  obteined_num_NA <- sum(is.na(data_set_for_model$masa))
+  expect_equal(obteined_num_NA, expected_num_NA)
+  expected_row <- nrow(data_with_sex) - 1
+  obtained_row <- nrow(data_set_for_model)
+  expect_equal(obtained_row, expected_row)
+})
+
+test_that("get_normalize_data remove a row with NA and change from H and F to 0 and 1", {
+  data_path_NA <- "../data/No_NA_trainning_data.csv"
+  data_path_sex <- "../data/trainning_sex_data.csv"
+  data_with_sex <- read_csv(data_path_sex)
+  data_set_for_model <- read_csv(data_path_NA)
+  normalized_data <- get_normalize_data(data_set_for_model, data_with_sex)
+  expected_row <- nrow(data_with_sex) - 1
+  obtained_row <- nrow(normalized_data)
+  expect_equal(obtained_row, expected_row)
+  expected_sex_type <- "integer"
+  obtained_sex_type <- typeof(normalized_data$sexo)
+  expect_equal(obtained_sex_type, expected_sex_type)
+})

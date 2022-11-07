@@ -16,8 +16,8 @@ n_data <- nrow(data)
 trainning_proportion <- 0.80
 
 variables_model <- c(
-  "longitud_craneo", "longitud_pico", "ancho_craneo", "altura_pico",
-  "tarso", "longitud_ala_cerrada", "longitud_ala_abierta", "envergadura"
+  "bill_depth", "bill_length", "head_length", "head_width",
+  "Tarsus", "closed_wing_length", "open_wing_length", "wingspan"
 )
 column_names <- c("(Intercept)", variables_model)
 num_repetitions <- 10
@@ -67,11 +67,14 @@ for (i in 1:num_repetitions) {
     .SD[, !sapply(.SD, is.numeric), with = FALSE],
     mult = "last"
   ]
+  write_csv(no_numerical_data, "no_numerical_data.csv")
 
   numerical_data <- trainning_data[,
     lapply(.SD[, sapply(.SD, is.numeric), with = FALSE], mean),
     by = id_darvic
   ]
+
+  write_csv(numerical_data, "numerical_data.csv")
   averaged_data <- numerical_data[no_numerical_data[!duplicated(id_darvic)]]
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
@@ -90,7 +93,7 @@ for (i in 1:num_repetitions) {
   all_regression <- fit_complete_model(normalized_data)
 
   # Aplicamos el método _stepwise_.
-  step_regression <- fit_stepwise(null_regression, all_regression)
+  step_regression <- fit_stepwise(normalized_data)
 
   normalized_data$id_darvic <- averaged_data[!is.na(averaged_data$masa), ]$id_darvic
   step_coefficients <- regretion_to_data_frame(step_regression)
@@ -155,8 +158,8 @@ for (i in 1:num_repetitions) {
 close(progress_bar)
 
 no_intercept_variables <- c(
-  "longitud_craneo", "altura_pico", "longitud_pico",
-  "tarso", "ancho_craneo"
+  "bill_depth", "bill_length", "head_length",
+  "head_width", "Tarsus"
 )
 
 final_variables <- c(
@@ -167,32 +170,32 @@ model_table$model_coefficients <- model_table$model_coefficients[, final_variabl
 
 model_table$standard_error <- model_table$standard_error[, final_variables]
 colnames(model_table$standard_error) <- c(
-  "error_std_intercept", "error_std_longitud_craneo", "error_std_alto_pico",
-  "error_std_longitud_pico", "error_std_tarso", "error_std_ancho_craneo"
+  "error_std_intercept", "error_std_head_length", "error_std_alto_pico",
+  "error_std_bill_length", "error_std_tarsus", "error_std_head_width"
 )
 
 model_table$z_value <- model_table$z_value[, final_variables]
 colnames(model_table$z_value) <- c(
-  "valor_z_intercept", "valor_z_longitud_craneo", "valor_z_altura_pico",
-  "valor_z_longitud_pico", "valor_z_tarso", "valor_z_ancho_craneo"
+  "valor_z_intercept", "valor_z_head_length", "valor_z_bill_height",
+  "valor_z_bill_length", "valor_z_tarsus", "valor_z_head_width"
 )
 
 model_table$pr_value <- model_table$pr_value[, final_variables]
 colnames(model_table$pr_value) <- c(
-  "pr_intercept", "pr_longitud_craneo", "pr_alto_pico",
-  "pr_longitud_pico", "pr_tarso", "pr_ancho_craneo"
+  "pr_intercept", "pr_head_length", "pr_alto_pico",
+  "pr_bill_length", "pr_tarsus", "pr_head_width"
 )
 
 model_table$min_normalization_parameters <-
   model_table$min_normalization_parameters[, no_intercept_variables]
 colnames(model_table$min_normalization_parameters) <- c(
-  "min_longitud_craneo", "min_alto_pico", "min_longitud_pico", "min_tarso", "min_ancho_craneo"
+  "min_head_length", "min_alto_pico", "min_bill_length", "min_tarsus", "min_head_width"
 )
 
 model_table$max_normalization_parameters <-
   model_table$max_normalization_parameters[, no_intercept_variables]
 colnames(model_table$max_normalization_parameters) <- c(
-  "max_longitud_craneo", "max_altura_pico", "max_longitud_pico", "max_tarso", "max_ancho_craneo"
+  "max_head_length", "max_bill_height", "max_bill_length", "max_tarsus", "max_head_width"
 )
 
 completed_table <- data.table(

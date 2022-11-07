@@ -85,8 +85,8 @@
                         }
                     },
                     {
-                        "name": "longitud_craneo",
-                        "long_name": "Cranial length",
+                        "name": "head_length",
+                        "long_name": "Head length",
                         "nombre_largo": "Longitud del cráneo",
                         "type": "number",
                         "units": "mm",
@@ -97,7 +97,7 @@
                         }
                     },
                     {
-                        "name": "longitud_pico",
+                        "name": "bill_length",
                         "long_name": "Bill length",
                         "nombre_largo": "Longitud del pico",
                         "type": "number",
@@ -121,8 +121,8 @@
                         }
                     },
                     {
-                        "name": "ancho_craneo",
-                        "long_name": "Craneal width",
+                        "name": "head_width",
+                        "long_name": "Head width",
                         "nombre_largo": "Ancho del cráneo",
                         "type": "number",
                         "units": "mm",
@@ -133,7 +133,7 @@
                         }
                     },
                     {
-                        "name": "altura_pico",
+                        "name": "bill_depth",
                         "long_name": "Bill height",
                         "nombre_largo": "Alto del pico",
                         "type": "number",
@@ -157,19 +157,19 @@
                         }
                     },
                     {
-                        "name": "tarso",
+                        "name": "Tarsus",
                         "long_name": "Tarsus",
-                        "nombre_largo": "Tarso",
+                        "nombre_largo": "Tarsus",
                         "type": "number",
                         "units": "mm",
-                        "description": "Distancia en milímetros de extremo a extremo del tarsus respecto al plano coronal del ave",
+                        "description": "Distancia en milímetros de extremo a extremo del Tarsus respecto al plano coronal del ave",
                         "constraints": {
                             "minimum": 83.17,
                             "maximum": 99.7
                         }
                     },
                     {
-                        "name": "longitud_ala_cerrada",
+                        "name": "closed_wing_length",
                         "long_name": "Closed wing length",
                         "nombre_largo": "Longitud del ala cerrada",
                         "type": "number",
@@ -181,7 +181,7 @@
                         }
                     },
                     {
-                        "name": "longitud_ala_abierta",
+                        "name": "open_wing_length",
                         "long_name": "Opened wing length",
                         "nombre_largo": "Longitud del ala abierta",
                         "type": "number",
@@ -193,9 +193,9 @@
                         }
                     },
                     {
-                        "name": "media_envergadura",
+                        "name": "half_wingspan",
                         "long_name": "Half wingspan",
-                        "nombre_largo": "Media envergadura",
+                        "nombre_largo": "Half wingspan",
                         "type": "number",
                         "units": "cm",
                         "description": "Distancia en centímetros entre un extremo del ala hasta el centro del pecho respecto al plano coronal del ave.",
@@ -205,9 +205,9 @@
                         }
                     },
                     {
-                        "name": "envergadura",
+                        "name": "wingspan",
                         "long_name": "Wingspan",
-                        "nombre_largo": "Envergadura",
+                        "nombre_largo": "wingspan",
                         "type": "number",
                         "units": "cm",
                         "description": "Distancia en centímetros entre las dos puntas de las alas cuando están completamente extendidas respecto al plano coronal del ave.",

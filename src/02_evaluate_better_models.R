@@ -19,10 +19,11 @@ bugs <- c()
 
 for (i_row in 1:n_rows_table) {
   auxiliar_coefficients_table <- imported_table[i_row, 1:5]
-  auxiliar_coefficients_table <- data.frame(data.table::melt(
-    auxiliar_coefficients_table
-  ),
-  row.names = colnames(auxiliar_coefficients_table)
+  auxiliar_coefficients_table <- data.frame(
+    data.table::melt(
+      auxiliar_coefficients_table
+    ),
+    row.names = colnames(auxiliar_coefficients_table)
   )
   colnames(auxiliar_coefficients_table) <- c("Variables", "Estimate")
   threshold <- as.numeric(imported_table[i_row, 7])
