@@ -189,7 +189,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   # Se definen variables para utilizarse en el texto que decribe los Datos.
   numerical_data_with_sex <- add_sex_to_data(trainning_data)
 
-  data_set_for_model <- delete_NA_from_column(variable_names)
+  data_set_for_model <- delete_NA_from_column(numerical_data_with_sex,variables_model)
 
   normalized_data <- get_normalize_data(data_set_for_model, numerical_data_with_sex)
 
