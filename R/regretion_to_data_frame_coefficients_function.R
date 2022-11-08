@@ -150,7 +150,7 @@ delete_NA_from_column <- function(numerical_data_with_sex, variables_model) {
 get_normalize_data <- function(data_set_for_model, numerical_data_with_sex) {
   normalized_data <- as.data.frame(sapply(data_set_for_model, normalize))
   normalized_data$sexo <- numerical_data_with_sex[!is.na(numerical_data_with_sex$masa), ]$sexo
-  normalized_data$sexo <- factor(normalized_data$sexo)
+  normalized_data <- normalized_data %>% mutate(sexo = ifelse(sexo == "H", 1, 0))
   return(normalized_data)
 }
 
@@ -189,7 +189,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   # Se definen variables para utilizarse en el texto que decribe los Datos.
   numerical_data_with_sex <- add_sex_to_data(trainning_data)
 
-  data_set_for_model <- delete_NA_from_column(numerical_data_with_sex,variables_model)
+  data_set_for_model <- delete_NA_from_column(numerical_data_with_sex, variables_model)
 
   normalized_data <- get_normalize_data(data_set_for_model, numerical_data_with_sex)
 
@@ -216,10 +216,11 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
     model_varibles_names <- names(step_regression$coefficients)
     model_varibles_names <- model_varibles_names[model_varibles_names != "(Intercept)"]
 
-    model_used_data <- numerical_data_with_sex[!is.na(numerical_data_with_sex$masa),
-      model_varibles_names,
-      with = FALSE
+    model_used_data <- numerical_data_with_sex[
+      !is.na(numerical_data_with_sex$masa),
+      model_varibles_names
     ]
+    names(model_used_data) <- rep(model_varibles_names, length(model_used_data))
     min_normalized_data <- sapply(model_used_data, min)
     max_normalized_data <- sapply(model_used_data, max)
     normalization_parameters <- list(
