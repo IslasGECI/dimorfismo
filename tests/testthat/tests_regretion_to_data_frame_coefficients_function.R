@@ -45,6 +45,14 @@ test_that("Coefficent is 552, -818 for fit_complete_model", {
   expect_equal(expected_coefficient, obtanided_coefficient, tolerance = 1e-3)
 })
 
+test_that("Fit setpwise columns ", {
+  normalized_data <- read_csv("../data/normalized_mutated_data.csv")
+  step_regression <- fit_stepwise(normalized_data)
+  obtained_ncol <- step_regression$rank
+  expected_ncol <- 2
+  expect_equal(obtained_ncol, expected_ncol)
+})
+
 test_that("Logistic regretion from scratch", {
   expected <- 3
   obtained <- line(0)
@@ -139,7 +147,6 @@ test_that("get_normalize_data remove a row with NA and change from H and F to 0 
   expected_row <- nrow(data_with_sex) - 1
   obtained_row <- nrow(normalized_data)
   expect_equal(obtained_row, expected_row)
-  expected_sex_type <- "integer"
-  obtained_sex_type <- typeof(normalized_data$sexo)
-  expect_equal(obtained_sex_type, expected_sex_type)
+  obtained_sex_type <- all(normalized_data$sexo < 1.1)
+  expect_true(obtained_sex_type)
 })
