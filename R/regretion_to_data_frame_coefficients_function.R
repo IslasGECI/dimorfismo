@@ -154,6 +154,24 @@ get_normalize_data <- function(data_set_for_model, numerical_data_with_sex) {
   return(normalized_data)
 }
 
+get_normalization_parameters_list <- function(normalization_parameters, step_coefficients){
+  list_normalization_parameters <- list(
+      normalization_parameters = normalization_parameters,
+      model_parameters = step_coefficients
+    )
+  return(list_normalization_parameters)
+}
+
+get_max_normalized_data <- function(model_used_data){
+  max_normalized_data <- sapply(model_used_data, max)
+  return(max_normalized_data)
+}
+
+get_min_normalized_data <- function(model_used_data){
+  min_normalized_data <- sapply(model_used_data, min)
+  return(min_normalized_data)
+}
+
 #' @export
 get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   final_y_test <- c()
@@ -183,7 +201,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
 
   trainning_data <- data[trainning_index, ]
   validation_data <- data[validation_index, ]
-  write_csv(trainning_data, "trainning_data.csv")
+
   setkey(trainning_data, id_darvic)
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
@@ -251,4 +269,15 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
       output_json_path
     )
   }
+}
+
+get_y_test <- function(validation_data){
+  y_test <- ifelse(validation_data$sexo == "M", 1, 0)
+  return(y_test)
+}
+
+get_final_y_tests <- function(y_test){
+  final_y_test <- c()
+  final_y_test <- append(final_y_test, y_test)
+  return(final_y_test)
 }
