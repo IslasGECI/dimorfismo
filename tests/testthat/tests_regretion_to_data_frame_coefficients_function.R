@@ -150,3 +150,18 @@ test_that("get_normalize_data remove a row with NA and change from H and F to 0 
   obtained_sex_type <- all(normalized_data$sexo < 1.1)
   expect_true(obtained_sex_type)
 })
+
+test_that("get normalization parameters", {
+  numerical_data_with_sex <- read_csv("../data/trainning_sex_data.csv")
+  model_varibles_names <- "head_length"
+  model_used_data <- get_model_used_data(numerical_data_with_sex, model_varibles_names)
+  min_normalized_data <- get_min_normalized_data(model_used_data)
+  max_normalized_data <- get_max_normalized_data(model_used_data)
+  normalization_parameters <- get_normalization_parameters(min_normalized_data, max_normalized_data)
+  obtained_min <- normalization_parameters$minimum_value$head_length
+  expected_min <- 168.06
+  expect_equal(obtained_min, expected_min)
+  obtained_max <- normalization_parameters$minimum_value$head_length
+  expected_max <- 178.77
+  expect_equal(obtained_max, expected_max)
+})
