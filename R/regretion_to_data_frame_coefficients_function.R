@@ -264,17 +264,12 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
     names(model_used_data) <- rep(model_varibles_names, length(model_used_data))
 
     min_normalized_data <- sapply(model_used_data, min)
-    print("min")
-    print(min_normalized_data)
+
     max_normalized_data <- sapply(model_used_data, max)
-    print("max")
-    print(max_normalized_data)
+
     normalization_parameters <- get_normalization_parameters(min_normalized_data, max_normalized_data)
 
-    list_normalization_parameters <- list(
-      normalization_parameters = normalization_parameters,
-      model_parameters = step_coefficients
-    )
+    list_normalization_parameters <- get_normalization_parameters_list(normalization_parameters, step_coefficients)
 
     for (i_pair_normalization in colnames(model_used_data)) {
       model_table$min_normalization_parameters[i, i_pair_normalization] <-
