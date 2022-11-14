@@ -161,7 +161,7 @@ test_that("get normalization parameters", {
   obtained_min <- normalization_parameters$minimum_value$head_length
   expected_min <- 168.06
   expect_equal(obtained_min, expected_min)
-  obtained_max <- normalization_parameters$minimum_value$head_length
-  expected_max <- 178.77
+  obtained_max <- normalization_parameters$maximum_value$head_length
+  expected_max <- 183.57
   expect_equal(obtained_max, expected_max)
 })
