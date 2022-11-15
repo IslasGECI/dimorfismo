@@ -154,44 +154,44 @@ get_normalize_data <- function(data_set_for_model, numerical_data_with_sex) {
   return(normalized_data)
 }
 
-get_model_used_data <- function(numerical_data_with_sex, model_varibles_names){
+get_model_used_data <- function(numerical_data_with_sex, model_varibles_names) {
   model_used_data <- numerical_data_with_sex[
-      !is.na(numerical_data_with_sex$masa),
-      model_varibles_names
-    ]
-    names(model_used_data) <- rep(model_varibles_names, length(model_used_data))
-    return(model_used_data)
+    !is.na(numerical_data_with_sex$masa),
+    model_varibles_names
+  ]
+  names(model_used_data) <- rep(model_varibles_names, length(model_used_data))
+  return(model_used_data)
 }
 
-get_max_normalized_data <- function(model_used_data){
+get_max_normalized_data <- function(model_used_data) {
   max_normalized_data <- sapply(model_used_data, max)
   return(max_normalized_data)
 }
 
-get_min_normalized_data <- function(model_used_data){
+get_min_normalized_data <- function(model_used_data) {
   min_normalized_data <- sapply(model_used_data, min)
   return(min_normalized_data)
 }
 
-get_normalization_parameters <- function(min_normalized_data, max_normalized_data){
+get_normalization_parameters <- function(min_normalized_data, max_normalized_data) {
   normalization_parameters <- list(
-      minimum_value = split(
-        unname(min_normalized_data),
-        names(min_normalized_data)
-      ),
-      maximum_value = split(
-        unname(max_normalized_data),
-        names(max_normalized_data)
-      )
+    minimum_value = split(
+      unname(min_normalized_data),
+      names(min_normalized_data)
+    ),
+    maximum_value = split(
+      unname(max_normalized_data),
+      names(max_normalized_data)
     )
-    return(normalization_parameters)
+  )
+  return(normalization_parameters)
 }
 
-get_normalization_parameters_list <- function(normalization_parameters, step_coefficients){
+get_normalization_parameters_list <- function(normalization_parameters, step_coefficients) {
   list_normalization_parameters <- list(
-      normalization_parameters = normalization_parameters,
-      model_parameters = step_coefficients
-    )
+    normalization_parameters = normalization_parameters,
+    model_parameters = step_coefficients
+  )
   return(list_normalization_parameters)
 }
 
@@ -285,12 +285,12 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
   }
 }
 
-get_y_test <- function(validation_data){
+get_y_test <- function(validation_data) {
   y_test <- ifelse(validation_data$sexo == "M", 1, 0)
   return(y_test)
 }
 
-get_final_y_tests <- function(y_test){
+get_final_y_tests <- function(y_test) {
   final_y_test <- c()
   final_y_test <- append(final_y_test, y_test)
   return(final_y_test)
