@@ -257,20 +257,13 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
 
     model_used_data <- get_model_used_data(numerical_data_with_sex, model_varibles_names)
 
-
-    print(numerical_data_with_sex)
-
     # names(model_used_data) <- rep(model_varibles_names, length(model_used_data))
-
-    print(model_used_data)
 
     min_normalized_data <- get_min_normalized_data(model_used_data)
 
     max_normalized_data <- get_max_normalized_data(model_used_data)
 
     normalization_parameters <- get_normalization_parameters(min_normalized_data, max_normalized_data)
-
-    print(normalization_parameters)
 
     list_normalization_parameters <- get_normalization_parameters_list(normalization_parameters, step_coefficients) #
 
