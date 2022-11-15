@@ -155,11 +155,9 @@ get_normalize_data <- function(data_set_for_model, numerical_data_with_sex) {
 }
 
 get_model_used_data <- function(numerical_data_with_sex, model_varibles_names) {
-  model_used_data <- numerical_data_with_sex[
-    !is.na(numerical_data_with_sex$masa),
-    model_varibles_names
-  ]
-  names(model_used_data) <- rep(model_varibles_names, length(model_used_data))
+  model_used_data <- numerical_data_with_sex %>%
+    filter(!is.na(masa)) %>%
+    select(model_varibles_names)
   return(model_used_data)
 }
 
@@ -257,19 +255,24 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
     model_varibles_names <- names(step_regression$coefficients)
     model_varibles_names <- model_varibles_names[model_varibles_names != "(Intercept)"]
 
-    model_used_data <- numerical_data_with_sex[
-      !is.na(numerical_data_with_sex$masa),
-      model_varibles_names
-    ]
-    names(model_used_data) <- rep(model_varibles_names, length(model_used_data))
+    model_used_data <- get_model_used_data(numerical_data_with_sex, model_varibles_names)
 
-    min_normalized_data <- sapply(model_used_data, min)
 
-    max_normalized_data <- sapply(model_used_data, max)
+    print(numerical_data_with_sex)
+
+    # names(model_used_data) <- rep(model_varibles_names, length(model_used_data))
+
+    print(model_used_data)
+
+    min_normalized_data <- get_min_normalized_data(model_used_data)
+
+    max_normalized_data <- get_max_normalized_data(model_used_data)
 
     normalization_parameters <- get_normalization_parameters(min_normalized_data, max_normalized_data)
 
-    list_normalization_parameters <- get_normalization_parameters_list(normalization_parameters, step_coefficients)
+    print(normalization_parameters)
+
+    list_normalization_parameters <- get_normalization_parameters_list(normalization_parameters, step_coefficients) #
 
     for (i_pair_normalization in colnames(model_used_data)) {
       model_table$min_normalization_parameters[i, i_pair_normalization] <-
