@@ -152,12 +152,8 @@ test_that("get_normalize_data remove a row with NA and change from H and F to 0 
 })
 
 test_that("get normalization parameters", {
-  numerical_data_with_sex <- read_csv("../data/trainning_sex_data.csv")
-  model_varibles_names <- "head_length"
   model_used_data <- read_csv("../data/model_used_tests_data.csv")
-  min_normalized_data <- get_min_normalized_data(model_used_data)
-  max_normalized_data <- get_max_normalized_data(model_used_data)
-  normalization_parameters <- get_normalization_parameters(min_normalized_data, max_normalized_data)
+  normalization_parameters <- get_normalization_parameters(model_used_data)
   obtained_min <- normalization_parameters$minimum_value$head_length
   expected_min <- 168.18
   expect_equal(obtained_min, expected_min)
