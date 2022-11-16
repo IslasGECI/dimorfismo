@@ -171,7 +171,9 @@ get_min_normalized_data <- function(model_used_data) {
   return(min_normalized_data)
 }
 
-get_normalization_parameters <- function(min_normalized_data, max_normalized_data) {
+get_normalization_parameters <- function(model_used_data) {
+  max_normalized_data <- get_max_normalized_data(model_used_data)
+  min_normalized_data <- get_min_normalized_data(model_used_data)
   normalization_parameters <- list(
     minimum_value = split(
       unname(min_normalized_data),
@@ -257,16 +259,13 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
 
     model_used_data <- get_model_used_data(numerical_data_with_sex, model_varibles_names)
 
-    # names(model_used_data) <- rep(model_varibles_names, length(model_used_data))
-
-    min_normalized_data <- get_min_normalized_data(model_used_data)
-
-    max_normalized_data <- get_max_normalized_data(model_used_data)
-
-    normalization_parameters <- get_normalization_parameters(min_normalized_data, max_normalized_data)
+    normalization_parameters <- get_normalization_parameters(model_used_data)
 
     list_normalization_parameters <- get_normalization_parameters_list(normalization_parameters, step_coefficients) #
+    print(list_normalization_parameters["model_parameters"]$Estimate)
 
+    min_normalized_data <- get_min_normalized_data(model_used_data)
+    max_normalized_data <- get_max_normalized_data(model_used_data)
     for (i_pair_normalization in colnames(model_used_data)) {
       model_table$min_normalization_parameters[i, i_pair_normalization] <-
         min_normalized_data[i_pair_normalization]
@@ -279,6 +278,7 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
       output_json_path
     )
   }
+  return(list_normalization_parameters)
 }
 
 get_y_test <- function(validation_data) {
