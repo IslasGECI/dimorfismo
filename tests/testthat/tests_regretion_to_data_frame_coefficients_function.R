@@ -161,3 +161,12 @@ test_that("get normalization parameters", {
   expected_max <- 183.57
   expect_equal(obtained_max, expected_max)
 })
+
+test_that("Get list of the normalization parameters" , {
+  model_used_data <- read_csv("../data/model_used_tests_data.csv")
+  normalization_parameters <- get_normalization_parameters_list(model_used_data)
+  list_normalization_parameters <- get_normalization_parameters_list(normalization_parameters, coeficientes_step)
+  expected_estimate <- c(409.199, -623.490)
+  obteined_estimate <- list_normalization_parameters[["model_parameters"]]$Estimate
+  expect_equal(obteined_estimate, expected_estimate)
+})
