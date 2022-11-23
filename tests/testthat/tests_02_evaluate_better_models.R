@@ -42,6 +42,12 @@ test_that("Los resultados de predicción son correctos", {
 })
 
 test_that("Los resultados de error en curva ROC son correctos", {
+  data <- read_csv("data/raw/laysan_albatross_morphometry_guadalupe.csv")
+  dimorphism_model_albatross <- dimorphism_model$new()
+  dimorphism_model_albatross$load_parameters(json_data_dir)
+  prob <- dimorphism_model_albatross$predict(data)
+  y_test <- correct_y_test
+  roc_data <- data.frame(y_test, prob)
   roc_error_outcome <- calculador_roc$calculate_error(roc_data, threshold)
   correct_error_roc <- 14.074074074074074403029
   expect_equivalent(roc_error_outcome, correct_error_roc)
