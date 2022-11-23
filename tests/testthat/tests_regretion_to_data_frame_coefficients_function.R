@@ -164,9 +164,12 @@ test_that("get normalization parameters", {
 
 test_that("Get list of the normalization parameters" , {
   model_used_data <- read_csv("../data/model_used_tests_data.csv")
-  normalization_parameters <- get_normalization_parameters_list(model_used_data)
-  list_normalization_parameters <- get_normalization_parameters_list(normalization_parameters, coeficientes_step)
-  expected_estimate <- c(409.199, -623.490)
-  obteined_estimate <- list_normalization_parameters[["model_parameters"]]$Estimate
+  normalized_data <- read_csv("../data/normalized_mutated_data.csv")
+  normalization_parameters <- get_normalization_parameters(model_used_data)
+  step_regression <- fit_stepwise(normalized_data)
+  step_coefficients <- regretion_to_data_frame(step_regression)
+  list_normalization_parameters <- get_normalization_parameters_list(normalization_parameters, step_coefficients)
+  expected_estimate <- c(-74.528, 138.641)
+  obteined_estimate <- (list_normalization_parameters[["model_parameters"]]$Estimate)
   expect_equal(obteined_estimate, expected_estimate)
 })
