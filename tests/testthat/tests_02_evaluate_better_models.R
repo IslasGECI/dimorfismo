@@ -49,6 +49,6 @@ test_that("Los resultados de error en curva ROC son correctos", {
   y_test <- correct_y_test
   roc_data <- data.frame(y_test, prob)
   roc_error_outcome <- calculador_roc$calculate_error(roc_data, threshold)
-  correct_error_roc <- 14.074074074074074403029
-  expect_equivalent(roc_error_outcome, correct_error_roc)
+  correct_error_roc <- 13.322
+  expect_equivalent(roc_error_outcome, correct_error_roc, tolerance = 1e-3)
 })
