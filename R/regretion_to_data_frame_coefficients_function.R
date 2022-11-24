@@ -262,7 +262,6 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
     normalization_parameters <- get_normalization_parameters(model_used_data)
 
     list_normalization_parameters <- get_normalization_parameters_list(normalization_parameters, step_coefficients) #
-    print(list_normalization_parameters[["model_parameters"]]$Estimate)
 
     min_normalized_data <- get_min_normalized_data(model_used_data)
     max_normalized_data <- get_max_normalized_data(model_used_data)
