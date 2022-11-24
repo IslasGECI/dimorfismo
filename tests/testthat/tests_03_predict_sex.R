@@ -9,17 +9,17 @@ json_data_path <- "data/processed/logistic_model_parameters.json"
 json_data <- rjson::fromJSON(file = json_data_path)
 
 correct_males <- c(
-  T, F, T, F, T, T, F, T, F, T, T, T, 
-  F, F, F, T, T, F, T, T, F, T, F, T, 
-  F, F, F, F, F, F, F, T, F, F, T, T, 
-  F, F, F, F, F, F, F, F, F, F, F, F, 
-  F, F, F, F, F, F, F, F, F, F, F, F, 
-  F, F, F, F, F, F, F, F, F, F, F, F, 
-  F, F, F, T, F, T, T, T, F, T, F, F, 
-  F, T, F, T, T, T, T, T, T, T, T, T, 
-  F, T, T, T, T, T, T, T, T, F, F, F, 
-  F, F, F, F, F, T, F, F, F, F, F, F, 
-  F, F, F, T, T, T, T, T, F, T, T, T, 
+  T, F, T, F, T, T, F, T, F, T, T, T,
+  F, F, F, T, T, F, T, T, F, T, F, T,
+  F, F, F, F, F, F, F, T, F, F, T, T,
+  F, F, F, F, F, F, F, F, F, F, F, F,
+  F, F, F, F, F, F, F, F, F, F, F, F,
+  F, F, F, F, F, F, F, F, F, F, F, F,
+  F, F, F, T, F, T, T, T, F, T, F, F,
+  F, T, F, T, T, T, T, T, T, T, T, T,
+  F, T, T, T, T, T, T, T, T, F, F, F,
+  F, F, F, F, F, T, F, F, F, F, F, F,
+  F, F, F, T, T, T, T, T, F, T, T, T,
   T, F, T
 )
 
