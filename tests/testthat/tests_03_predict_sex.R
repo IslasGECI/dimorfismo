@@ -9,11 +9,18 @@ json_data_path <- "data/processed/logistic_model_parameters.json"
 json_data <- rjson::fromJSON(file = json_data_path)
 
 correct_males <- c(
-  T, F, T, F, T, T, F, T, F, T, F, T, F, F, F, T, T, F, T, T, F, T, F, T, F,
-  F, F, F, F, F, F, T, F, F, T, T, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F,
-  F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, T, F, T, F, T, F, T, F, F, F, T, F, T, T,
-  T, T, T, T, T, T, T, F, T, T, T, T, T, T, F, T, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F, F,
-  F, F, T, F, F, T, T, F, T, T, T, F, F, T
+  T, F, T, F, T, T, F, T, F, T, T, T,
+  F, F, F, T, T, F, T, T, F, T, F, T,
+  F, F, F, F, F, F, F, T, F, F, T, T,
+  F, F, F, F, F, F, F, F, F, F, F, F,
+  F, F, F, F, F, F, F, F, F, F, F, F,
+  F, F, F, F, F, F, F, F, F, F, F, F,
+  F, F, F, T, F, T, T, T, F, T, F, F,
+  F, T, F, T, T, T, T, T, T, T, T, T,
+  F, T, T, T, T, T, T, T, T, F, F, F,
+  F, F, F, F, F, T, F, F, F, F, F, F,
+  F, F, F, T, T, T, T, T, F, T, T, T,
+  T, F, T
 )
 
 test_that("Los resultados generados del código son correctos:", {
@@ -28,9 +35,15 @@ test_that("El valor umbral es correcto:", {
   expect_equal(threshold, correct_threshold)
 })
 
-test_that("La probabilidad de error es correcta:", {
-  correct_prob <- 0.642786947
-  expect_equivalent(prob, correct_prob)
+test_that("La probabilidad de error con 10 repeticiones es correcta:", {
+  correct_prob <- 0.824
+  tdp_path <- "data/raw/"
+  csv_file <- file.path(tdp_path, "laysan_albatross_morphometry_guadalupe.csv")
+  csv_data <- data.table::data.table(read.csv(csv_file))
+  n_rows_data <- nrow(csv_data)
+  data <- csv_data[n_rows_data, ]
+  prob <- dimorphism_model_albatross$predict(data)
+  expect_equivalent(prob, correct_prob, tolerance = 1e-3)
 })
 
 test_that("Los resultados finales son correctos:", {

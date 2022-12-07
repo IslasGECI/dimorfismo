@@ -40,3 +40,7 @@ docker run --rm --volume ${PWD}:/workdir ${REMOTE}/${REPO}:latest make
 - [x] Mostrar en el PDF los resultados obtenidos en los archivos CSV y JSON.
 - [x] Redactar un reporte semanal con las actividades realizadas declarando su intensión u objetivo.
 - [x] Reporte final con base en reportes semanales.
+
+### Papers:
+
+- https://www.researchgate.net/publication/333839835_Sexual_Dimorphism_and_Foraging_Trips_of_the_Laysan_Albatross_Phoebastria_immutabilis

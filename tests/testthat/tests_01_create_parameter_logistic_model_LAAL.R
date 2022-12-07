@@ -8,11 +8,8 @@ json_data <- rjson::fromJSON(file = json_data_path)
 
 test_that("Los resultados generados del código son correctos:", {
   data_path <- "tests/data/laysan_albatross_morphometry_guadalupe.csv"
-  output_json_path <- "tests/data/output_best_json_for_logistic_model.json"
+  output_json <- "tests/data/output_best_json_for_logistic_model.json"
   get_best_json_for_logistic_model(data_path, output_json)
-  json_correct_data_path <- "tests/data/logistic_model_parameters_tests.json"
-  json_correct_data <- rjson::fromJSON(file = json_correct_data_path)
-  expect_equal(output_json_path, json_correct_data)
   correct_lenght <- 58
   obtained_length <- length(readLines(json_data_path))
   expect_equal(obtained_length, correct_lenght, tolerance = 1)
@@ -20,18 +17,7 @@ test_that("Los resultados generados del código son correctos:", {
 
 source("src/01_create_parameter_logistic_model_LAAL.R")
 
-correct_y_test <- c(
-  1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
-  1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-  1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0,
-  0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1,
-  1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0,
-  0, 0, 0, 0, 0, 1, 1
-)
+correct_y_test <- c(1, 0, 1)
 
 test_that("El valor mínimo de error es correcto:", {
   correct_minimum_error <- 7.40740740740740655212448473
@@ -46,5 +32,8 @@ test_that("Los valores normalizados son correctos:", {
 })
 
 test_that("El valor de prueba es correcto:", {
+  validation_data <- read_csv("tests/data/validation_data.csv")
+  y_test <- get_y_test(validation_data)
+  final_y_test <- get_final_y_tests(y_test)
   expect_equivalent(final_y_test, correct_y_test)
 })

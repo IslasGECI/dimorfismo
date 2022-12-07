@@ -45,6 +45,14 @@ test_that("Coefficent is 552, -818 for fit_complete_model", {
   expect_equal(expected_coefficient, obtanided_coefficient, tolerance = 1e-3)
 })
 
+test_that("Fit setpwise columns ", {
+  normalized_data <- read_csv("../data/normalized_mutated_data.csv")
+  step_regression <- fit_stepwise(normalized_data)
+  obtained_ncol <- step_regression$rank
+  expected_ncol <- 2
+  expect_equal(obtained_ncol, expected_ncol)
+})
+
 test_that("Logistic regretion from scratch", {
   expected <- 3
   obtained <- line(0)
@@ -139,7 +147,29 @@ test_that("get_normalize_data remove a row with NA and change from H and F to 0 
   expected_row <- nrow(data_with_sex) - 1
   obtained_row <- nrow(normalized_data)
   expect_equal(obtained_row, expected_row)
-  expected_sex_type <- "integer"
-  obtained_sex_type <- typeof(normalized_data$sexo)
-  expect_equal(obtained_sex_type, expected_sex_type)
+  obtained_sex_type <- all(normalized_data$sexo < 1.1)
+  expect_true(obtained_sex_type)
+})
+
+test_that("get normalization parameters", {
+  model_used_data <- read_csv("../data/model_used_tests_data.csv")
+  normalization_parameters <- get_normalization_parameters(model_used_data)
+  obtained_min <- normalization_parameters$minimum_value$head_length
+  expected_min <- 168.18
+  expect_equal(obtained_min, expected_min)
+  obtained_max <- normalization_parameters$maximum_value$head_length
+  expected_max <- 183.57
+  expect_equal(obtained_max, expected_max)
+})
+
+test_that("Get list of the normalization parameters", {
+  model_used_data <- read_csv("../data/model_used_tests_data.csv")
+  normalized_data <- read_csv("../data/normalized_mutated_data.csv")
+  normalization_parameters <- get_normalization_parameters(model_used_data)
+  step_regression <- fit_stepwise(normalized_data)
+  step_coefficients <- regretion_to_data_frame(step_regression)
+  list_normalization_parameters <- get_normalization_parameters_list(normalization_parameters, step_coefficients)
+  expected_estimate <- c(-74.528, 138.641)
+  obteined_estimate <- (list_normalization_parameters[["model_parameters"]]$Estimate)
+  expect_equal(obteined_estimate, expected_estimate)
 })

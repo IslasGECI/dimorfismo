@@ -1,4 +1,4 @@
-all: init reports/funcion_logistica.pdf
+all: init reports/logistic_function.pdf
 
 define lint
 	R -e "library(lintr)" \
@@ -33,7 +33,7 @@ RawData = \
 
 # II. Sección de requisitos de objetivos principales:
 # ------------------------------------------------------------------------------------------------
-reports/funcion_logistica.pdf: reports/logistic_function.tex $(csvLogisticModelTable) $(csvBestModelTable) $(jsonBestLogisticModelParameters) $(jsonLogisticModelParameters)
+reports/logistic_function.pdf: reports/logistic_function.tex $(csvLogisticModelTable) $(csvBestModelTable) $(jsonBestLogisticModelParameters) $(jsonLogisticModelParameters)
 	cd $(<D) && pdflatex $(<F)
 	cd $(<D) && pythontex $(<F)
 	cd $(<D) && pdflatex $(<F)

@@ -150,8 +150,49 @@ delete_NA_from_column <- function(numerical_data_with_sex, variables_model) {
 get_normalize_data <- function(data_set_for_model, numerical_data_with_sex) {
   normalized_data <- as.data.frame(sapply(data_set_for_model, normalize))
   normalized_data$sexo <- numerical_data_with_sex[!is.na(numerical_data_with_sex$masa), ]$sexo
-  normalized_data$sexo <- factor(normalized_data$sexo)
+  normalized_data <- normalized_data %>% mutate(sexo = ifelse(sexo == "H", 1, 0))
   return(normalized_data)
+}
+
+get_model_used_data <- function(numerical_data_with_sex, model_varibles_names) {
+  model_used_data <- numerical_data_with_sex %>%
+    filter(!is.na(masa)) %>%
+    select(model_varibles_names)
+  return(model_used_data)
+}
+
+get_max_normalized_data <- function(model_used_data) {
+  max_normalized_data <- sapply(model_used_data, max)
+  return(max_normalized_data)
+}
+
+get_min_normalized_data <- function(model_used_data) {
+  min_normalized_data <- sapply(model_used_data, min)
+  return(min_normalized_data)
+}
+
+get_normalization_parameters <- function(model_used_data) {
+  max_normalized_data <- get_max_normalized_data(model_used_data)
+  min_normalized_data <- get_min_normalized_data(model_used_data)
+  normalization_parameters <- list(
+    minimum_value = split(
+      unname(min_normalized_data),
+      names(min_normalized_data)
+    ),
+    maximum_value = split(
+      unname(max_normalized_data),
+      names(max_normalized_data)
+    )
+  )
+  return(normalization_parameters)
+}
+
+get_normalization_parameters_list <- function(normalization_parameters, step_coefficients) {
+  list_normalization_parameters <- list(
+    normalization_parameters = normalization_parameters,
+    model_parameters = step_coefficients
+  )
+  return(list_normalization_parameters)
 }
 
 #' @export
@@ -183,13 +224,13 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
 
   trainning_data <- data[trainning_index, ]
   validation_data <- data[validation_index, ]
-  write_csv(trainning_data, "trainning_data.csv")
+
   setkey(trainning_data, id_darvic)
 
   # Se definen variables para utilizarse en el texto que decribe los Datos.
   numerical_data_with_sex <- add_sex_to_data(trainning_data)
 
-  data_set_for_model <- delete_NA_from_column(variable_names)
+  data_set_for_model <- delete_NA_from_column(numerical_data_with_sex, variables_model)
 
   normalized_data <- get_normalize_data(data_set_for_model, numerical_data_with_sex)
 
@@ -216,28 +257,14 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
     model_varibles_names <- names(step_regression$coefficients)
     model_varibles_names <- model_varibles_names[model_varibles_names != "(Intercept)"]
 
-    model_used_data <- numerical_data_with_sex[!is.na(numerical_data_with_sex$masa),
-      model_varibles_names,
-      with = FALSE
-    ]
-    min_normalized_data <- sapply(model_used_data, min)
-    max_normalized_data <- sapply(model_used_data, max)
-    normalization_parameters <- list(
-      minimum_value = split(
-        unname(min_normalized_data),
-        names(min_normalized_data)
-      ),
-      maximum_value = split(
-        unname(max_normalized_data),
-        names(max_normalized_data)
-      )
-    )
+    model_used_data <- get_model_used_data(numerical_data_with_sex, model_varibles_names)
 
-    list_normalization_parameters <- list(
-      normalization_parameters = normalization_parameters,
-      model_parameters = step_coefficients
-    )
+    normalization_parameters <- get_normalization_parameters(model_used_data)
 
+    list_normalization_parameters <- get_normalization_parameters_list(normalization_parameters, step_coefficients) #
+
+    min_normalized_data <- get_min_normalized_data(model_used_data)
+    max_normalized_data <- get_max_normalized_data(model_used_data)
     for (i_pair_normalization in colnames(model_used_data)) {
       model_table$min_normalization_parameters[i, i_pair_normalization] <-
         min_normalized_data[i_pair_normalization]
@@ -250,4 +277,16 @@ get_best_json_for_logistic_model <- function(data_path, output_json_path) {
       output_json_path
     )
   }
+  return(list_normalization_parameters)
+}
+
+get_y_test <- function(validation_data) {
+  y_test <- ifelse(validation_data$sexo == "M", 1, 0)
+  return(y_test)
+}
+
+get_final_y_tests <- function(y_test) {
+  final_y_test <- c()
+  final_y_test <- append(final_y_test, y_test)
+  return(final_y_test)
 }
